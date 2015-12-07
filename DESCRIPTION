@@ -1,0 +1,14 @@
+Package: cmna
+Type: Package
+Title: Computational Methods for Numerical Analysis
+Version: 0.0
+Date: 2011-07-01
+Author: James P. Howard, II <jh@jameshoward.us>
+Maintainer: James P. Howard, II <jh@jameshoward.us>
+Description: None yet.
+License: BSD_2_clause + file LICENSE
+LazyLoad: yes
+Suggests:
+    testthat
+Depends:
+    roxygen2
