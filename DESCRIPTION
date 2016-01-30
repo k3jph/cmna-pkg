@@ -1,14 +1,14 @@
 Package: cmna
 Type: Package
 Title: Computational Methods for Numerical Analysis
-Version: 0.0
-Date: 2011-07-01
-Author: James P. Howard, II <jh@jameshoward.us>
-Maintainer: James P. Howard, II <jh@jameshoward.us>
-Description: None yet.
+Version: 0.1.0
+Date: 2016-01-31
+Author: "James P. Howard, II" <jh@jameshoward.us>
+Maintainer: "James P. Howard, II" <jh@jameshoward.us>
+Description: Provides the source and examples for Computational Methods
+			 for Numerical Analysis with R.
 License: BSD_2_clause + file LICENSE
 LazyLoad: yes
 Suggests:
     testthat
-Depends:
-    roxygen2
+RoxygenNote: 5.0.1

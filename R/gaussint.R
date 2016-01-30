@@ -4,6 +4,7 @@
 #' Use the Gaussian method to evaluate integrals
 #'
 #' @param f function to integrate
+#' @param m number of evaluation points
 #' @param x list of evaluation points
 #' @param w list of weights
 #'

@@ -28,11 +28,13 @@
 #' y <- c(-2, 2, -1, -1)
 #' f <- cbezier(x, y, seq(0, 1, 1/100))
 #'
+#' @importFrom utils read.csv
+#' 
 #' @rdname bezier
 #' @export
 qbezier <- function(x, y, t) {
     if(length(x) != 3 || length(y) != 3)
-        error("x and y must contain exactly 3 values")
+        stop("x and y must contain exactly 3 values")
     
     newx <- (1-t)^2 * x[1] + 2 * (1-t) * t * x[2] +
         t^2 * x[3]
@@ -46,7 +48,7 @@ qbezier <- function(x, y, t) {
 #' @export
 cbezier <- function(x, y, t) {
     if(length(x) != 4 || length(y) != 4)
-        error("x and y must contain exactly 4 values")
+        stop("x and y must contain exactly 4 values")
 
     newx <- (1-t)^3 * x[1] + 3 * (1-t)^2 * t * x[2] +
         3 * (1-t) * t^2 * x[3] + t^3 * x[4]

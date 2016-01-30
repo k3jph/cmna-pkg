@@ -29,7 +29,7 @@
 #' @examples
 #' f <- function(x) { sin(x)^2 + log(x)}
 #' mcint(f, 0, 1)
-#' mcint(f, 0, 1, n = 10e6)
+#' mcint(f, 0, 1, m = 10e6)
 #'
 #' @export
 mcint <- function(f, a, b, m = 1000, max.y = 1) {

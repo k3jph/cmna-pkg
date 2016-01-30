@@ -59,7 +59,7 @@ findiff2 <- function(f, x, h) {
 #' @export
 rdiff <- function(f, x, n = 10, h = 1e-4) {
     if(n == 1)
-        return(symiff(f, x, h = h))
+        return(symdiff(f, x, h = h))
     
     dx <- (4 * rdiff(f, x, n = n - 1, h = h / 2) -
                symdiff(f, x, h = h)) / 3

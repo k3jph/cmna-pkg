@@ -23,7 +23,7 @@
 #' @export
 nn <- function(p, y, q) {
     if(ncol(p) != ncol(q))
-        error("p and q must have same number of columns")
+        stop("p and q must have same number of columns")
     
     ## Repeat the rows of q to simplfy the  calculation
     qprime <- t(matrix(rep(q, nrow(p)), ncol(p)))

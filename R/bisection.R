@@ -3,7 +3,7 @@
 #' @description
 #' Use the bisection method to find real roots
 #'
-#' @param f function to integrate
+#' @param f function to locate a root for
 #' @param a the a bound of the search region
 #' @param b the b bound of the search region
 #' @param tol the error tolerance
@@ -14,7 +14,7 @@
 #' The bisection method functions by repeatedly halving the interval
 #' between \code{a} and \code{b} and will return when the
 #' interval between them is less than \code{tol}, the error tolerance.
-#' However, this implementation also stop if after \code{maxiter}
+#' However, this implementation also stops if after \code{m}
 #' iterations.
 #'
 #' @return the real root found

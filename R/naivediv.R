@@ -30,7 +30,7 @@ naivediv <- function(m, n) {
     r <- m
     
     if(n == 0)
-        error("Attempted division by 0")
+        stop("Attempted division by 0")
 
     while(r >= n) {
         quot <- quot + 1
@@ -47,7 +47,7 @@ longdiv <- function(m, n) {
     r <- 0
 
     if(n == 0)
-        error("Attempted division by 0")
+        stop("Attempted division by 0")
  
     for(i in 31:0) {
         r <- bitwShiftL(r, 1)

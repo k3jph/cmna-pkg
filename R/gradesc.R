@@ -2,7 +2,7 @@
 #'
 #' @name gradient
 #' @rdname gradient
-#' 
+#'
 #' @description
 #' Use gradient descent to find local minima
 #'
@@ -11,7 +11,7 @@
 #' @param h the step size
 #' @param tol the error tolerance
 #' @param m the maximum number of iterations
-#' 
+#'
 #' @details
 #'
 #' Gradient descent can be used to find local minima of functions.  It
@@ -25,16 +25,25 @@
 #' @family optimz
 #'
 #' @examples
-#' fp <- function(x) { x^3 + 3x^2 - 1 }
-#' graddsc(fp, x)
+#' fp <- function(x) { x^3 + 3 * x^2 - 1 }
+#' graddsc(fp, 0)
 #'
+#' f <- function(x) { (x[1] - 1)^2 + (x[2] - 1)^2 }
+#' fp <-function(x) {
+#'     x1 <- 2 * x[1] - 2
+#'     x2 <- 8 * x[2] - 8
+#'
+#'     return(c(x1, x2))
+#' }
+#' gd(fp, c(0, 0), 0.05)
+
 #' @export
 graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
     iter <- 0
-    
+
     oldx <- x
     x = x - h * fp(x)
-    
+
     while(abs(x - oldx) > tol) {
         iter <- iter + 1
         if(iter > m)
@@ -42,7 +51,7 @@ graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
         oldx <- x
         x = x - h * fp(x)
     }
-    
+
     return(x)
 }
 
@@ -50,10 +59,10 @@ graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
 #' @export
 gradasc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
     iter <- 0
-    
+
     oldx <- x
     x = x + h * fp(x)
-    
+
     while(abs(x - oldx) > tol) {
         iter <- iter + 1
         if(iter > m)
@@ -61,7 +70,25 @@ gradasc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
         oldx <- x
         x = x + h * fp(x)
     }
-    
+
     return(x)
 }
-    
+
+#' @rdname gradient
+#' @export
+gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
+    iter <- 0
+
+    oldx <- x
+    x = x - h * fp(x)
+
+    while(vecnorm(x - oldx) > tol) {
+        iter <- iter + 1
+        if(iter > m)
+            return(x)
+        oldx <- x
+        x = x - h * fp(x)
+    }
+
+    return(x)
+}

@@ -14,8 +14,9 @@
 #' @family linear
 #'
 #' @examples
-#' A <- matrix(c(5,1,2,1,9,3,2,3,7),3)
-#' choleskymatrix(m)
+#' (A <- matrix(c(5, 1, 2, 1, 9, 3, 2, 3, 7), 3))
+#' (L <- choleskymatrix(A))
+#' t(L) %*% L
 #'
 #' @export
 choleskymatrix <- function(m) {
