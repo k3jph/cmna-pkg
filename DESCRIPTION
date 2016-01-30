@@ -8,7 +8,8 @@ Maintainer: "James P. Howard, II" <jh@jameshoward.us>
 Description: Provides the source and examples for Computational Methods
 			 for Numerical Analysis with R.
 License: BSD_2_clause + file LICENSE
-LazyLoad: yes
+LazyLoad: no
 Suggests:
     testthat
 RoxygenNote: 5.0.1
+Depends: R (>= 2.10)

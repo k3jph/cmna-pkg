@@ -34,8 +34,6 @@ gaussint <- function(f, x, w) {
 #' @export
 gauss.legendre <- function(f, m = 5) {
     p <- paste("gauss.legendre.", m, sep = "")
-    tryCatch(data(list = p, envir = environment()),
-             warning = stop)
     params <- eval(parse(text = p))
     
     return(gaussint(f, params$x, params$w))
@@ -45,8 +43,6 @@ gauss.legendre <- function(f, m = 5) {
 #' @export
 gauss.laguerre <- function(f, m = 5) {
   p <- paste("gauss.laguerre.", m, sep = "")
-  tryCatch(data(list = p, envir = environment()),
-           warning = stop)
   params <- eval(parse(text = p))
   
   return(gaussint(f, params$x, params$w))
@@ -56,8 +52,6 @@ gauss.laguerre <- function(f, m = 5) {
 #' @export
 gauss.hermite <- function(f, m = 5) {
   p <- paste("gauss.hermite.", m, sep = "")
-  tryCatch(data(list = p, envir = environment()),
-           warning = stop)
   params <- eval(parse(text = p))
   
   return(gaussint(f, params$x, params$w))
