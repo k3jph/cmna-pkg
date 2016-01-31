@@ -1,0 +1,16 @@
+##
+##  FIXME
+##
+
+citHeader("To cite package 'cmna' in publications use:")
+
+desc <- packageDescription("cmna")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
+vers <- paste("R package version", desc$Version)
+
+citEntry(entry="Manual",
+         title = "Computational Methods for Numerical Analysis",
+         author = personList(person(first = "James", middle="P.", last="Howard, II")),
+         year = year,
+         note = vers,
+         textVersion = paste("James P. Howard, II, Computational Methods for Numerical Analysis."))
