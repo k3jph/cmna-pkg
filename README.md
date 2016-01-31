@@ -5,14 +5,114 @@
 This is the R package to support _Computational Methods for Numerical
 Analysis with R_ by James P. Howard, II.  This book is scheduled for
 publication in 2016 and will include a variety of implementations of
-simple numerical analysis algorithms.
+numerical analysis algorithms in pure R.
 
 ## Algorithms included
 
+* Elementary and Example Algorithms
+  * Polynomial Expansion
+    * Naive (naivepoly)
+	* Cached Naive (betterpoly)
+	* Horner's Method (horner, rhorner)
+  * Summation
+    * Naive Summation (naivesum)
+    * Kahan Summation (kahansum)
+  * Division
+    * Naive Division (naivediv)
+    * Long Division (longdiv)
+  * Miscellaneous
+    * Naive Primality tester (isPrime)
+	* Nth Root (nthroot)
+	* Quadratic Formula (quadratic, quadratic2)
+  * Samples
+    * Fibbonaci (fibonacci)
+	* Wilinson's Polynomial (wilkinson)
+    * Himmelblau (himmelblau) 
+* Linear Algebra
+  * Row/Vector Operations
+    * Row Replacement (replacerow)
+	* Scale Row (scalerow)
+	* Swap Rows (swaprows)
+	* Norm of a Vector (vecnorm)
+  * Elementary Functions
+    * Determinant (detmatrix)
+	* Matrix Inverse (invmatrix)
+	* Row-Echelon Form (refmatrix)
+	* Reduced Row-Echelon Form (rrefmatrix)
+	* Solve a Matrix, Using Row Reduction (solvematrix)
+  * Decompositions
+    * Cholesky Decomposition (choleskymatrix)
+	* LU Decomposition (lumatrix)
+  * Iterative Methods
+    * Conjugate Gradient (cgmmatrix)
+	* Gauss Seidel (gaussseidel)
+	* Jacobi (jacobi)
+  * Specialty Methods
+    * Tridiagonal Matrix Solver (tridiagmatrix)
+* Interpolation and Extrapolation
+  * Polynomial Interpolation
+    * Liner Interpolation (linterp)
+	* Polynomial Interpolation (polyinterp)
+  * Splines
+    * Piecewise Linear (pwiselinterp)
+    * Cubic Spline (cubicspline)
+  * Bezier
+    * Quadratic Bezier (qbezier)
+    * Cubic Bezier (cbezier)
+  * Multidimensional Interpolaters
+    * Bilinear (bilinear)
+	* Nearest Neighbor (nn)
+  * Applications
+    * Image Resizing (resizeImageNN, resizeImageBL)
+* Differentiation
+  * Finite Differences
+    * One-Step (findiff)
+	* More Differentiators, symdiff, rdiff)
+	* Second Derivative (findiff2)
 * Numerical Integration
-	* Newton-Cotes
-		* midpoint method
-		* trapezoid method
+  * Newton-Cotes
+	* Midpoint Method (midpt)
+	* Trapezoid Method (trap)
+	* Simpson's Rule (simp)
+	* Simpson's 3/8s Rule (simp38)
+  * Gaussian Integration
+    * Driver (gaussint)
+	* Specific forms (gauss.hermite, gauss.laguerre, gauss.legendre)
+  * Adaptive Integrators
+    * Recursive Adaptive (adaptint)
+	* Romberg (romberg)
+  * Monte Carlo
+    * Monte Carlo Integration, 1D (mcint)
+	* Monte Carlo Integration, 2D (mcint2)
+  * Applications
+    * Shell Method for Revolved Volume (shellmethod)
+    * Disc Method for Revolved Volume (discmethod)
+	* Gini Coefficient (giniquintile)
+* Root Finding
+  * Bisection Method (bisection)
+  * Newton's Method (newton)
+  * Secant Method (secant)
+* Optimization
+  * Continuous
+    * Golden Section (goldsectmax, goldsectmin)
+    * Gradient Descent (gd, gdls, gradasc, graddsc)
+	* Hill Climbing (hillclimbing)
+	* Simulated Annealing (sa)
+  * Discrete
+    * Traveling Salesperson Problem (tspsa)
+* Differential Equations
+  * Initial Value Problems
+    * Euler Method (euler)
+	* Midpoint Method (midptivp)
+	* Fouth-Order Runge-Kutta (rungekitta4)
+    * Adams-Bashforth (adamsbashforth)
+  * Systems of Differential Equations
+    * Euler Method (eulersys)
+  * Partial Differential Equations
+    * Heat Equation, 1D (heat)
+	* Wave Equation, 1D (wave)
+  * Applications
+    * Boundary Value Problems (bvpexample, bvpexample10)
 
 ## Dependencies
 
