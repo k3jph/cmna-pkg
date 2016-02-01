@@ -1,16 +1,9 @@
-##
-##  FIXME
-##
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
 
-citHeader("To cite package 'cmna' in publications use:")
-
-desc <- packageDescription("cmna")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
-vers <- paste("R package version", desc$Version)
-
-citEntry(entry="Manual",
+bibentry(bibtype = "Manual",
          title = "Computational Methods for Numerical Analysis",
-         author = personList(person(first = "James", middle="P.", last="Howard, II")),
+         author = person("James P.", "{Howard, II}", email = "jh@jameshoward.us"),
          year = year,
-         note = vers,
-         textVersion = paste("James P. Howard, II, Computational Methods for Numerical Analysis."))
+         note = note,
+         url = "https://jameshoward.us/cmna")
