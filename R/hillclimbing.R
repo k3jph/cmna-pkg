@@ -52,6 +52,9 @@
 #' hillclimbing(f, c(0,0))
 #' hillclimbing(f, c(-1,-1))
 #' hillclimbing(f, c(10,10))
+#'
+#' @importFrom stats runif
+#' @importFrom stats rnorm
 
 #' @export
 hillclimbing <- function(f, x, h = 1, m = 1e3) {

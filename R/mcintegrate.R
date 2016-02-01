@@ -57,6 +57,8 @@
 #' mcint(f, 0, 1)
 #' mcint(f, 0, 1, m = 10e6)
 #'
+#' @importFrom stats runif
+#' 
 #' @export
 mcint <- function(f, a, b, m = 1000, max.y = 1) {
     x <- runif(m, min = a, max = b)

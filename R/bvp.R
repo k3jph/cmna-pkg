@@ -50,6 +50,9 @@
 #' bvpexample(2)
 #' ## (bvp.b <- bisection(bvpexample, 0, 1))
 #' ## (bvp.s <- secant(bvpexample, 0))
+#'
+#' @importFrom utils tail
+#' 
 #' @rdname bvp
 #' @export
 bvpexample <- function(x) {
@@ -63,7 +66,7 @@ bvpexample <- function(x) {
         
         return(c(y1 = y1, y2 = y2))
     }
-    
+
     z <- eulersys(odesystem, x0, y0, 1 / 1000, 1000)
     tail(z$y1, 1) - yn
 }
@@ -76,10 +79,10 @@ bvpexample10 <- function(x) {
   yn <- 1
   
   odesystem <- function(x, y) {
-    y1 <- y[2]
-    y2 <- y[1]^2 - 2
-    
-    return(c(y1 = y1, y2 = y2))
+      y1 <- y[2]
+      y2 <- y[1]^2 - 2
+
+      return(c(y1 = y1, y2 = y2))
   }
   
   z <- eulersys(odesystem, x0, y0, 1/ 10, 10)

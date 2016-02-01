@@ -52,7 +52,10 @@
 #'
 #' f <- function(x) { (x[1] - 1)^2 + (x[2] - 1)^2 }
 #' sa(f, c(0, 0), 0.05)
-
+#'
+#' @importFrom stats runif
+#' @importFrom stats rnorm
+#'
 #' @rdname sa
 #' @export
 sa <- function(f, x, temp = 1e4, rate = 1e-4) {

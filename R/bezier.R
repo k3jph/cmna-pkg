@@ -54,8 +54,6 @@
 #' y <- c(-2, 2, -1, -1)
 #' f <- cbezier(x, y, seq(0, 1, 1/100))
 #'
-#' @importFrom utils read.csv
-#' 
 #' @rdname bezier
 #' @export
 qbezier <- function(x, y, t) {
