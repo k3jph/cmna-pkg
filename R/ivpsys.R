@@ -28,7 +28,7 @@
 #'
 #' @name ivpsys
 #' @rdname ivpsys
-#' 
+#'
 #' @description
 #' solve initial value problems for systems ordinary differential equations
 #'
@@ -43,7 +43,7 @@
 #' differential equations.  The code{midptivp} method solves initial
 #' value problems using the second-order Runge-Kutta method.  The
 #' \code{rungekutta4} method is the fourth-order Runge-Kutta method.
-#' 
+#'
 #' @return a data frame of \code{x} and \code{y} values
 #'
 #' @examples
@@ -55,8 +55,8 @@
 eulersys <- function(f, x0, y0, h, n) {
     x <- x0
     y <- y0
-    
-    ## If y0 values are named, the data frame names them!  
+
+    ## If y0 values are named, the data frame names them!
     ## The value names produced by f(x, y) should match.
     values <- data.frame(x = x, t(y0))
     for(i in 1:n) {
@@ -64,6 +64,6 @@ eulersys <- function(f, x0, y0, h, n) {
         x0 <- x0 + h
         values <- rbind(values, data.frame(x = x0, t(y0)))
     }
-    
-    return(values)   
+
+    return(values)
 }

@@ -28,7 +28,7 @@
 #'
 #' @name bvp
 #' @rdname bvp
-#' 
+#'
 #' @description
 #' solve boundary value problems for ordinary differential equations
 #'
@@ -39,7 +39,7 @@
 #' differential equations.  The code{midptivp} method solves initial
 #' value problems using the second-order Runge-Kutta method.  The
 #' \code{rungekutta4} method is the fourth-order Runge-Kutta method.
-#' 
+#'
 #' @return a data frame of \code{x} and \code{y} values
 #'
 #' @examples
@@ -52,18 +52,18 @@
 #' ## (bvp.s <- secant(bvpexample, 0))
 #'
 #' @importFrom utils tail
-#' 
+#'
 #' @rdname bvp
 #' @export
 bvpexample <- function(x) {
     x0 <- 0
     y0 <- c(y1 = 1, y2 = x)
     yn <- 1
-    
+
     odesystem <- function(x, y) {
         y1 <- y[2]
         y2 <- y[1]^2 - 2
-        
+
         return(c(y1 = y1, y2 = y2))
     }
 
@@ -77,14 +77,14 @@ bvpexample10 <- function(x) {
   x0 <- 0
   y0 <- c(y1 = 1, y2 = x)
   yn <- 1
-  
+
   odesystem <- function(x, y) {
       y1 <- y[2]
       y2 <- y[1]^2 - 2
 
       return(c(y1 = y1, y2 = y2))
   }
-  
+
   z <- eulersys(odesystem, x0, y0, 1/ 10, 10)
   tail(z$y1, 1) - yn
 }

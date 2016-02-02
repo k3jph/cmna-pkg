@@ -38,7 +38,7 @@
 #' The \code{gaussint} function uses the Gaussian integration to
 #' evaluate an integral.  The function itself is a driver and expects
 #' the integration points and associated weights as options.
-#' 
+#'
 #' @return the value of the integral
 #'
 #' @family integration
@@ -52,7 +52,7 @@
 #' @export
 gaussint <- function(f, x, w) {
     y <- f(x)
-    
+
     return(sum(y * w))
 }
 
@@ -61,7 +61,7 @@ gaussint <- function(f, x, w) {
 gauss.legendre <- function(f, m = 5) {
     p <- paste("gauss.legendre.", m, sep = "")
     params <- eval(parse(text = p))
-    
+
     return(gaussint(f, params$x, params$w))
 }
 
@@ -70,7 +70,7 @@ gauss.legendre <- function(f, m = 5) {
 gauss.laguerre <- function(f, m = 5) {
   p <- paste("gauss.laguerre.", m, sep = "")
   params <- eval(parse(text = p))
-  
+
   return(gaussint(f, params$x, params$w))
 }
 
@@ -79,6 +79,6 @@ gauss.laguerre <- function(f, m = 5) {
 gauss.hermite <- function(f, m = 5) {
   p <- paste("gauss.hermite.", m, sep = "")
   params <- eval(parse(text = p))
-  
+
   return(gaussint(f, params$x, params$w))
 }

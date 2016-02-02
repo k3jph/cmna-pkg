@@ -27,7 +27,7 @@ numerical analysis algorithms in pure R.
   * Samples
     * Fibbonaci (fibonacci)
 	* Wilinson's Polynomial (wilkinson)
-    * Himmelblau (himmelblau) 
+    * Himmelblau (himmelblau)
 * Linear Algebra
   * Row/Vector Operations
     * Row Replacement (replacerow)

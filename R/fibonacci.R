@@ -35,14 +35,14 @@
 #' This function is recursively implements the famous Fibonacci
 #' sequence.  The function returns the \code{n}th member of the
 #' sequence.
-#' 
+#'
 #' @return the sequence element
 #'
 #' @family algebra
-#' 
+#'
 #' @examples
 #' fibonacci(10)
-#' 
+#'
 #' @export
 fibonacci <- function(n) {
     if(n == 0)

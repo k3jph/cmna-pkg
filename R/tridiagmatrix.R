@@ -24,20 +24,20 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#' @title Solve a tridiagonal matrix 
+#' @title Solve a tridiagonal matrix
 #'
 #' @description
 #' use the tridiagonal matrix algorithm to solve a tridiagonal matrix
-#' 
+#'
 #' @param d vector of entries on the main diagonal
 #' @param l vector of entries below the main diagonal
 #' @param u vector of entries above the main diagonal
 #' @param b vector of the right-hand side of the linear system
-#' 
+#'
 #' @details
 #' \code{tridiagmatrix} uses the tridiagonal matrix algorithm to solve a
 #' tridiagonal matrix.
-#' 
+#'
 #' @return the solution vector
 #'
 #' @family linear
@@ -46,7 +46,7 @@
 tridiagmatrix <- function(l, d, u, b) {
     n <- length(d)
     l <- c(NA, l)
-    
+
     ##  The forward sweep
     u[1] <- u[1] / d[1]
     b[1] <- b[1] / d[1]
@@ -57,12 +57,12 @@ tridiagmatrix <- function(l, d, u, b) {
     }
     b[n] <- (b[n] - l[n] * b[n - 1]) /
         (d[n] - l[n] * u[n - 1])
-    
+
     ##  The backward sweep
     x <- rep.int(0, n)
     x[n] <- b[n]
     for(i in (n - 1):1)
         x[i] <- b[i] - u[i] * x[i + 1]
-    
+
     return(x)
 }

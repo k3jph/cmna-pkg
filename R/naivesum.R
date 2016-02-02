@@ -31,7 +31,7 @@
 #'
 #' @description
 #' Find the sum of a vector
-#' 
+#'
 #' @param x a vector of numbers to be summed
 #'
 #' @details

@@ -28,12 +28,12 @@
 #'
 #' @description
 #' Invert the matrix using Gaussian elimination
-#' 
+#'
 #' @param m a matrix
-#' 
+#'
 #' @details
 #' \code{invmatrix} invertse the given matrix using Gaussian elimination
-#' and returns the result. 
+#' and returns the result.
 #'
 #' @return the inverted matrix
 #'

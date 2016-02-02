@@ -65,12 +65,12 @@ adaptint <- function(f, a, b, n = 10, tol = 1e-6) {
             n = n - 1
             tol <- tol / 2
             c <- (a + b) / 2
-            lt <- adaptint(f, a, c, n = n, tol = tol) 
+            lt <- adaptint(f, a, c, n = n, tol = tol)
             rt <- adaptint(f, c, b, n = n, tol = tol)
             area <- lt + rt
         } else
-            area <- q2            
+            area <- q2
     }
-    
+
     return(area)
 }

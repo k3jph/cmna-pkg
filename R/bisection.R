@@ -34,9 +34,9 @@
 #' @param b the b bound of the search region
 #' @param tol the error tolerance
 #' @param m the maximum number of iterations
-#' 
+#'
 #' @details
-#' 
+#'
 #' The bisection method functions by repeatedly halving the interval
 #' between \code{a} and \code{b} and will return when the
 #' interval between them is less than \code{tol}, the error tolerance.
@@ -56,7 +56,7 @@ bisection <- function(f, a, b, tol = 1e-3, m = 100) {
     iter <- 0
     f.a <- f(a)
     f.b <- f(b)
-    
+
     while (abs(b - a) > tol) {
         iter <- iter + 1
         if (iter > m)

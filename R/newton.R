@@ -34,7 +34,7 @@
 #' @param x an initial estimate of the root
 #' @param tol the error tolerance
 #' @param m the maximum number of iterations
-#' 
+#'
 #' @details
 #'
 #' Newton's method finds real roots of a function, but requires knowing
