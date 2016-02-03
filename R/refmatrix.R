@@ -31,13 +31,13 @@
 #'
 #' @description
 #' Transform a matrix to row echelon form.
-#' 
+#'
 #' @param m a matrix
 #' @param A a square matrix representing the coefficients of a linear
 #' system in \code{solvematrix}
 #' @param b a vector representing the right-hand side of the linear
 #' system in \code{solvematrix}
-#' 
+#'
 #' @details
 #' \code{refmatrix} reduces a matrix to row echelon form.  This is not a
 #' reduced row echelon form, though that can be easily calculated from
@@ -60,7 +60,7 @@ refmatrix <- function(m) {
     count.rows <- nrow(m)
     count.cols <- ncol(m)
     piv <- 1
-    
+
     for(row.curr in 1:count.rows) {
         if(piv <= count.cols) {
             i <- row.curr
@@ -73,7 +73,7 @@ refmatrix <- function(m) {
                         return(m)
                 }
             }
-            if(i != row.curr) 
+            if(i != row.curr)
                 m <- swaprows(m, i, row.curr)
             for(j in row.curr:count.rows)
                 if(j != row.curr) {
@@ -92,7 +92,7 @@ rrefmatrix <- function(m) {
     count.rows <- nrow(m)
     count.cols <- ncol(m)
     piv <- 1
-    
+
     for(row.curr in 1:count.rows) {
         if(piv <= count.cols) {
             i <- row.curr
@@ -105,7 +105,7 @@ rrefmatrix <- function(m) {
                         return(m)
                 }
             }
-            if(i != row.curr) 
+            if(i != row.curr)
                 m <- swaprows(m, i, row.curr)
             piv.val <- m[row.curr, piv]
             m <- scalerow(m, row.curr, 1 / piv.val)

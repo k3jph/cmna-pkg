@@ -30,17 +30,17 @@
 #' @title Image resizing
 #'
 #' @description
-#' Resize images using nearest neighbor and 
+#' Resize images using nearest neighbor and
 #'
 #' @param imx a 3-dimensional array containing image data
 #' @param width the new width
 #' @param height the new height
 #'
-#' @details 
+#' @details
 #' The \var{resizeImageNN} function uses the nearest neighbor method to
 #' resize the image.  Also, \var{resizeImageBL} uses bilinear
 #' interpolation to resize the image.
-#' 
+#'
 #' @return a three-dimensional array containing the resized image.
 #'
 #' @family interpolation
@@ -54,7 +54,7 @@ resizeImageNN <- function(imx, width, height) {
 
     ## Create a new array to store the new image
     nn <- array(0, c(height, width, layers))
-    
+
     for(l in 1:layers)
         for(h in 0:height) {
             y <- round(h / h.scale) + 1
@@ -63,7 +63,7 @@ resizeImageNN <- function(imx, width, height) {
                 nn[h, w, l] <- imx[y, x, l]
             }
         }
-    
+
     return(nn)
 }
 
@@ -74,39 +74,39 @@ resizeImageBL <- function(imx, width, height) {
     layers <- imx.dim[3]
     w.orig <- imx.dim[1]
     h.orig <- imx.dim[2]
-    
+
     w.scale <- (w.orig - 1) / width
     h.scale <- (h.orig - 1) / height
-    
+
     ## Create a new array to store the new image
     bl <- array(0, c(height, width, layers))
-    
+
     zb <- matrix(0, 2, 2)
     for(l in 1:layers)
         for(h in 1:height) {
             y <- floor(h.scale * h)
             if(y == 0) y <- 1
             if(y == h.orig) y <- h.orig - 1
-            
+
             yb <- c(y, y + 1)
             yl <- h.scale * h
-            
+
             for(w in 1:width) {
                 x <- floor(w.scale * w)
                 if(x == 0) x <- 1
                 if(x == w.orig) x <- w.orig - 1
-                
+
                 xb <- c(x, x + 1)
                 xl <- w.scale * w
-                
+
                 zb[1, 1] <- imx[y, x, l]
                 zb[1, 2] <- imx[y, x + 1, l]
                 zb[2, 1] <- imx[y + 1, x, l]
                 zb[2, 2] <- imx[y + 1, x + 1, l]
-                
+
                 bl[h, w, l] <- bilinear(xb, yb, zb, xl, yl)
             }
         }
-    
+
     return(bl)
 }

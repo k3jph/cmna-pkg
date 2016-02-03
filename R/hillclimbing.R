@@ -25,7 +25,7 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #' @title Hill climbing
-#' 
+#'
 #' @name hillclimbing
 #' @rdname hillclimbing
 #'
@@ -39,26 +39,29 @@
 #'
 #' @details
 #'
-#' Hill climbing 
+#' Hill climbing
 #'
 #' @return the \code{x} value of the minimum found
 #'
 #' @family optimz
 #'
 #' @examples
-#' f <- function(x) {   
+#' f <- function(x) {
 #'     (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
 #' }
 #' hillclimbing(f, c(0,0))
 #' hillclimbing(f, c(-1,-1))
 #' hillclimbing(f, c(10,10))
+#'
+#' @importFrom stats runif
+#' @importFrom stats rnorm
 
 #' @export
 hillclimbing <- function(f, x, h = 1, m = 1e3) {
     n <- length(x)
-    
+
     xcurr <- x
-    ycurr <- f(x) 
+    ycurr <- f(x)
 
     for(i in 1:m) {
         xnext <- xcurr
@@ -70,7 +73,7 @@ hillclimbing <- function(f, x, h = 1, m = 1e3) {
             ycurr <- ynext
         }
     }
-    
+
     return(xcurr)
 }
 

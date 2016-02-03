@@ -28,9 +28,9 @@
 #'
 #' @description
 #' Calculate the determinant of the matrix
-#' 
+#'
 #' @param m a matrix
-#' 
+#'
 #' @details
 #' \code{detmatrix} calculates the determinant of the matrix given.
 #'

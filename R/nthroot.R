@@ -40,21 +40,21 @@
 #' @return the root
 #'
 #' @family algebra
-#' 
+#'
 #' @examples
 #' nthroot(100, 2)
 #' nthroot(65536, 4)
 #' nthroot(1000, 3)
-#' 
+#'
 #' @export
 nthroot <- function(a, n, tol = 1 / 1000) {
     x <- 1
     deltax <- tol * 10
-    
+
     while(abs(deltax) > tol) {
         deltax <- (1 / n) * (a / x ^ (n - 1) - x)
         x <- x + deltax
     }
-    
+
     return(x)
 }

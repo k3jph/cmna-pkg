@@ -53,7 +53,7 @@
 #' tdelta <- .001
 #' n <- 25
 #' z <- heat(u, alpha, xdelta, tdelta, n)
-#' 
+#'
 #' @export
 heat <- function(u, alpha, xdelta, tdelta, n) {
     m <- length(u)

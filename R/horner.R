@@ -53,11 +53,11 @@
 #'
 #' The function \code{betterpoly} implements a polynomial evaluator using
 #' the straightforward algebraic approach with cached \emph{x} terms.
-#' 
+#'
 #' @return the value of the function at \code{x}
 #'
 #' @family algebra
-#' 
+#'
 #' @examples
 #' b <- c(2, 10, 11)
 #' x <- 5
@@ -70,10 +70,10 @@
 #' @export
 horner <- function(x, betas) {
     y <- rep(0, length(x))
-    
+
     for(i in length(betas):1)
         y <- betas[i] + x * y
- 
+
     return(y)
 }
 
@@ -81,10 +81,10 @@ horner <- function(x, betas) {
 #' @export
 rhorner <- function(x, betas) {
     n <- length(betas)
-    
+
     if(n == 1)
         return(betas)
-    
+
     return(betas[1] + x * rhorner(x, betas[2:n]))
 }
 
@@ -92,10 +92,10 @@ rhorner <- function(x, betas) {
 #' @export
 naivepoly <- function(x, betas) {
     y <- rep(0, length(x))
-    
+
     for(i in 1:length(betas))
         y <- y + betas[i] * (x ^ (i - 1))
-    
+
     return(y)
 }
 
@@ -104,11 +104,11 @@ naivepoly <- function(x, betas) {
 betterpoly <- function(x, betas) {
     y <- rep(0, length(x))
     cached.x <- 1
-    
+
     for(i in 1:length(betas)) {
         y <- y + betas[i] * cached.x
         cached.x <- cached.x * x
     }
-    
+
     return(y)
 }

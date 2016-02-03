@@ -30,10 +30,10 @@
 #' Generate the Himmelblau function
 #'
 #' @param x a vector of \code{x}-values
-#' 
+#'
 #' @details
 #' Generate the Himmelblau function
-#' 
+#'
 #' @return the value of the function at \code{x}.
 #'
 #' @export

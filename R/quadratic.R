@@ -64,7 +64,7 @@ quadratic <- function(b2, b1, b0) {
 
 #' @rdname quadratic
 #' @export
-quadratic2 <- function(b2, b1, b0) {    
+quadratic2 <- function(b2, b1, b0) {
     t1 <- sqrt(b1^2 - 4 * b2 * b0)
     t2 <- 2 * b0
 

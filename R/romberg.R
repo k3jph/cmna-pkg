@@ -56,7 +56,7 @@
 #' @export
 romberg <- function(f, a, b, m, tab = FALSE) {
     R <- matrix(NA, nrow = m, ncol = m)
-    
+
     R[1, 1] <- trap(f, a, b, m = 1)
     for(j in 2:m) {
         R[j, 1] <- trap(f, a, b, m = 2^(j - 1))
@@ -66,7 +66,7 @@ romberg <- function(f, a, b, m, tab = FALSE) {
             R[j, k] <- R[j, k] / (k4 - 1)
         }
     }
-    
+
     if(tab == TRUE)
         return(R)
     return(R[m, m])

@@ -28,9 +28,9 @@
 #'
 #' @description
 #' Decompose a matrix into the Cholesky
-#' 
+#'
 #' @param m a matrix
-#' 
+#'
 #' @details
 #' \code{choleskymatrix} decomposes the matrix \code{m} into the LU
 #' decomposition, such that m == L %*% L*.
@@ -49,7 +49,7 @@ choleskymatrix <- function(m) {
     count.rows <- nrow(m)
     count.cols <- ncol(m)
 
-    
+
     L = diag(0, count.rows)
     for(i in 1:count.rows) {
         for(k in 1:i) {

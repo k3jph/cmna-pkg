@@ -52,16 +52,19 @@
 #'
 #' f <- function(x) { (x[1] - 1)^2 + (x[2] - 1)^2 }
 #' sa(f, c(0, 0), 0.05)
-
+#'
+#' @importFrom stats runif
+#' @importFrom stats rnorm
+#'
 #' @rdname sa
 #' @export
 sa <- function(f, x, temp = 1e4, rate = 1e-4) {
     step = 1 - rate
     n <- length(x)
-    
+
     xbest <- xcurr <- xnext <- x
-    ybest <- ycurr <- ynext <- f(x) 
-    
+    ybest <- ycurr <- ynext <- f(x)
+
     while(temp > 1) {
         temp <- temp * step
         i <- ceiling(runif(1, 0, n))
@@ -77,7 +80,7 @@ sa <- function(f, x, temp = 1e4, rate = 1e-4) {
             ybest <- ycurr
         }
     }
-    
+
     return(xbest)
 }
 
@@ -86,7 +89,7 @@ sa <- function(f, x, temp = 1e4, rate = 1e-4) {
 tspsa <- function(x, temp = 1e2, rate = 1e-4) {
     step = 1 - rate
     n <- nrow(x)
-    
+
     xbest <- xcurr <- xnext <- c(1:n)
     ynext <- 0
     for(i in 2:n) {
@@ -98,7 +101,7 @@ tspsa <- function(x, temp = 1e2, rate = 1e-4) {
     b <- xnext[n]
     ynext <- ynext + vecnorm(x[a,] - x[b,])
     ybest <- ycurr <- ynext
-    
+
     while(temp > 1) {
         temp <- temp * step
         i <- ceiling(runif(1, 1, n))

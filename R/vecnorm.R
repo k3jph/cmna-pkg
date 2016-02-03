@@ -28,12 +28,12 @@
 #'
 #' @description
 #' Find the norm of a vector
-#' 
+#'
 #' @param b a vector
 #'
 #' @details
 #' Find the norm of a vector
-#' 
+#'
 #' @return the norm
 #'
 #' @family linear

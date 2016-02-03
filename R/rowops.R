@@ -30,17 +30,17 @@
 #' @title Elementary row operations
 #'
 #' @description
-#' 
+#'
 #' These are elementary operations for a matrix.  They do not presume a
 #' square matrix and will work on any matrix.  They use R's internal row
 #' addressing to function.
-#' 
+#'
 #' @param m a matrix
 #' @param row a row to modify
 #' @param row1 a source row
 #' @param row2 a destination row
 #' @param k a scaling factor
-#' 
+#'
 #' @details
 #'
 #' \code{replacerow} replaces one row with the sum of itself and the

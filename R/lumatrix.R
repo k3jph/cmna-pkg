@@ -28,9 +28,9 @@
 #'
 #' @description
 #' Decompose a matrix into lower- and upper-triangular matrices
-#' 
+#'
 #' @param m a matrix
-#' 
+#'
 #' @details
 #' \code{lumatrix} decomposes the matrix \code{m} into the LU
 #' decomposition, such that m == L %*% U.
@@ -48,7 +48,7 @@ lumatrix <- function(m) {
     count.rows <- nrow(m)
     count.cols <- ncol(m)
     piv <- 1
-    
+
     P <- L <- diag(count.cols)
     for(row.curr in 1:count.rows) {
         if(piv <= count.cols) {
@@ -75,6 +75,6 @@ lumatrix <- function(m) {
             piv <- piv + 1
         }
     }
-    
+
     return(list(P = P, L = L, U = m))
 }

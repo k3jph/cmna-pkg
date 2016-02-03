@@ -26,7 +26,7 @@
 
 #' @title Computational Methods for Numerical Analysis
 #' @docType package
-#' 
+#'
 #' @description
 #' Provides the source and examples for \emph{Computational Methods for
 #' Numerical Analysis with R}.
@@ -41,6 +41,6 @@
 #'
 #' @author
 #' James P. Howard, II <jh@jameshoward.us>
-#' 
+#'
 "_PACKAGE"
 #> [1] "_PACKAGE"
