@@ -36,7 +36,7 @@ Simple Monte Carlo Integraton
 The \code{mcint} function uses a simple Monte Carlo algorithm to
 estimate the value of an integral.  The parameter \code{n} sets the
 total number of evaluation points.  The parameter \code{max.y} is the
-maximum expected value of the range of function \code{f}.  The 
+maximum expected value of the range of function \code{f}.  The
 \code{mcint2} provides Monte Carlo integration in two dimensions.
 }
 \examples{

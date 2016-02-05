@@ -25,12 +25,13 @@ Use hill climbing to find the global minimum
 Hill climbing
 }
 \examples{
-f <- function(x) {   
+f <- function(x) {
     (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
 }
 hillclimbing(f, c(0,0))
 hillclimbing(f, c(-1,-1))
 hillclimbing(f, c(10,10))
+
 }
 \seealso{
 Other optimz: \code{\link{bisection}},

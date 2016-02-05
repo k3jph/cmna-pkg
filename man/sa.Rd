@@ -34,6 +34,7 @@ sa(f, 0)
 
 f <- function(x) { (x[1] - 1)^2 + (x[2] - 1)^2 }
 sa(f, c(0, 0), 0.05)
+
 }
 \seealso{
 Other optimz: \code{\link{bisection}},
