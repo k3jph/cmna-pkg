@@ -1,6 +1,8 @@
-# CMNA
+# Computational Methods for Numerical Analysis
 
 [![Build Status](https://travis-ci.org/howardjp/cmna.svg?branch=master,osx)](https://travis-ci.org/howardjp/cmna)
+[![Coverage Status](https://coveralls.io/repos/howardjp/cmna/badge.svg?branch=master&service=github)](https://coveralls.io/github/howardjp/cmna?branch=master)
+[![Downloads from the RStudio CRAN mirror](http://cranlogs.r-pkg.org/badges/cmna)](http://cran.rstudio.com/package=cmna)
 
 This is the R package to support _Computational Methods for Numerical
 Analysis with R_ by James P. Howard, II.  This book is scheduled for
