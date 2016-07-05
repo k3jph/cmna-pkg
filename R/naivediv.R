@@ -63,7 +63,7 @@ naivediv <- function(m, n) {
         r <- r - n
     }
 
-    return(list(quot = quot, r = r))
+    return(list(quotient = quot, remainder = r))
 }
 
 #' @rdname division
@@ -84,5 +84,5 @@ longdiv <- function(m, n) {
         }
     }
 
-    return(list(quot = quot, r = r))
+    return(list(quotient = quot, remainder = r))
 }
