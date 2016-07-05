@@ -54,10 +54,10 @@ polyinterp <- function(x, y) {
     vandermonde <- rep(1, length(x))
     for(i in 1:n) {
         xi <- x^i
-        vandermonde <- cbind(xi, vandermonde)
+        vandermonde <- cbind(vandermonde, xi)
     }
     beta <- solve(vandermonde, y)
 
     names(beta) <- NULL
-    return(rev(beta))
+    return(beta)
 }
