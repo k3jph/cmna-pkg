@@ -58,8 +58,10 @@ gdls <- function(A, b, alpha = 0.05, tol = 1e-6, m = 1e5) {
     oldtheta = theta + 10 * tol
 
     while(vecnorm(oldtheta - theta) > tol) {
-        if((iter <- iter + 1) > m)
+        if((iter <- iter + 1) > m) {
+            warning("maximum number of iterations exceeded")
             return(theta)
+        }
         e <- (A %*% theta - b)
         d <- (t(A) %*% e) / length(b)
         oldtheta <- theta

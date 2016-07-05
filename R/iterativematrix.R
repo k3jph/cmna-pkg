@@ -71,7 +71,11 @@ jacobi <- function(A, b, tol = 10e-7, maxiter = 100) {
     x <- rep(0, n)
     newx <- rep(tol, n)
 
-    while(vecnorm(newx - x) > tol & iter < maxiter) {
+    while(vecnorm(newx - x) > tol) {
+        if(maxiter > iter) {
+            warning("maximum number of iterations exceeded")
+            break
+        }
         x <- newx
         newx <- Dinv %*% (b - R %*% x)
         iter <- iter + 1
@@ -94,7 +98,11 @@ gaussseidel <- function(A, b, tol = 10e-7, maxiter = 100) {
     x <- rep(0, n)
     newx <- rep(tol * 10, n)
 
-    while(vecnorm(newx - x) > tol & iter < maxiter) {
+    while(vecnorm(newx - x) > tol) {
+        if(maxiter > iter) {
+            warning("maximum number of iterations exceeded")
+            break
+        }
         x <- newx
         newx <- Linv %*% (b - U %*% x)
         iter <- iter + 1
@@ -113,8 +121,12 @@ cgmmatrix <- function(A, b, tol = 10e-7, maxiter = 100) {
     newx <- rep(tol * 10, n)
 
     p <- r <- b - A %*% x
-    while(vecnorm(r) > tol & iter < maxiter) {
-        a <- as.numeric((t(r) %*% r) / t(p) %*% A %*% p)
+    while(vecnorm(r) > tol) {
+        if(maxiter > iter) {
+            warning("maximum number of iterations exceeded")
+            break
+        }
+		a <- as.numeric((t(r) %*% r) / t(p) %*% A %*% p)
         newx <- x + a * p
         newr <- r - a * A %*% p
         beta <- as.numeric(t(newr) %*% newr / (t(r) %*% r))
