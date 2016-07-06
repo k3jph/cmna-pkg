@@ -29,9 +29,9 @@
 #' @description
 #' use the tridiagonal matrix algorithm to solve a tridiagonal matrix
 #'
-#' @param d vector of entries on the main diagonal
-#' @param l vector of entries below the main diagonal
-#' @param u vector of entries above the main diagonal
+#' @param D vector of entries on the main diagonal
+#' @param L vector of entries below the main diagonal
+#' @param U vector of entries above the main diagonal
 #' @param b vector of the right-hand side of the linear system
 #'
 #' @details
