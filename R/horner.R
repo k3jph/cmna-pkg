@@ -33,12 +33,12 @@
 #' Use Horner's rule to evaluate a polynomial
 #'
 #' @param x a vector of x values to evaluate the polynomial
-#' @param betas vector of coefficients of x
+#' @param coefs vector of coefficients of x
 #'
 #' @details
 #' This function implements Horner's rule for fast polynomial
 #' evaluation.  The implementation expects \code{x} to be a vector of x
-#' values at which to evaluate the polynomial. The parameter \code{betas}
+#' values at which to evaluate the polynomial. The parameter \code{coefs}
 #' is a vector of coefficients of \emph{x}.  The vector order is such
 #' that the first element is the constant term, the second element is
 #' the coefficient of \emph{x}, the so forth to the highest degreed
@@ -68,45 +68,45 @@
 #' rhorner(x, b)
 
 #' @export
-horner <- function(x, betas) {
+horner <- function(x, coefs) {
     y <- rep(0, length(x))
 
-    for(i in length(betas):1)
-        y <- betas[i] + x * y
+    for(i in length(coefs):1)
+        y <- coefs[i] + x * y
 
     return(y)
 }
 
 #' @rdname horner
 #' @export
-rhorner <- function(x, betas) {
-    n <- length(betas)
+rhorner <- function(x, coefs) {
+    n <- length(coefs)
 
     if(n == 1)
-        return(betas)
+        return(coefs)
 
-    return(betas[1] + x * rhorner(x, betas[2:n]))
+    return(coefs[1] + x * rhorner(x, coefs[2:n]))
 }
 
 #' @rdname horner
 #' @export
-naivepoly <- function(x, betas) {
+naivepoly <- function(x, coefs) {
     y <- rep(0, length(x))
 
-    for(i in 1:length(betas))
-        y <- y + betas[i] * (x ^ (i - 1))
+    for(i in 1:length(coefs))
+        y <- y + coefs[i] * (x ^ (i - 1))
 
     return(y)
 }
 
 #' @rdname horner
 #' @export
-betterpoly <- function(x, betas) {
+betterpoly <- function(x, coefs) {
     y <- rep(0, length(x))
     cached.x <- 1
 
-    for(i in 1:length(betas)) {
-        y <- y + betas[i] * cached.x
+    for(i in 1:length(coefs)) {
+        y <- y + coefs[i] * cached.x
         cached.x <- cached.x * x
     }
 
