@@ -32,12 +32,12 @@ piecewise summation algorithm that divides the vector in two and adds
 the individual vector sums for a result.
 }
 \examples{
-l <- 1:10^6
-n <- sample(l, 1)
-bound <- sample(l, 2)
-bound.u <- max(bound) - 10^6 / 2
-bound.l <- min(bound) - 10^6 / 2
-x <- runif(n, bound.l, bound.u)
+k <- 1:10^6
+n <- sample(k, 1)
+bound <- sample(k, 2)
+bound.upper <- max(bound) - 10^6 / 2
+bound.lower <- min(bound) - 10^6 / 2
+x <- runif(n, bound.lower, bound.upper)
 naivesum(x)
 kahansum(x)
 pwisesum(x)
