@@ -81,7 +81,7 @@ jacobi <- function(A, b, tol = 10e-7, maxiter = 100) {
         iter <- iter + 1
     }
 
-    return(as.vector(x))
+    return(as.vector(newx))
 }
 
 #' @rdname iterativematrix
@@ -108,7 +108,7 @@ gaussseidel <- function(A, b, tol = 10e-7, maxiter = 100) {
         iter <- iter + 1
     }
 
-    return(as.vector(x))
+    return(as.vector(newx))
 }
 
 #' @rdname iterativematrix
