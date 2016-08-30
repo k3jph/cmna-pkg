@@ -49,7 +49,6 @@ choleskymatrix <- function(m) {
     count.rows <- nrow(m)
     count.cols <- ncol(m)
 
-
     L = diag(0, count.rows)
     for(i in 1:count.rows) {
         for(k in 1:i) {
