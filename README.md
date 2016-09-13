@@ -106,7 +106,7 @@ numerical analysis algorithms in pure R.
   * Initial Value Problems
     * Euler Method (euler)
 	* Midpoint Method (midptivp)
-	* Fouth-Order Runge-Kutta (rungekitta4)
+	* Fouth-Order Runge-Kutta (rungekutta4)
     * Adams-Bashforth (adamsbashforth)
   * Systems of Differential Equations
     * Euler Method (eulersys)
