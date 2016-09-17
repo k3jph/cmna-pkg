@@ -7,9 +7,9 @@
 \alias{symdiff}
 \title{Finite Differences}
 \usage{
-findiff(f, x, h)
+findiff(f, x, h = x * sqrt(.Machine$double.eps))
 
-symdiff(f, x, h = tol * 10, tol = 0.001, m = 100)
+symdiff(f, x, h = x * .Machine$double.eps^(1/3))
 
 findiff2(f, x, h)
 
@@ -21,10 +21,6 @@ rdiff(f, x, n = 10, h = 1e-04)
 \item{x}{the \code{x}-value to differentiate at}
 
 \item{h}{the step-size for evaluation}
-
-\item{tol}{the error tolerance for \code{symdiff}}
-
-\item{m}{the maximum number of convergence steps in \code{symdiff}}
 
 \item{n}{the maximum number of convergence steps in \code{rdiff}}
 }
