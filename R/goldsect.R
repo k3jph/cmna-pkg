@@ -64,8 +64,10 @@ goldsectmin <- function(f, a, b, tol = 1e-3, m = 100) {
 
     while (abs(b - a) > tol) {
         iter <- iter + 1
-        if (iter > m)
+        if (iter > m) {
+            warning("maximum number of iterations exceeded")
             break
+        }
 
         if(f(a.star) < f(b.star)) {
             b <- b.star
@@ -92,8 +94,10 @@ goldsectmax <- function(f, a, b, tol = 1e-3, m = 100) {
 
     while (abs(b - a) > tol) {
         iter <- iter + 1
-        if (iter > m)
+        if (iter > m) {
+            warning("maximum number of iterations exceeded")
             break
+        }
 
         if(f(a.star) > f(b.star)) {
             b <- b.star

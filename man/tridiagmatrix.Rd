@@ -4,14 +4,14 @@
 \alias{tridiagmatrix}
 \title{Solve a tridiagonal matrix}
 \usage{
-tridiagmatrix(l, d, u, b)
+tridiagmatrix(L, D, U, b)
 }
 \arguments{
-\item{l}{vector of entries below the main diagonal}
+\item{L}{vector of entries below the main diagonal}
 
-\item{d}{vector of entries on the main diagonal}
+\item{D}{vector of entries on the main diagonal}
 
-\item{u}{vector of entries above the main diagonal}
+\item{U}{vector of entries above the main diagonal}
 
 \item{b}{vector of the right-hand side of the linear system}
 }

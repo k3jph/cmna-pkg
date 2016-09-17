@@ -1,6 +1,8 @@
-# CMNA
+# Computational Methods for Numerical Analysis
 
 [![Build Status](https://travis-ci.org/howardjp/cmna.svg?branch=master,osx)](https://travis-ci.org/howardjp/cmna)
+[![Coverage Status](https://coveralls.io/repos/howardjp/cmna/badge.svg?branch=master&service=github)](https://coveralls.io/github/howardjp/cmna?branch=master)
+[![Downloads from the RStudio CRAN mirror](http://cranlogs.r-pkg.org/badges/cmna)](http://cran.rstudio.com/package=cmna)
 
 This is the R package to support _Computational Methods for Numerical
 Analysis with R_ by James P. Howard, II.  This book is scheduled for
@@ -104,7 +106,7 @@ numerical analysis algorithms in pure R.
   * Initial Value Problems
     * Euler Method (euler)
 	* Midpoint Method (midptivp)
-	* Fouth-Order Runge-Kutta (rungekitta4)
+	* Fouth-Order Runge-Kutta (rungekutta4)
     * Adams-Bashforth (adamsbashforth)
   * Systems of Differential Equations
     * Euler Method (eulersys)
@@ -124,6 +126,7 @@ numerical analysis algorithms in pure R.
 * Use [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/)
 * Write unit tests using [testthat](https://github.com/hadley/testthat)
 * Document functions using [roxygen2](https://github.com/yihui/roxygen2)
+* Use [ZenHub](https://www.zenhub.com/) for project management on GitHub
 
 ## For more information
 

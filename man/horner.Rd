@@ -7,18 +7,18 @@
 \alias{rhorner}
 \title{Horner's rule}
 \usage{
-horner(x, betas)
+horner(x, coefs)
 
-rhorner(x, betas)
+rhorner(x, coefs)
 
-naivepoly(x, betas)
+naivepoly(x, coefs)
 
-betterpoly(x, betas)
+betterpoly(x, coefs)
 }
 \arguments{
 \item{x}{a vector of x values to evaluate the polynomial}
 
-\item{betas}{vector of coefficients of x}
+\item{coefs}{vector of coefficients of x}
 }
 \value{
 the value of the function at \code{x}
@@ -29,7 +29,7 @@ Use Horner's rule to evaluate a polynomial
 \details{
 This function implements Horner's rule for fast polynomial
 evaluation.  The implementation expects \code{x} to be a vector of x
-values at which to evaluate the polynomial. The parameter \code{betas}
+values at which to evaluate the polynomial. The parameter \code{coefs}
 is a vector of coefficients of \emph{x}.  The vector order is such
 that the first element is the constant term, the second element is
 the coefficient of \emph{x}, the so forth to the highest degreed
