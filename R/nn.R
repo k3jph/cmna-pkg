@@ -52,6 +52,7 @@ nn <- function(p, y, q) {
         stop("p and q must have same number of columns")
 
     ## Repeat the rows of q to simplfy the  calculation
-    d <- sqrt(rowSums((p - q)^2))
+    qprime <- t(matrix(rep(q, nrow(p)), ncol(p)))
+    d <- sqrt(rowSums((p - qprime)^2))
     return(y[which.min(d)])
 }
