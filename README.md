@@ -69,7 +69,7 @@ numerical analysis algorithms in pure R.
 * Differentiation
   * Finite Differences
     * One-Step (findiff)
-	* More Differentiators, symdiff, rdiff)
+	* More Differentiators (symdiff, rdiff)
 	* Second Derivative (findiff2)
 * Numerical Integration
   * Newton-Cotes

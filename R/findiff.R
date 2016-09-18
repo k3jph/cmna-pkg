@@ -35,8 +35,6 @@
 #' @param f function to differentiate
 #' @param x the \code{x}-value to differentiate at
 #' @param h the step-size for evaluation
-#' @param tol the error tolerance for \code{symdiff}
-#' @param m the maximum number of convergence steps in \code{symdiff}
 #' @param n the maximum number of convergence steps in \code{rdiff}
 #'
 #' @details
@@ -55,24 +53,15 @@
 #' symdiff(sin, pi, 1e-3)
 #'
 #' @export
-findiff <- function(f, x, h) {
+findiff <- function(f, x, h = x * sqrt(.Machine$double.eps)) {
     return((f(x + h) - f(x)) / h)
 }
 
 #' @rdname findiff
 #' @export
-symdiff <- function(f, x, h = tol * 10,
-                    tol = 1e-3, m = 100) {
-    i <- 0
+symdiff <- function(f, x, h = x * .Machine$double.eps^(1/3)) {
 
-    lastdx <- (f(x + h) - f(x - h)) / (2 * h)
-    while(i < m) {
-        h <- h / 2
-        dx <- (f(x + h) - f(x - h)) / (2 * h)
-        if((abs(dx - lastdx) < tol))
-            return(dx)
-        lastdx <- dx
-    }
+    return((f(x + h) - f(x - h)) / (2 * h))
 }
 
 #' @rdname findiff

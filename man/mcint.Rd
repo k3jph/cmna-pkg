@@ -5,9 +5,9 @@
 \alias{mcint2}
 \title{Monte Carlo Integration}
 \usage{
-mcint(f, a, b, m = 1000, max.y = 1)
+mcint(f, a, b, m = 1000)
 
-mcint2(f, xdom, ydom, m = 1000, max.z = 1)
+mcint2(f, xdom, ydom, m = 1000)
 }
 \arguments{
 \item{f}{function to integrate}
@@ -18,13 +18,9 @@ mcint2(f, xdom, ydom, m = 1000, max.z = 1)
 
 \item{m}{the number of subintervals to calculate}
 
-\item{max.y}{the largest expected value of the range}
-
 \item{xdom}{the domain on \code{x} of integration in two dimensions}
 
 \item{ydom}{the domain on \code{y} of integration in two dimensions}
-
-\item{max.z}{the largest expected value of the range in two dimensions}
 }
 \value{
 the value of the integral

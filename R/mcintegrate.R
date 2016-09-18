@@ -38,8 +38,6 @@
 #' @param xdom the domain on \code{x} of integration in two dimensions
 #' @param ydom the domain on \code{y} of integration in two dimensions
 #' @param m the number of subintervals to calculate
-#' @param max.y the largest expected value of the range
-#' @param max.z the largest expected value of the range in two dimensions
 #'
 #' @details
 #' The \code{mcint} function uses a simple Monte Carlo algorithm to
@@ -60,18 +58,17 @@
 #' @importFrom stats runif
 #'
 #' @export
-mcint <- function(f, a, b, m = 1000, max.y = 1) {
-    x <- runif(m, min = a, max = b)
-    y <- runif(m, min = 0, max = max.y)
-
-    y.hat <- f(x)
-    area <- (b - a) * mean(y <= y.hat) * max.y
-    return(area)
+mcint <- function(f, a, b, m = 1000) {
+  x <- runif(m, min = a, max = b)
+  
+  y.hat <- f(x)
+  area <- (b - a) * sum(y.hat) / m
+  return(area)
 }
 
 #' @rdname mcint
 #' @export
-mcint2 <- function(f, xdom, ydom, m = 1000, max.z = 1) {
+mcint2 <- function(f, xdom, ydom, m = 1000) {
     xmin <- min(xdom)
     xmax <- max(xdom)
     ymin <- min(ydom)
@@ -79,10 +76,9 @@ mcint2 <- function(f, xdom, ydom, m = 1000, max.z = 1) {
 
     x <- runif(m, min = xmin, max = xmax)
     y <- runif(m, min = ymin, max = ymax)
-    z <- runif(m, min = 0, max = max.z)
 
     z.hat <- f(x, y)
-    area <- (xmax - xmin) * (ymax - ymin) *
-        mean(z <= z.hat) * max.z
-    return(area)
+    V = (xmax - xmin) * (ymax - ymin)
+    volume = V * sum(z.hat) / m
+    return(volume)
 }
