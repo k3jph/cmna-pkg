@@ -1,8 +1,8 @@
 Package: cmna
 Type: Package
 Title: Computational Methods for Numerical Analysis
-Version: 0.2.2
-Date: 2016-09-17
+Version: 0.3.0
+Date: 2016-09-18
 Authors@R: person(given = "James P.", family = "Howard, II",
 		          email = "jh@jameshoward.us", role = c("aut", "cre"))
 URL: https://jameshoward.us/cmna/,
