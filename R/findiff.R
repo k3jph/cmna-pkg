@@ -53,14 +53,15 @@
 #' symdiff(sin, pi, 1e-3)
 #'
 #' @export
-findiff <- function(f, x, h = x * sqrt(.Machine$double.eps)) {
+findiff <- function(f, x,
+               h = x * sqrt(.Machine$double.eps)) {
     return((f(x + h) - f(x)) / h)
 }
 
 #' @rdname findiff
 #' @export
-symdiff <- function(f, x, h = x * .Machine$double.eps^(1/3)) {
-
+symdiff <- function(f, x,
+               h = x * .Machine$double.eps^(1/3)) {
     return((f(x + h) - f(x - h)) / (2 * h))
 }
 
