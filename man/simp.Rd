@@ -47,4 +47,3 @@ Other newton-cotes: \code{\link{adaptint}},
   \code{\link{romberg}}, \code{\link{simp38}},
   \code{\link{trap}}
 }
-

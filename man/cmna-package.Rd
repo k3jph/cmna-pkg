@@ -17,7 +17,15 @@ by James P. Howard, II.  Together, these functions provide methods to
 support linear algebra, interpolation, integration, root finding,
 optimization, and differential equations.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://jameshoward.us/cmna/}
+  \item \url{https://github.com/howardjp/cmna}
+  \item Report bugs at \url{https://github.com/howardjp/cmna/issues}
+}
+
+}
 \author{
 James P. Howard, II <jh@jameshoward.us>
 }
-

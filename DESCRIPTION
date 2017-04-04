@@ -16,5 +16,5 @@ License: BSD_2_clause + file LICENSE
 LazyLoad: no
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Depends: R (>= 2.10)

@@ -39,4 +39,3 @@ tdelta <- .02
 n <- 40
 z <- wave(u, speed, xdelta, tdelta, n)
 }
-

@@ -27,15 +27,14 @@ f <- polyinterp(x, y)
 
 }
 \seealso{
+Other interp: \code{\link{bezier}}, \code{\link{bilinear}},
+  \code{\link{cubicspline}}, \code{\link{linterp}},
+  \code{\link{nn}}, \code{\link{pwiselinterp}}
+
 Other algebra: \code{\link{bilinear}},
   \code{\link{cubicspline}}, \code{\link{division}},
   \code{\link{fibonacci}}, \code{\link{horner}},
   \code{\link{isPrime}}, \code{\link{linterp}},
   \code{\link{nthroot}}, \code{\link{pwiselinterp}},
   \code{\link{quadratic}}
-
-Other interp: \code{\link{bezier}}, \code{\link{bilinear}},
-  \code{\link{cubicspline}}, \code{\link{linterp}},
-  \code{\link{nn}}, \code{\link{pwiselinterp}}
 }
-

@@ -18,4 +18,3 @@ Generate the Himmelblau function
 \details{
 Generate the Himmelblau function
 }
-

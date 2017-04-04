@@ -2,8 +2,8 @@
 % Please edit documentation in R/bezier.R
 \name{bezier}
 \alias{bezier}
-\alias{cbezier}
 \alias{qbezier}
+\alias{cbezier}
 \title{Bezier curves}
 \usage{
 qbezier(x, y, t)
@@ -45,4 +45,3 @@ Other interp: \code{\link{bilinear}},
   \code{\link{nn}}, \code{\link{polyinterp}},
   \code{\link{pwiselinterp}}
 }
-

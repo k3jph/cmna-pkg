@@ -2,9 +2,9 @@
 % Please edit documentation in R/findiff.R
 \name{findiff}
 \alias{findiff}
+\alias{symdiff}
 \alias{findiff2}
 \alias{rdiff}
-\alias{symdiff}
 \title{Finite Differences}
 \usage{
 findiff(f, x, h = x * sqrt(.Machine$double.eps))
@@ -41,4 +41,3 @@ findiff(sin, pi, 1e-3)
 symdiff(sin, pi, 1e-3)
 
 }
-
