@@ -2,8 +2,8 @@
 % Please edit documentation in R/goldsect.R
 \name{goldsect}
 \alias{goldsect}
-\alias{goldsectmax}
 \alias{goldsectmin}
+\alias{goldsectmax}
 \title{Golden Section Search}
 \usage{
 goldsectmin(f, a, b, tol = 0.001, m = 100)
@@ -45,4 +45,3 @@ Other optimz: \code{\link{bisection}},
   \code{\link{newton}}, \code{\link{sa}},
   \code{\link{secant}}
 }
-

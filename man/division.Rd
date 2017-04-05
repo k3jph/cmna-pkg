@@ -2,8 +2,8 @@
 % Please edit documentation in R/naivediv.R
 \name{division}
 \alias{division}
-\alias{longdiv}
 \alias{naivediv}
+\alias{longdiv}
 \title{Algorithms for divisions}
 \usage{
 naivediv(m, n)
@@ -41,4 +41,3 @@ Other algebra: \code{\link{bilinear}},
   \code{\link{polyinterp}}, \code{\link{pwiselinterp}},
   \code{\link{quadratic}}
 }
-

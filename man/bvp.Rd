@@ -35,4 +35,3 @@ bvpexample(2)
 ## (bvp.s <- secant(bvpexample, 0))
 
 }
-

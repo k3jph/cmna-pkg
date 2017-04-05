@@ -38,4 +38,3 @@ n <- 25
 z <- heat(u, alpha, xdelta, tdelta, n)
 
 }
-

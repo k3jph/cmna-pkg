@@ -36,16 +36,15 @@ bilinear(x, y, z, newx, newy)
 
 }
 \seealso{
+Other interp: \code{\link{bezier}},
+  \code{\link{cubicspline}}, \code{\link{linterp}},
+  \code{\link{nn}}, \code{\link{polyinterp}},
+  \code{\link{pwiselinterp}}
+
 Other algebra: \code{\link{cubicspline}},
   \code{\link{division}}, \code{\link{fibonacci}},
   \code{\link{horner}}, \code{\link{isPrime}},
   \code{\link{linterp}}, \code{\link{nthroot}},
   \code{\link{polyinterp}}, \code{\link{pwiselinterp}},
   \code{\link{quadratic}}
-
-Other interp: \code{\link{bezier}},
-  \code{\link{cubicspline}}, \code{\link{linterp}},
-  \code{\link{nn}}, \code{\link{polyinterp}},
-  \code{\link{pwiselinterp}}
 }
-
