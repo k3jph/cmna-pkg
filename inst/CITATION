@@ -1,6 +1,6 @@
 bibentry(bibtype = "Book",
          title = "Computational Methods for Numerical Analysis with R",
-         author = person(c("James", "P."), "Howard, II", role = c("aut", "cre"), email = "jh@jameshoward.us"),
+         author = "James P. Howard",
          year = 2017,
          publisher = "Chapman and Hall/CRC",
          address = "Boca Raton, Florida",
