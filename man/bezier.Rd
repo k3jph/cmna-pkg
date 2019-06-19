@@ -45,3 +45,4 @@ Other interp: \code{\link{bilinear}},
   \code{\link{nn}}, \code{\link{polyinterp}},
   \code{\link{pwiselinterp}}
 }
+\concept{interp}

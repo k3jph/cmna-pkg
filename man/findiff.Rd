@@ -41,3 +41,4 @@ findiff(sin, pi, 1e-3)
 symdiff(sin, pi, 1e-3)
 
 }
+\concept{differentiation}

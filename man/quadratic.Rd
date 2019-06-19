@@ -42,3 +42,4 @@ Other algebra: \code{\link{bilinear}},
   \code{\link{nthroot}}, \code{\link{polyinterp}},
   \code{\link{pwiselinterp}}
 }
+\concept{algebra}

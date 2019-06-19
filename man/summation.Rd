@@ -42,3 +42,4 @@ naivesum(x)
 kahansum(x)
 pwisesum(x)
 }
+\concept{intro}

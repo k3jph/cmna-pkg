@@ -49,3 +49,5 @@ Other newton-cotes: \code{\link{adaptint}},
   \code{\link{simp38}}, \code{\link{simp}},
   \code{\link{trap}}
 }
+\concept{integration}
+\concept{newton-cotes}

@@ -28,3 +28,4 @@ The \var{resizeImageNN} function uses the nearest neighbor method to
 resize the image.  Also, \var{resizeImageBL} uses bilinear
 interpolation to resize the image.
 }
+\concept{interpolation}

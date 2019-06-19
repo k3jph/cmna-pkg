@@ -32,3 +32,4 @@ Other linear: \code{\link{detmatrix}}, \code{\link{gdls}},
   \code{\link{rowops}}, \code{\link{tridiagmatrix}},
   \code{\link{vecnorm}}
 }
+\concept{linear}
