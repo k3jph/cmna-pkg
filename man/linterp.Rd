@@ -40,3 +40,5 @@ Other algebra: \code{\link{bilinear}},
   \code{\link{polyinterp}}, \code{\link{pwiselinterp}},
   \code{\link{quadratic}}
 }
+\concept{algebra}
+\concept{interp}

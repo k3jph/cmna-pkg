@@ -32,3 +32,4 @@ Other linear: \code{\link{choleskymatrix}},
   \code{\link{lumatrix}}, \code{\link{refmatrix}},
   \code{\link{rowops}}, \code{\link{vecnorm}}
 }
+\concept{linear}

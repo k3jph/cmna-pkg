@@ -56,3 +56,4 @@ Other optimz: \code{\link{bisection}},
   \code{\link{newton}}, \code{\link{sa}},
   \code{\link{secant}}
 }
+\concept{optimz}

@@ -41,3 +41,4 @@ Other optimz: \code{\link{goldsect}},
   \code{\link{newton}}, \code{\link{sa}},
   \code{\link{secant}}
 }
+\concept{optimz}

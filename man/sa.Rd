@@ -42,3 +42,4 @@ Other optimz: \code{\link{bisection}},
   \code{\link{hillclimbing}}, \code{\link{newton}},
   \code{\link{secant}}
 }
+\concept{optimz}
