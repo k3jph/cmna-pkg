@@ -1,13 +1,13 @@
 # Computational Methods for Numerical Analysis
 
-[![Build Status](https://travis-ci.org/howardjp/cmna.svg?branch=master,osx)](https://travis-ci.org/howardjp/cmna)
-[![Coverage Status](https://coveralls.io/repos/howardjp/cmna/badge.svg?branch=master&service=github)](https://coveralls.io/github/howardjp/cmna?branch=master)
-[![Downloads from the RStudio CRAN mirror](http://cranlogs.r-pkg.org/badges/cmna)](https://cran.r-project.org/package=cmna)
+[![Build Status](https://img.shields.io/travis/howardjp/cmna.svg)](https://travis-ci.org/howardjp/cmna)
+[![Coverage Status](https://img.shields.io/coveralls/github/howardjp/cmna.svg)](https://coveralls.io/github/howardjp/cmna?branch=master)
+[![Downloads from the RStudio CRAN mirror](https://cranlogs.r-pkg.org/badges/cmna)](https://cran.r-project.org/package=cmna)
+[![Package DOI](https://img.shields.io/badge/Package_DOI-10.5281%2Fzenodo.3249230-blue.svg)](https://doi.org/10.5281/zenodo.3249230)
+[![Book DOI](https://img.shields.io/badge/Book_DOI-10.1201%2F9781315120195-blue.svg)](https://doi.org/10.1201/9781315120195)
 
 This is the R package to support _Computational Methods for Numerical
-Analysis with R_ by James P. Howard, II.  This book is scheduled for
-publication in 2016 and will include a variety of implementations of
-numerical analysis algorithms in pure R.
+Analysis with R_ by James P. Howard, II.
 
 ## Algorithms included
 
@@ -126,10 +126,9 @@ numerical analysis algorithms in pure R.
 * Use [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/)
 * Write unit tests using [testthat](https://github.com/hadley/testthat)
 * Document functions using [roxygen2](https://github.com/yihui/roxygen2)
-* Use [ZenHub](https://www.zenhub.com/) for project management on GitHub
 
 ## For more information
 
-* [Website for CMNA](https://jameshoward.us/cmna)
-* James P. Howard, II &lt;jh@jameshoward.us&gt;
+* [Website for CMNA](https://howardjp.github.io/cmna/)
+* James P. Howard, II <<jh@jameshoward.us>>
 

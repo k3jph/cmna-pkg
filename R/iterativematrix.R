@@ -72,7 +72,7 @@ jacobi <- function(A, b, tol = 10e-7, maxiter = 100) {
     newx <- rep(tol, n)
 
     while(vecnorm(newx - x) > tol) {
-        if(maxiter > iter) {
+        if(maxiter < iter) {
             warning("iterations maximum exceeded")
             break
         }
@@ -99,7 +99,7 @@ gaussseidel <- function(A, b, tol = 10e-7, maxiter = 100) {
     newx <- rep(tol * 10, n)
 
     while(vecnorm(newx - x) > tol) {
-        if(maxiter > iter) {
+        if(maxiter < iter) {
             warning("iterations maximum exceeded")
             break
         }
@@ -122,7 +122,7 @@ cgmmatrix <- function(A, b, tol = 10e-7, maxiter = 100) {
 
     p <- r <- b - A %*% x
     while(vecnorm(r) > tol) {
-        if(maxiter > iter) {
+        if(maxiter < iter) {
             warning("iterations maximum exceeded")
             break
         }

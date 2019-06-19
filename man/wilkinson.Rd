@@ -29,3 +29,4 @@ value is f(x) = (x - 1)(x - 2)...(x - n).  The default of \code{n} is
 wilkinson(0)
 
 }
+\concept{polynomials}

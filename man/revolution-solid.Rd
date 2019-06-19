@@ -43,3 +43,4 @@ Other integration: \code{\link{adaptint}},
   \code{\link{romberg}}, \code{\link{simp38}},
   \code{\link{simp}}, \code{\link{trap}}
 }
+\concept{integration}

@@ -38,3 +38,5 @@ Other algebra: \code{\link{bilinear}},
   \code{\link{nthroot}}, \code{\link{pwiselinterp}},
   \code{\link{quadratic}}
 }
+\concept{algebra}
+\concept{interp}
