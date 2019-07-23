@@ -1,8 +1,8 @@
 Package: cmna
 Type: Package
 Title: Computational Methods for Numerical Analysis
-Version: 1.0.1
-Date: 2019-06-19
+Version: 1.0.2
+Date: 2019-07-23
 Encoding: UTF-8
 Authors@R: person(given = "James", family = "Howard",
                   email = "jh@jameshoward.us", role = c("aut", "cre"),
