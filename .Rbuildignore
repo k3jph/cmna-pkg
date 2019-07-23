@@ -3,3 +3,5 @@
 .travis.yml
 data-raw
 docs
+COPYRIGHT.md
+^_pkgdown.yml$
