@@ -8,6 +8,14 @@ r:
 r_packages:
  - testthat
  - covr
+ - markdown
+ - roxygen2
+ - devtools
+
+before_script:
+ - Rscript -e 'devtools::document()'
 
 after_success:
  - Rscript -e 'covr::coveralls()'
+ - Rscript -e 'library(covr); codecov()'
+
