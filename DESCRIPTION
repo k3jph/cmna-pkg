@@ -16,6 +16,8 @@ Description: Provides the source and examples for James P. Howard, II,
 License: BSD_2_clause + file LICENSE
 LazyLoad: no
 Suggests:
-    testthat
+    testthat,
+    devtools,
+    markdown
 RoxygenNote: 6.1.1
 Depends: R (>= 2.10)
