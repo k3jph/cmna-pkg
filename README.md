@@ -1,13 +1,28 @@
 # Computational Methods for Numerical Analysis
 
-[![Build Status](https://img.shields.io/travis/howardjp/cmna.svg)](https://travis-ci.org/howardjp/cmna)
-[![Coverage Status](https://img.shields.io/coveralls/github/howardjp/cmna.svg)](https://coveralls.io/github/howardjp/cmna?branch=master)
+[![Build Status](https://travis-ci.org/k3jph/cmna-pkg.svg?branch=master)](https://travis-ci.org/k3jph/cmna-pkg)
+[![Coverage Status](https://coveralls.io/repos/github/k3jph/cmna-pkg/badge.svg?branch=develop)](https://coveralls.io/github/k3jph/cmna-pkg?branch=develop)
+[![codecov](https://codecov.io/gh/k3jph/cmna-pkg/branch/master/graph/badge.svg)](https://codecov.io/gh/k3jph/cmna-pkg)
 [![Downloads from the RStudio CRAN mirror](https://cranlogs.r-pkg.org/badges/cmna)](https://cran.r-project.org/package=cmna)
 [![Package DOI](https://img.shields.io/badge/Package_DOI-10.5281%2Fzenodo.3249230-blue.svg)](https://doi.org/10.5281/zenodo.3249230)
 [![Book DOI](https://img.shields.io/badge/Book_DOI-10.1201%2F9781315120195-blue.svg)](https://doi.org/10.1201/9781315120195)
 
 This is the R package to support _Computational Methods for Numerical
 Analysis with R_ by James P. Howard, II.
+
+_Computational Methods for Numerical Analysis with R_ is an overview
+of traditional numerical analysis topics presented using R. This
+guide shows how common functions from linear algebra, interpolation,
+numerical integration, optimization, and differential equations can
+be implemented in pure R code. Every algorithm described is given
+with a complete function implementation in R, along with examples
+to demonstrate the function and its use.
+
+_Computational Methods for Numerical Analysis with R_ with R is
+intended for those who already know R, but are interested in learning
+more about how the underlying algorithms work. As such, it is
+suitable for statisticians, economists, and engineers, and others
+with a computational and numerical background.
 
 ## Algorithms included
 
@@ -120,6 +135,7 @@ Analysis with R_ by James P. Howard, II.
 
 * testthat
 * roxygen2
+* markdown
 
 ## Contribution guidelines
 
@@ -129,6 +145,5 @@ Analysis with R_ by James P. Howard, II.
 
 ## For more information
 
-* [Website for CMNA](https://howardjp.github.io/cmna/)
+* [Website for CMNA](https://jameshoward.us/cmna/)
 * James P. Howard, II <<jh@jameshoward.us>>
-

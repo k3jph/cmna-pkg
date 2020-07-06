@@ -3,6 +3,6 @@ bibentry(bibtype = "Book",
          author = "James P. Howard",
          year = 2017,
          publisher = "Chapman and Hall/CRC",
-         address = "Boca Raton, Florida",
+         address = "New York",
          series = "Numerical Analysis and Scientific Computing Series",
          url = "https://jameshoward.us/cmna")

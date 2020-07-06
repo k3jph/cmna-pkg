@@ -1,4 +1,4 @@
-url: https://howardjp.github.io/cmna/
+url: https://jameshoward.us/cmna-pkg
 destination: docs
 
 home:
@@ -6,7 +6,7 @@ home:
   - text: CMNA Page
     href: https://jameshoward.us/cmna
   - text: The Book
-    href: https://www.taylorfrancis.com/books/9781315120195
+    href: https://taylorfrancis.com/books/9781315120195
 
 authors:
   James P. Howard, II:
