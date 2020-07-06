@@ -1,8 +1,8 @@
 Package: cmna
 Type: Package
 Title: Computational Methods for Numerical Analysis
-Version: 1.0.2
-Date: 2019-07-23
+Version: 1.0.3
+Date: 2020-07-05
 Encoding: UTF-8
 Authors@R: person(given = "James", family = "Howard",
                   email = "jh@jameshoward.us", role = c("aut", "cre"),
@@ -18,6 +18,6 @@ LazyLoad: no
 Suggests:
     testthat,
     devtools,
-    markdown
-RoxygenNote: 6.1.1
+    markdown,
+    roxygen2
 Depends: R (>= 2.10)
