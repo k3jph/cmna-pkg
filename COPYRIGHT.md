@@ -1,7 +1,7 @@
 Simplified BSD License
 ======================
 
-_Copyright © 2016-2019, James P. Howard, II <<jh@jameshoward.us>>_  
+_Copyright © 2016-2020, James P. Howard, II <<jh@jameshoward.us>>_  
 _All rights reserved._
 
 Redistribution and use in source and binary forms, with or without
