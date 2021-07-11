@@ -1,20 +1,28 @@
 on:
   push:
-    branches: main
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
 
-name: pkgdown
+name: test-coverage
 
 jobs:
-  pkgdown:
+  test-coverage:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v1
 
-      - uses: r-lib/actions/setup-pandoc@master
+      - uses: r-lib/actions/setup-pandoc@v1
 
       - name: Query dependencies
         run: |
@@ -23,8 +31,8 @@ jobs:
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
-      - name: Cache R packages
-        uses: actions/cache@v1
+      - name: Restore R package cache
+        uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
@@ -32,18 +40,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages("remotes")
+          install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_dev("pkgdown")
+          remotes::install_cran("covr")
         shell: Rscript {0}
 
-      - name: Generate documentation
-        run: devtools::document()
-        shell: Rscript {0}
-
-      - name: Install package
-        run: R CMD INSTALL .
-
-      - name: Deploy package
-        run: pkgdown::deploy_to_branch(new_process = FALSE)
+      - name: Test coverage
+        run: covr::codecov()
         shell: Rscript {0}

@@ -1,8 +1,8 @@
 Package: cmna
 Type: Package
 Title: Computational Methods for Numerical Analysis
-Version: 1.0.3
-Date: 2020-07-05
+Version: 1.0.4
+Date: 2021-07-11
 Encoding: UTF-8
 Authors@R: person(given = "James", family = "Howard",
                   email = "jh@jameshoward.us", role = c("aut", "cre"),
@@ -14,7 +14,6 @@ Description: Provides the source and examples for James P. Howard, II,
              <https://jameshoward.us/cmna>, a book on numerical
              methods in R.
 License: BSD_2_clause + file LICENSE
-LazyLoad: no
 Suggests:
     testthat,
     devtools,
