@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -66,9 +68,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,26 +90,20 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmna</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/k3jph/cmna-pkg/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,9 +129,9 @@
     <p>Find the zeros of a quadratic equation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quadratic</span>(<span class='kw'>b2</span>, <span class='kw'>b1</span>, <span class='kw'>b0</span>)
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>quadratic</span><span class='op'>(</span><span class='va'>b2</span>, <span class='va'>b1</span>, <span class='va'>b0</span><span class='op'>)</span>
 
-<span class='fu'>quadratic2</span>(<span class='kw'>b2</span>, <span class='kw'>b1</span>, <span class='kw'>b0</span>)</pre>
+<span class='fu'>quadratic2</span><span class='op'>(</span><span class='va'>b2</span>, <span class='va'>b1</span>, <span class='va'>b0</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,19 +162,27 @@ and the <code>quadratic2</code> has reduced potential error.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other algebra: 
-<code>bilinear()</code>,
-<code>cubicspline()</code>,
-<code>division</code>,
-<code>fibonacci()</code>,
-<code>horner()</code>,
-<code>isPrime()</code>,
-<code>linterp()</code>,
-<code>nthroot()</code>,
-<code>polyinterp()</code>,
-<code>pwiselinterp()</code></p></div>
+<code><a href='bilinear.html'>bilinear</a>()</code>,
+<code><a href='cubicspline.html'>cubicspline</a>()</code>,
+<code><a href='division.html'>division</a></code>,
+<code><a href='fibonacci.html'>fibonacci</a>()</code>,
+<code><a href='horner.html'>horner</a>()</code>,
+<code><a href='isPrime.html'>isPrime</a>()</code>,
+<code><a href='linterp.html'>linterp</a>()</code>,
+<code><a href='nthroot.html'>nthroot</a>()</code>,
+<code><a href='polyinterp.html'>polyinterp</a>()</code>,
+<code><a href='pwiselinterp.html'>pwiselinterp</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>quadratic</span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] -1  1</div><div class='input'><span class='fu'>quadratic</span>(<span class='fl'>4</span>, <span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] 0.5 0.5</div><div class='input'><span class='fu'>quadratic2</span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] -1  1</div><div class='input'><span class='fu'>quadratic2</span>(<span class='fl'>4</span>, <span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] 0.5 0.5</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>quadratic</span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -1  1</span>
+<span class='r-in'><span class='fu'>quadratic</span><span class='op'>(</span><span class='fl'>4</span>, <span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.5 0.5</span>
+<span class='r-in'><span class='fu'>quadratic2</span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -1  1</span>
+<span class='r-in'><span class='fu'>quadratic2</span><span class='op'>(</span><span class='fl'>4</span>, <span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.5 0.5</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -184,11 +194,11 @@ and the <code>quadratic2</code> has reduced potential error.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by James Howard.</p>
+  <p><p>Developed by James Howard.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -196,6 +206,8 @@ and the <code>quadratic2</code> has reduced potential error.</p>
 
   
 
+
+  
 
   </body>
 </html>

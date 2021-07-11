@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -66,9 +68,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,26 +90,20 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmna</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/k3jph/cmna-pkg/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,13 +129,13 @@
     <p>solve initial value problems for ordinary differential equations</p>
     </div>
 
-    <pre class="usage"><span class='fu'>euler</span>(<span class='kw'>f</span>, <span class='kw'>x0</span>, <span class='kw'>y0</span>, <span class='kw'>h</span>, <span class='kw'>n</span>)
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>euler</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>x0</span>, <span class='va'>y0</span>, <span class='va'>h</span>, <span class='va'>n</span><span class='op'>)</span>
 
-<span class='fu'>midptivp</span>(<span class='kw'>f</span>, <span class='kw'>x0</span>, <span class='kw'>y0</span>, <span class='kw'>h</span>, <span class='kw'>n</span>)
+<span class='fu'>midptivp</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>x0</span>, <span class='va'>y0</span>, <span class='va'>h</span>, <span class='va'>n</span><span class='op'>)</span>
 
-<span class='fu'>rungekutta4</span>(<span class='kw'>f</span>, <span class='kw'>x0</span>, <span class='kw'>y0</span>, <span class='kw'>h</span>, <span class='kw'>n</span>)
+<span class='fu'>rungekutta4</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>x0</span>, <span class='va'>y0</span>, <span class='va'>h</span>, <span class='va'>n</span><span class='op'>)</span>
 
-<span class='fu'>adamsbashforth</span>(<span class='kw'>f</span>, <span class='kw'>x0</span>, <span class='kw'>y0</span>, <span class='kw'>h</span>, <span class='kw'>n</span>)</pre>
+<span class='fu'>adamsbashforth</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>x0</span>, <span class='va'>y0</span>, <span class='va'>h</span>, <span class='va'>n</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,10 +173,11 @@ value problems using the second-order Runge-Kutta method.  The
 <code>rungekutta4</code> method is the fourth-order Runge-Kutta method.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>, <span class='kw'>y</span>) { <span class='kw'>y</span> <span class='op'>/</span> (<span class='fl'>2</span> <span class='op'>*</span> <span class='kw'>x</span> <span class='op'>+</span> <span class='fl'>1</span>) }
-<span class='kw'>ivp.euler</span> <span class='op'>&lt;-</span> <span class='fu'>euler</span>(<span class='kw'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span>)
-<span class='kw'>ivp.midpt</span> <span class='op'>&lt;-</span> <span class='fu'>midptivp</span>(<span class='kw'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span>)
-<span class='kw'>ivp.rk4</span> <span class='op'>&lt;-</span> <span class='fu'>rungekutta4</span>(<span class='kw'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span>)</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span> <span class='va'>y</span> <span class='op'>/</span> <span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>}</span></span>
+<span class='r-in'><span class='va'>ivp.euler</span> <span class='op'>&lt;-</span> <span class='fu'>euler</span><span class='op'>(</span><span class='va'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ivp.midpt</span> <span class='op'>&lt;-</span> <span class='fu'>midptivp</span><span class='op'>(</span><span class='va'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ivp.rk4</span> <span class='op'>&lt;-</span> <span class='fu'>rungekutta4</span><span class='op'>(</span><span class='va'>f</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>/</span><span class='fl'>100</span>, <span class='fl'>100</span><span class='op'>)</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -186,11 +189,11 @@ value problems using the second-order Runge-Kutta method.  The
 
       <footer>
       <div class="copyright">
-  <p>Developed by James Howard.</p>
+  <p><p>Developed by James Howard.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -198,6 +201,8 @@ value problems using the second-order Runge-Kutta method.  The
 
   
 
+
+  
 
   </body>
 </html>

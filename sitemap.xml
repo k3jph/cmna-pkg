@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jameshoward.us/cmna-pkg/404.html</loc>
+  </url>
+  <url>
+    <loc>https://jameshoward.us/cmna-pkg/COPYRIGHT.html</loc>
+  </url>
+  <url>
+    <loc>https://jameshoward.us/cmna-pkg/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://jameshoward.us/cmna-pkg/authors.html</loc>
+  </url>
+  <url>
     <loc>https://jameshoward.us/cmna-pkg/index.html</loc>
   </url>
   <url>
@@ -65,6 +77,9 @@
   </url>
   <url>
     <loc>https://jameshoward.us/cmna-pkg/reference/horner.html</loc>
+  </url>
+  <url>
+    <loc>https://jameshoward.us/cmna-pkg/reference/index.html</loc>
   </url>
   <url>
     <loc>https://jameshoward.us/cmna-pkg/reference/invmatrix.html</loc>
