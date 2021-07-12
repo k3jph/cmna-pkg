@@ -5,4 +5,4 @@ bibentry(bibtype = "Book",
          publisher = "Chapman and Hall/CRC",
          address = "New York",
          series = "Numerical Analysis and Scientific Computing Series",
-         url = "https://jameshoward.us/cmna")
+         url = "https://jameshoward.us/cmna/")
