@@ -62,36 +62,58 @@
 #' @rdname summation
 #' @export
 naivesum <- function(x) {
-    s <- 0
-    n <- length(x)
+  s <- 0
+  n <- length(x)
 
-    for(i in 1:n)
-        s <- s + x[i]
+  if (any(n == 0, is.null(0))) {
     return(s)
+  }
+
+  stopifnot(is.numeric(x))
+
+  for (i in 1:n) {
+    s <- s + x[i]
+  }
+
+  return(s)
 }
 
 #' @rdname summation
 #' @export
 kahansum <- function(x) {
-    comp <- s <- 0
-    n <- length(x)
+  comp <- s <- 0
+  n <- length(x)
 
-    for(i in 1:n) {
-        y <- x[i] - comp
-        t <- x[i] + s
-        comp <- (t - s) - y
-        s <- t
-    }
+  if (any(n == 0, is.null(0))) {
     return(s)
+  }
+
+  stopifnot(is.numeric(x))
+
+  for (i in 1:n) {
+    y <- x[i] - comp
+    t <- x[i] + s
+    comp <- (t - s) - y
+    s <- t
+  }
+  return(s)
 }
 
 #' @rdname summation
 #' @export
 pwisesum <- function(x) {
-    n <- length(x)
+  n <- length(x)
 
-    if(n == 1)
-        return(x)
-    m = floor(n / 2)
-    return(pwisesum(x[1:m]) + pwisesum(x[(m + 1):n]))
+  if (any(n == 0, is.null(0))) {
+    return(0)
+  }
+
+  stopifnot(is.numeric(x))
+
+  if (n == 1) {
+    return(x)
+  }
+
+  m <- floor(n / 2)
+  return(pwisesum(x[1:m]) + pwisesum(x[(m + 1):n]))
 }
