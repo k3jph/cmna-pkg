@@ -69,46 +69,57 @@
 
 #' @export
 horner <- function(x, coefs) {
-    y <- rep(0, length(x))
+  y <- rep(0, length(x))
 
-    for(i in length(coefs):1)
-        y <- coefs[i] + x * y
+  stopifnot(is.numeric(coefs))
 
-    return(y)
+  for (i in length(coefs):1) {
+    y <- coefs[i] + x * y
+  }
+
+  return(y)
 }
 
 #' @rdname horner
 #' @export
 rhorner <- function(x, coefs) {
-    n <- length(coefs)
+  n <- length(coefs)
 
-    if(n == 1)
-        return(coefs)
+  stopifnot(is.numeric(coefs))
 
-    return(coefs[1] + x * rhorner(x, coefs[2:n]))
+  if (n == 1) {
+    return(coefs)
+  }
+
+  return(coefs[1] + x * rhorner(x, coefs[2:n]))
 }
 
 #' @rdname horner
 #' @export
 naivepoly <- function(x, coefs) {
-    y <- rep(0, length(x))
+  y <- rep(0, length(x))
 
-    for(i in 1:length(coefs))
-        y <- y + coefs[i] * (x ^ (i - 1))
+  stopifnot(is.numeric(coefs))
 
-    return(y)
+  for (i in 1:length(coefs)) {
+    y <- y + coefs[i] * (x^(i - 1))
+  }
+
+  return(y)
 }
 
 #' @rdname horner
 #' @export
 betterpoly <- function(x, coefs) {
-    y <- rep(0, length(x))
-    cached.x <- 1
+  y <- rep(0, length(x))
+  cached.x <- 1
 
-    for(i in 1:length(coefs)) {
-        y <- y + coefs[i] * cached.x
-        cached.x <- cached.x * x
-    }
+  stopifnot(is.numeric(coefs))
 
-    return(y)
+  for (i in 1:length(coefs)) {
+    y <- y + coefs[i] * cached.x
+    cached.x <- cached.x * x
+  }
+
+  return(y)
 }
