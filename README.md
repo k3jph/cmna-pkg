@@ -8,6 +8,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/75dad26c84804291ab359fc32e67f635)](https://app.codacy.com/gh/k3jph/cmna-pkg/dashboard)
 [![Package DOI](https://img.shields.io/badge/Package_DOI-10.5281%2Fzenodo.3249230-blue.svg)](https://doi.org/10.5281/zenodo.3249230)
 [![Book DOI](https://img.shields.io/badge/Book_DOI-10.1201%2F9781315120195-blue.svg)](https://doi.org/10.1201/9781315120195)
+[![k3jph](https://img.shields.io/badge/k3jph-James_Howard-871717.svg)](https://jameshoward.us)
 
 This is the R package to support _Computational Methods for Numerical
 Analysis with R_ by James P. Howard, II.
