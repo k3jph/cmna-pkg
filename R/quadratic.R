@@ -27,7 +27,7 @@
 #' @rdname quadratic
 #' @name quadratic
 #'
-#' @title The quadratic equation.
+#' @title The quadratic equation
 #'
 #' @description
 #' Find the zeros of a quadratic equation.

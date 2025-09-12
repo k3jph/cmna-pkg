@@ -27,7 +27,6 @@
 #' @title Initial value problems for systems of ordinary differential equations
 #'
 #' @name ivpsys
-#' @rdname ivpsys
 #'
 #' @description
 #' solve initial value problems for systems ordinary differential equations
@@ -40,7 +39,7 @@
 #'
 #' @details
 #' The \code{euler} method implements the Euler method for solving
-#' differential equations.  The code{midptivp} method solves initial
+#' differential equations. The \code{midptivp} method solves initial
 #' value problems using the second-order Runge-Kutta method.  The
 #' \code{rungekutta4} method is the fourth-order Runge-Kutta method.
 #'

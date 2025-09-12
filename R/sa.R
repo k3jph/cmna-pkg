@@ -27,7 +27,6 @@
 #' @title Simulated annealing
 #'
 #' @name sa
-#' @rdname sa
 #'
 #' @description
 #' Use simulated annealing to find the global minimum
