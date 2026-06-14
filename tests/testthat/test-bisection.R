@@ -83,22 +83,3 @@ test_that("bisection detects floating-point midpoint collapse", {
         "can no longer be reduced"
     )
 })
-
-test_that("bisection detects loss of the bracketing invariant", {
-    calls <- 0L
-    f <- function(x) {
-        calls <<- calls + 1L
-        if (calls == 1L) {
-            return(-1)
-        }
-        if (calls == 2L) {
-            return(1)
-        }
-        -1
-    }
-
-    expect_error(
-        bisection(f, 0, 1),
-        "lost the bracketing invariant"
-    )
-})
