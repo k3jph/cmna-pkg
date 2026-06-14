@@ -24,47 +24,96 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#' @title Newton's method
+#' @title Newton's Method
 #'
 #' @description
-#' Use Newton's method to find real roots
+#' Locate a real root of a differentiable function using Newton iteration.
 #'
-#' @param f function to integrate
-#' @param fp function representing the derivative of \code{f}
-#' @param x an initial estimate of the root
-#' @param tol the error tolerance
-#' @param m the maximum number of iterations
+#' @param f A function of one numeric argument.
+#' @param fp A function giving the derivative of \code{f}.
+#' @param x A finite numeric scalar giving the initial estimate.
+#' @param tol A positive finite numeric tolerance for the change between
+#'   successive estimates.
+#' @param m A positive whole number giving the maximum number of iterations.
 #'
 #' @details
+#' Newton's method updates the current estimate according to
+#' \deqn{x_{n+1} = x_n - f(x_n) / f'(x_n).}
 #'
-#' Newton's method finds real roots of a function, but requires knowing
-#' the function derivative.  It will return when the interval between
-#' them is less than \code{tol}, the error tolerance.  However, this
-#' implementation also stops after \code{m} iterations.
+#' The function returns immediately when the initial estimate is already an
+#' exact root. Otherwise, iteration stops when the absolute change between two
+#' successive estimates is no greater than \code{tol}. The function signals an
+#' error if the derivative is zero, an intermediate value is non-finite, the
+#' estimate ceases to change in floating-point arithmetic before convergence,
+#' or the iteration limit is exhausted.
 #'
-#' @return the real root found
+#' @return A numeric approximation to a real root of \code{f}.
 #'
-#' @family optimz
+#' @family optimization
 #'
 #' @examples
-#' f <- function(x) { x^3 - 2 * x^2 - 159 * x - 540 }
-#' fp <- function(x) {3 * x^2 - 4 * x - 159 }
+#' f <- function(x) x^3 - 2 * x^2 - 159 * x - 540
+#' fp <- function(x) 3 * x^2 - 4 * x - 159
 #' newton(f, fp, 1)
 #'
 #' @export
 newton <- function(f, fp, x, tol = 1e-3, m = 100) {
-    iter <- 0
-
-    oldx <- x
-    x <- oldx + 10 * tol
-
-    while(abs(x - oldx) > tol) {
-        iter <- iter + 1
-        if(iter > m)
-            stop("No solution found")
-        oldx <- x
-        x <- x - f(x) / fp(x)
+    if (!is.function(f)) {
+        stop("f must be a function", call. = FALSE)
+    }
+    if (!is.function(fp)) {
+        stop("fp must be a function", call. = FALSE)
+    }
+    if (!is.numeric(x) || length(x) != 1L || !is.finite(x)) {
+        stop("x must be a finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
+        stop("tol must be a positive finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
+        stop("m must be a positive whole number", call. = FALSE)
     }
 
-    return(x)
+    fx <- f(x)
+    if (!is.numeric(fx) || length(fx) != 1L || !is.finite(fx)) {
+        stop("f(x) must be a finite numeric scalar", call. = FALSE)
+    }
+    if (fx == 0) {
+        return(x)
+    }
+
+    for (iter in seq_len(m)) {
+        fpx <- fp(x)
+        if (!is.numeric(fpx) || length(fpx) != 1L || !is.finite(fpx)) {
+            stop("fp(x) must be a finite numeric scalar", call. = FALSE)
+        }
+        if (fpx == 0) {
+            stop("derivative is zero at the current estimate", call. = FALSE)
+        }
+
+        next_x <- x - fx / fpx
+        if (!is.numeric(next_x) || length(next_x) != 1L || !is.finite(next_x)) {
+            stop("next estimate must be a finite numeric scalar", call. = FALSE)
+        }
+
+        step <- abs(next_x - x)
+        if (step <= tol) {
+            return(next_x)
+        }
+        if (next_x == x) {
+            stop("Newton iteration can no longer advance in floating-point arithmetic",
+                 call. = FALSE)
+        }
+
+        x <- next_x
+        fx <- f(x)
+        if (!is.numeric(fx) || length(fx) != 1L || !is.finite(fx)) {
+            stop("f(x) must be a finite numeric scalar", call. = FALSE)
+        }
+        if (fx == 0) {
+            return(x)
+        }
+    }
+
+    stop("maximum number of iterations exceeded", call. = FALSE)
 }
