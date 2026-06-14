@@ -45,7 +45,7 @@
 #' Iteration stops when the interval width is no greater than \code{tol}. The
 #' returned value is the midpoint of the final interval. If floating-point
 #' arithmetic can no longer produce a midpoint distinct from both endpoints,
-#' or if the bracketing invariant is lost, the function stops with an error.
+#' the function stops with an error.
 #'
 #' @return A numeric approximation to a real root of \code{f}.
 #'
@@ -127,11 +127,9 @@ bisection <- function(f, a, b, tol = 1e-3, m = 100) {
         if (sign(f.a) != sign(ymid)) {
             b <- xmid
             f.b <- ymid
-        } else if (sign(ymid) != sign(f.b)) {
+        } else {
             a <- xmid
             f.a <- ymid
-        } else {
-            stop("bisection lost the bracketing invariant", call. = FALSE)
         }
     }
 
