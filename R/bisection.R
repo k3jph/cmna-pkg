@@ -27,54 +27,113 @@
 #' @title The Bisection Method
 #'
 #' @description
-#' Use the bisection method to find real roots
+#' Locate a real root of a continuous function by repeatedly halving an
+#' interval that brackets the root.
 #'
-#' @param f function to locate a root for
-#' @param a the a bound of the search region
-#' @param b the b bound of the search region
-#' @param tol the error tolerance
-#' @param m the maximum number of iterations
+#' @param f A function of one numeric argument.
+#' @param a,b Finite numeric endpoints of the initial interval. If supplied in
+#'   reverse order, they are reordered silently.
+#' @param tol A positive finite numeric tolerance for the interval width.
+#' @param m A positive whole number giving the maximum number of iterations.
 #'
 #' @details
+#' The method requires the initial interval to bracket a root: either an
+#' endpoint is itself a root, or the function values at the endpoints have
+#' opposite signs. At each iteration, the interval is replaced by the half
+#' that continues to bracket a root.
 #'
-#' The bisection method functions by repeatedly halving the interval
-#' between \code{a} and \code{b} and will return when the
-#' interval between them is less than \code{tol}, the error tolerance.
-#' However, this implementation also stops if after \code{m}
-#' iterations.
+#' Iteration stops when the interval width is no greater than \code{tol}. The
+#' returned value is the midpoint of the final interval. If floating-point
+#' arithmetic can no longer produce a midpoint distinct from both endpoints,
+#' or if the bracketing invariant is lost, the function stops with an error.
 #'
-#' @return the real root found
+#' @return A numeric approximation to a real root of \code{f}.
 #'
-#' @family optimz
+#' @family optimization
 #'
 #' @examples
-#' f <- function(x) { x^3 - 2 * x^2 - 159 * x - 540}
+#' f <- function(x) x^3 - 2 * x^2 - 159 * x - 540
 #' bisection(f, 0, 10)
+#'
+#' g <- function(x) x - 2
+#' bisection(g, 5, 2)
 #'
 #' @export
 bisection <- function(f, a, b, tol = 1e-3, m = 100) {
-    iter <- 0
+    if (!is.function(f)) {
+        stop("f must be a function", call. = FALSE)
+    }
+    if (!is.numeric(a) || length(a) != 1L || !is.finite(a)) {
+        stop("a must be a finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(b) || length(b) != 1L || !is.finite(b)) {
+        stop("b must be a finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
+        stop("tol must be a positive finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
+        stop("m must be a positive whole number", call. = FALSE)
+    }
+
+    if (a > b) {
+        tmp <- a
+        a <- b
+        b <- tmp
+    }
+
     f.a <- f(a)
     f.b <- f(b)
 
+    if (!is.numeric(f.a) || length(f.a) != 1L || !is.finite(f.a)) {
+        stop("f(a) must be a finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(f.b) || length(f.b) != 1L || !is.finite(f.b)) {
+        stop("f(b) must be a finite numeric scalar", call. = FALSE)
+    }
+
+    if (f.a == 0) {
+        return(a)
+    }
+    if (f.b == 0) {
+        return(b)
+    }
+    if (sign(f.a) == sign(f.b)) {
+        stop("the initial interval does not bracket a root", call. = FALSE)
+    }
+
+    iter <- 0L
+
     while (abs(b - a) > tol) {
-        iter <- iter + 1
-        if (iter > m) {
-            warning("iterations maximum exceeded")
-            break
+        if (iter >= m) {
+            stop("maximum number of iterations exceeded", call. = FALSE)
         }
-        xmid <- (a + b) / 2
-        ymid <-  f(xmid)
-        if (f.a * ymid > 0) {
+        iter <- iter + 1L
+
+        xmid <- a + (b - a) / 2
+        if (xmid == a || xmid == b) {
+            stop("bisection interval can no longer be reduced in floating-point arithmetic",
+                 call. = FALSE)
+        }
+
+        ymid <- f(xmid)
+        if (!is.numeric(ymid) || length(ymid) != 1L || !is.finite(ymid)) {
+            stop("f(midpoint) must be a finite numeric scalar", call. = FALSE)
+        }
+        if (ymid == 0) {
+            return(xmid)
+        }
+
+        if (sign(f.a) != sign(ymid)) {
+            b <- xmid
+            f.b <- ymid
+        } else if (sign(ymid) != sign(f.b)) {
             a <- xmid
             f.a <- ymid
         } else {
-            b <- xmid
-            f.b <- ymid
+            stop("bisection lost the bracketing invariant", call. = FALSE)
         }
     }
 
-    ## Interpolate a midpoint for return value
-    root <- (a + b) / 2
-    return(root)
+    a + (b - a) / 2
 }
