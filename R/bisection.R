@@ -53,7 +53,7 @@
 #'
 #' @examples
 #' f <- function(x) x^3 - 2 * x^2 - 159 * x - 540
-#' bisection(f, 0, 10)
+#' bisection(f, 10, 20)
 #'
 #' g <- function(x) x - 2
 #' bisection(g, 5, 2)
