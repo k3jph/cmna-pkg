@@ -5,13 +5,12 @@ on:
     - cron: '0 1 * * *'
   push:
     branches:
-      - main
-      - master
       - develop
+      - 'feature/**'
+      - 'release/**'
+      - 'hotfix/**'
   pull_request:
     branches:
-      - main
-      - master
       - develop
 
 name: Build
@@ -63,5 +62,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-
-
