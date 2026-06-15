@@ -27,47 +27,102 @@
 #' @title Secant Method
 #'
 #' @description
-#' The secant method for root finding
+#' Locate a real root of a function using the secant method.
 #'
-#' @param f function to integrate
-#' @param x an initial estimate of the root
-#' @param tol the error tolerance
-#' @param m the maximum number of iterations
+#' @param f A function of one numeric argument.
+#' @param x0 A finite numeric scalar giving the first initial estimate.
+#' @param x1 A finite numeric scalar giving the second initial estimate.
+#' @param tol A positive finite numeric tolerance for the change between
+#'   successive estimates.
+#' @param m A positive whole number giving the maximum number of iterations.
 #'
 #' @details
+#' The secant method approximates the derivative in Newton's method using two
+#' successive estimates. The function returns immediately if either initial
+#' estimate is already an exact root. Otherwise, iteration stops when the
+#' absolute change between successive estimates is no greater than \code{tol}.
 #'
-#' The secant method for root finding extends Newton's method to
-#' estimate the derivative.  It will return when the interval between
-#' them is less than \code{tol}, the error tolerance.  However, this
-#' implementation also stop if after \code{m} iterations.
+#' The function signals an error if the initial estimates are identical, the
+#' secant denominator is zero, an intermediate value is non-finite, the
+#' iteration ceases to advance in floating-point arithmetic before convergence,
+#' or the iteration limit is exhausted.
 #'
-#' @return the real root found
+#' @return A numeric approximation to a real root of \code{f}.
 #'
-#' @family optimz
+#' @family optimization
 #'
 #' @examples
-#' f <- function(x) { x^3 - 2 * x^2 - 159 * x - 540 }
-#' secant(f, 1)
+#' f <- function(x) x^3 - 2 * x^2 - 159 * x - 540
+#' secant(f, 1, 2)
 #'
 #' @export
-secant <- function(f, x, tol = 1e-3, m = 100) {
-    i <- 0
-
-    oldx <- x
-    oldfx <- f(x)
-    x <- oldx + 10 * tol
-
-    while(abs(x - oldx) > tol) {
-        i <- i + 1
-        if (i > m)
-            stop("No solution found")
-
-        fx <- f(x)
-        newx <- x - fx * ((x - oldx) / (fx - oldfx))
-        oldx <- x
-        oldfx <- fx
-        x <- newx
+secant <- function(f, x0, x1, tol = 1e-3, m = 100) {
+    if (!is.function(f)) {
+        stop("f must be a function", call. = FALSE)
+    }
+    if (!is.numeric(x0) || length(x0) != 1L || !is.finite(x0)) {
+        stop("x0 must be a finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(x1) || length(x1) != 1L || !is.finite(x1)) {
+        stop("x1 must be a finite numeric scalar", call. = FALSE)
+    }
+    if (x0 == x1) {
+        stop("x0 and x1 must be distinct", call. = FALSE)
+    }
+    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
+        stop("tol must be a positive finite numeric scalar", call. = FALSE)
+    }
+    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
+        stop("m must be a positive whole number", call. = FALSE)
     }
 
-    return(x)
+    f0 <- f(x0)
+    if (!is.numeric(f0) || length(f0) != 1L || !is.finite(f0)) {
+        stop("f(x0) must be a finite numeric scalar", call. = FALSE)
+    }
+    if (f0 == 0) {
+        return(x0)
+    }
+
+    f1 <- f(x1)
+    if (!is.numeric(f1) || length(f1) != 1L || !is.finite(f1)) {
+        stop("f(x1) must be a finite numeric scalar", call. = FALSE)
+    }
+    if (f1 == 0) {
+        return(x1)
+    }
+
+    for (iter in seq_len(m)) {
+        denominator <- f1 - f0
+        if (denominator == 0) {
+            stop("secant denominator is zero", call. = FALSE)
+        }
+
+        next_x <- x1 - f1 * (x1 - x0) / denominator
+        if (!is.numeric(next_x) || length(next_x) != 1L || !is.finite(next_x)) {
+            stop("next estimate must be a finite numeric scalar", call. = FALSE)
+        }
+
+        step <- abs(next_x - x1)
+        if (step <= tol) {
+            return(next_x)
+        }
+        if (next_x == x1) {
+            stop("secant iteration can no longer advance in floating-point arithmetic",
+                 call. = FALSE)
+        }
+
+        x0 <- x1
+        f0 <- f1
+        x1 <- next_x
+        f1 <- f(x1)
+        if (!is.numeric(f1) || length(f1) != 1L || !is.finite(f1)) {
+            stop("f(x1) must be a finite numeric scalar", call. = FALSE)
+        }
+        if (f1 == 0) {
+            return(x1)
+        }
+    }
+
+    stop("maximum number of iterations exceeded", call. = FALSE)
 }
