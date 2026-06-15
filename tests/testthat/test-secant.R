@@ -46,7 +46,7 @@ test_that("secant rejects a zero denominator", {
 
 test_that("secant rejects a non-finite next estimate", {
     expect_error(
-        secant(function(x) if (x == 0) 1e308 else -1e308, 0, 1),
+        secant(function(x) if (x == 0) 1e308 else 1e308 - 1, 0, 1),
         "next estimate must be"
     )
 })
