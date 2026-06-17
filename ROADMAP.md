@@ -58,11 +58,13 @@ As of June 2026, the modernization has established the working pattern for CMNA 
 
 - Git Flow has been restored, with `develop` as the active integration line.
 - The R CI, lint, coverage, and pkgdown workflows have been refreshed.
-- The root-finding family has been modernized incrementally:
-  - `bisection()` now validates its bracket and termination conditions and handles endpoint roots and reversed bounds;
-  - `newton()` validates the function and derivative throughout the iteration and detects zero derivatives, stagnation, and non-finite updates; and
-  - `secant()` uses two explicit initial estimates and detects zero secant denominators, stagnation, and failed convergence.
-- The root-finding work provides the reference pattern for later iterative algorithms.
+- The root-finding family is complete as the first CMNA 2.0 reference family:
+  - `bisection()` validates its bracket and termination conditions and handles endpoint roots, reversed bounds, non-finite evaluations, stagnation, and iteration exhaustion;
+  - `newton()` validates the function and derivative throughout iteration and distinguishes zero derivatives, non-finite updates, stagnation, and failed convergence; and
+  - `secant()` uses two explicit initial estimates and distinguishes zero and non-finite denominators, non-finite updates, stagnation, and failed convergence.
+- Shared private validators now define package-wide scalar, tolerance, iteration-limit, and checked-evaluation behavior.
+- Root-finding failures use base-R CMNA condition classes for invalid use, numerical breakdown, and convergence failure.
+- Canonical tests and [ROOTFINDING.md](ROOTFINDING.md) record the semantic contract shared with `cmna-el` and the differences intentionally retained by each language.
 
 This is the beginning of CMNA 2.0, not the end. Much of the package still reflects the original implementation style and must be reviewed family by family.
 
@@ -86,7 +88,7 @@ Work includes:
 
 **Exit criteria:** a contributor can modernize an algorithm without inventing a new local convention for validation, termination, documentation, testing, or branching.
 
-### Phase 1 — Root finding
+### Phase 1 — Root finding — complete
 
 **Goal:** finish the first complete CMNA 2.0 algorithm family and use it as the model for iterative numerical code.
 
@@ -96,14 +98,16 @@ Included methods:
 - Newton's method; and
 - secant method.
 
-Remaining work is principally family-level review:
+Completed family-level work:
 
-- verify consistent argument names and error language across all three functions;
-- confirm documentation, examples, exports, and pkgdown presentation;
-- add invariant or comparative tests where they provide value; and
-- compare the contracts with `cmna-el` without forcing language-inappropriate interface identity.
+- established consistent argument validation and stable error language across all three functions;
+- introduced package-private validators and base-R CMNA condition classes;
+- documented the shared convergence and failure contract in [ROOTFINDING.md](ROOTFINDING.md);
+- added comparative and canonical tests shared conceptually with `cmna-el`;
+- preserved scalar return values and the established R signatures and defaults; and
+- confirmed that stagnation and exhausted iteration are visible failures rather than successful results.
 
-**Exit criteria:** the family is internally consistent, fully documented, tested for both convergence and failure, and ready to be used in the second-edition text.
+**Exit criteria satisfied:** the family is internally consistent, documented, tested for both convergence and failure, and ready to be used as the reference pattern for later iterative methods and the second-edition text.
 
 ### Phase 2 — Fundamentals and elementary algorithms
 
