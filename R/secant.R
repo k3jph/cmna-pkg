@@ -57,72 +57,100 @@
 #'
 #' @export
 secant <- function(f, x0, x1, tol = 1e-3, m = 100) {
-    if (!is.function(f)) {
-        stop("f must be a function", call. = FALSE)
-    }
-    if (!is.numeric(x0) || length(x0) != 1L || !is.finite(x0)) {
-        stop("x0 must be a finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(x1) || length(x1) != 1L || !is.finite(x1)) {
-        stop("x1 must be a finite numeric scalar", call. = FALSE)
-    }
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x0, "x0")
+    .cmna_validate_finite_scalar(x1, "x1")
     if (x0 == x1) {
-        stop("x0 and x1 must be distinct", call. = FALSE)
+        .cmna_abort(
+            "x0 and x1 must be distinct",
+            "cmna_invalid_argument",
+            argument = c("x0", "x1"),
+            x0 = x0,
+            x1 = x1
+        )
     }
-    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
-        stop("tol must be a positive finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
-        stop("m must be a positive whole number", call. = FALSE)
-    }
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
 
-    f0 <- f(x0)
-    if (!is.numeric(f0) || length(f0) != 1L || !is.finite(f0)) {
-        stop("f(x0) must be a finite numeric scalar", call. = FALSE)
-    }
+    f0 <- .cmna_checked_value(f, x0, "f(x0)")
     if (f0 == 0) {
         return(x0)
     }
 
-    f1 <- f(x1)
-    if (!is.numeric(f1) || length(f1) != 1L || !is.finite(f1)) {
-        stop("f(x1) must be a finite numeric scalar", call. = FALSE)
-    }
+    f1 <- .cmna_checked_value(f, x1, "f(x1)")
     if (f1 == 0) {
         return(x1)
     }
 
     for (iter in seq_len(m)) {
-        denominator <- f1 - f0
+        denominator <- .cmna_require_finite_scalar(
+            f1 - f0,
+            "secant denominator",
+            method = "secant",
+            iteration = iter - 1L,
+            x0 = x0,
+            x1 = x1,
+            f0 = f0,
+            f1 = f1
+        )
         if (denominator == 0) {
-            stop("secant denominator is zero", call. = FALSE)
+            .cmna_abort(
+                "secant denominator is zero",
+                c("cmna_zero_denominator", "cmna_numerical_breakdown"),
+                method = "secant",
+                iteration = iter - 1L,
+                x0 = x0,
+                x1 = x1,
+                f0 = f0,
+                f1 = f1
+            )
         }
 
-        next_x <- x1 - f1 * (x1 - x0) / denominator
-        if (!is.numeric(next_x) || length(next_x) != 1L || !is.finite(next_x)) {
-            stop("next estimate must be a finite numeric scalar", call. = FALSE)
+        next_x <- .cmna_require_finite_scalar(
+            x1 - f1 * (x1 - x0) / denominator,
+            "next estimate",
+            method = "secant",
+            iteration = iter - 1L,
+            x0 = x0,
+            x1 = x1
+        )
+
+        if (next_x == x1) {
+            .cmna_abort(
+                paste(
+                    "secant iteration can no longer advance",
+                    "in floating-point arithmetic"
+                ),
+                c("cmna_stagnation", "cmna_convergence_failure"),
+                method = "secant",
+                iteration = iter - 1L,
+                estimate = x1,
+                function_value = f1
+            )
         }
 
         step <- abs(next_x - x1)
         if (step <= tol) {
             return(next_x)
         }
-        if (next_x == x1) {
-            stop("secant iteration can no longer advance in floating-point arithmetic",
-                 call. = FALSE)
-        }
 
         x0 <- x1
         f0 <- f1
         x1 <- next_x
-        f1 <- f(x1)
-        if (!is.numeric(f1) || length(f1) != 1L || !is.finite(f1)) {
-            stop("f(x1) must be a finite numeric scalar", call. = FALSE)
-        }
+        f1 <- .cmna_checked_value(f, x1, "f(x1)")
         if (f1 == 0) {
             return(x1)
         }
     }
 
-    stop("maximum number of iterations exceeded", call. = FALSE)
+    .cmna_abort(
+        "maximum number of iterations exceeded",
+        c("cmna_iteration_limit", "cmna_convergence_failure"),
+        method = "secant",
+        iterations = m,
+        x0 = x0,
+        x1 = x1,
+        f0 = f0,
+        f1 = f1
+    )
 }

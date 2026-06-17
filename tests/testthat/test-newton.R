@@ -15,38 +15,86 @@ test_that("newton returns an initial estimate that is already a root", {
 })
 
 test_that("newton validates its arguments", {
-    expect_error(newton(1, identity, 1), "f must be a function")
-    expect_error(newton(identity, 1, 1), "fp must be a function")
-    expect_error(newton(identity, identity, c(0, 1)), "x must be")
-    expect_error(newton(identity, identity, Inf), "x must be")
-    expect_error(newton(identity, identity, 1, tol = 0), "tol must be")
-    expect_error(newton(identity, identity, 1, m = 0), "m must be")
-    expect_error(newton(identity, identity, 1, m = 1.5), "m must be")
+    expect_error(
+        newton(1, identity, 1),
+        "f must be a function",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, 1, 1),
+        "fp must be a function",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, identity, c(0, 1)),
+        "x must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, identity, Inf),
+        "x must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, identity, 1, tol = 0),
+        "tol must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, identity, 1, m = 0),
+        "m must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        newton(identity, identity, 1, m = 1.5),
+        "m must be",
+        class = "cmna_invalid_argument"
+    )
 })
 
 test_that("newton rejects non-finite function and derivative values", {
     expect_error(
         newton(function(x) NaN, identity, 1),
-        "f\\(x\\) must be"
+        "f\\(x\\) must be",
+        class = "cmna_non_finite_value"
     )
 
     expect_error(
         newton(function(x) x - 1, function(x) Inf, 0),
-        "fp\\(x\\) must be"
+        "fp\\(x\\) must be",
+        class = "cmna_non_finite_value"
     )
 })
 
 test_that("newton rejects a zero derivative", {
     expect_error(
         newton(function(x) x^2 + 1, function(x) 0, 1),
-        "derivative is zero"
+        "derivative is zero",
+        class = "cmna_zero_derivative"
+    )
+    expect_error(
+        newton(function(x) x^2 + 1, function(x) 0, 1),
+        class = "cmna_numerical_breakdown"
     )
 })
 
 test_that("newton rejects a non-finite next estimate", {
     expect_error(
         newton(function(x) 1e308, function(x) 1e-308, 0),
-        "next estimate must be"
+        "next estimate must be",
+        class = "cmna_non_finite_value"
+    )
+})
+
+test_that("newton detects floating-point stagnation", {
+    expect_error(
+        newton(function(x) 1, function(x) 1e308, 1),
+        "can no longer advance",
+        class = "cmna_stagnation"
+    )
+    expect_error(
+        newton(function(x) 1, function(x) 1e308, 1),
+        class = "cmna_convergence_failure"
     )
 })
 
@@ -56,6 +104,7 @@ test_that("newton errors when the iteration limit is exhausted", {
 
     expect_error(
         newton(f, fp, 1, tol = 1e-15, m = 1),
-        "maximum number of iterations exceeded"
+        "maximum number of iterations exceeded",
+        class = "cmna_iteration_limit"
     )
 })

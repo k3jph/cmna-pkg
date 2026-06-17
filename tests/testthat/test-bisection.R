@@ -26,23 +26,57 @@ test_that("bisection rejects an interval that does not bracket a root", {
 
     expect_error(
         bisection(f, -1, 1),
-        "initial interval does not bracket a root"
+        "initial interval does not bracket a root",
+        class = "cmna_invalid_bracket"
+    )
+    expect_error(
+        bisection(f, -1, 1),
+        class = "cmna_invalid_argument"
     )
 })
 
 test_that("bisection validates its arguments", {
-    expect_error(bisection(1, 0, 1), "f must be a function")
-    expect_error(bisection(identity, c(0, 1), 2), "a must be")
-    expect_error(bisection(identity, 0, Inf), "b must be")
-    expect_error(bisection(identity, -1, 1, tol = 0), "tol must be")
-    expect_error(bisection(identity, -1, 1, m = 0), "m must be")
-    expect_error(bisection(identity, -1, 1, m = 1.5), "m must be")
+    expect_error(
+        bisection(1, 0, 1),
+        "f must be a function",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        bisection(identity, c(0, 1), 2),
+        "a must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        bisection(identity, 0, Inf),
+        "b must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        bisection(identity, -1, 1, tol = 0),
+        "tol must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        bisection(identity, -1, 1, m = 0),
+        "m must be",
+        class = "cmna_invalid_argument"
+    )
+    expect_error(
+        bisection(identity, -1, 1, m = 1.5),
+        "m must be",
+        class = "cmna_invalid_argument"
+    )
 })
 
 test_that("bisection rejects non-finite function values", {
     expect_error(
         bisection(function(x) NaN, 0, 1),
-        "f\\(a\\) must be"
+        "f\\(a\\) must be",
+        class = "cmna_non_finite_value"
+    )
+    expect_error(
+        bisection(function(x) NaN, 0, 1),
+        class = "cmna_numerical_breakdown"
     )
 
     f <- function(x) {
@@ -54,7 +88,8 @@ test_that("bisection rejects non-finite function values", {
 
     expect_error(
         bisection(f, 0, 1),
-        "f\\(midpoint\\) must be"
+        "f\\(midpoint\\) must be",
+        class = "cmna_non_finite_value"
     )
 })
 
@@ -63,7 +98,12 @@ test_that("bisection errors when the iteration limit is exhausted", {
 
     expect_error(
         bisection(f, 1, 2, tol = 1e-15, m = 1),
-        "maximum number of iterations exceeded"
+        "maximum number of iterations exceeded",
+        class = "cmna_iteration_limit"
+    )
+    expect_error(
+        bisection(f, 1, 2, tol = 1e-15, m = 1),
+        class = "cmna_convergence_failure"
     )
 })
 
@@ -80,6 +120,7 @@ test_that("bisection detects floating-point midpoint collapse", {
 
     expect_error(
         bisection(g, a, b, tol = .Machine$double.xmin),
-        "can no longer be reduced"
+        "can no longer be reduced",
+        class = "cmna_stagnation"
     )
 })
