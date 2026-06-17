@@ -60,21 +60,11 @@
 #'
 #' @export
 bisection <- function(f, a, b, tol = 1e-3, m = 100) {
-    if (!is.function(f)) {
-        stop("f must be a function", call. = FALSE)
-    }
-    if (!is.numeric(a) || length(a) != 1L || !is.finite(a)) {
-        stop("a must be a finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(b) || length(b) != 1L || !is.finite(b)) {
-        stop("b must be a finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
-        stop("tol must be a positive finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
-        stop("m must be a positive whole number", call. = FALSE)
-    }
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
 
     if (a > b) {
         tmp <- a
@@ -82,15 +72,8 @@ bisection <- function(f, a, b, tol = 1e-3, m = 100) {
         b <- tmp
     }
 
-    f.a <- f(a)
-    f.b <- f(b)
-
-    if (!is.numeric(f.a) || length(f.a) != 1L || !is.finite(f.a)) {
-        stop("f(a) must be a finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(f.b) || length(f.b) != 1L || !is.finite(f.b)) {
-        stop("f(b) must be a finite numeric scalar", call. = FALSE)
-    }
+    f.a <- .cmna_checked_value(f, a, "f(a)")
+    f.b <- .cmna_checked_value(f, b, "f(b)")
 
     if (f.a == 0) {
         return(a)
@@ -99,27 +82,49 @@ bisection <- function(f, a, b, tol = 1e-3, m = 100) {
         return(b)
     }
     if (sign(f.a) == sign(f.b)) {
-        stop("the initial interval does not bracket a root", call. = FALSE)
+        .cmna_abort(
+            "the initial interval does not bracket a root",
+            c("cmna_invalid_bracket", "cmna_invalid_argument"),
+            method = "bisection",
+            a = a,
+            b = b,
+            f_a = f.a,
+            f_b = f.b
+        )
     }
 
     iter <- 0L
 
     while (abs(b - a) > tol) {
         if (iter >= m) {
-            stop("maximum number of iterations exceeded", call. = FALSE)
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                c("cmna_iteration_limit", "cmna_convergence_failure"),
+                method = "bisection",
+                iterations = iter,
+                a = a,
+                b = b
+            )
         }
         iter <- iter + 1L
 
         xmid <- a + (b - a) / 2
         if (xmid == a || xmid == b) {
-            stop("bisection interval can no longer be reduced in floating-point arithmetic",
-                 call. = FALSE)
+            .cmna_abort(
+                paste(
+                    "bisection interval can no longer be reduced",
+                    "in floating-point arithmetic"
+                ),
+                c("cmna_stagnation", "cmna_convergence_failure"),
+                method = "bisection",
+                iteration = iter,
+                a = a,
+                b = b,
+                midpoint = xmid
+            )
         }
 
-        ymid <- f(xmid)
-        if (!is.numeric(ymid) || length(ymid) != 1L || !is.finite(ymid)) {
-            stop("f(midpoint) must be a finite numeric scalar", call. = FALSE)
-        }
+        ymid <- .cmna_checked_value(f, xmid, "f(midpoint)")
         if (ymid == 0) {
             return(xmid)
         }
