@@ -62,11 +62,11 @@ Both repositories intentionally test the following concepts:
 The canonical compensated-summation example is:
 
 ```text
-1, followed by one hundred thousand copies of 1e-16
+1, followed by one thousand copies of 1e-16, followed by -1
 ```
 
-The exact mathematical sum is `1.00000000001`. Left-to-right summation loses the
-small increments after the leading `1`; Kahan summation recovers them to useful
+The exact mathematical sum is `1e-13`. Left-to-right summation loses the small
+increments after the leading `1`; Kahan summation recovers them to useful
 accuracy.
 
 ## Deliberate language-specific differences
