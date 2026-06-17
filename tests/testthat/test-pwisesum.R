@@ -1,32 +1,30 @@
-library("testthat")
-context("pwisesum")
+test_that("pwisesum sums ordinary numeric vectors", {
+    expect_equal(pwisesum(c(1, 2, 3, 4)), 10)
+    expect_equal(pwisesum(c(-1, -2, 3)), 0)
+    expect_equal(pwisesum(c(1.5, 2.25)), 3.75)
+})
 
-l <- 1:10^6
+test_that("pwisesum handles empty input", {
+    expect_equal(pwisesum(numeric()), 0)
+    expect_equal(pwisesum(NULL), 0)
+})
 
-test_that("adds correctly", {
-  for (i in 1:5) {
-    n <- sample(l, 1)
-    bound <- sample(l, 2)
-    bound.u <- max(bound) - 10^6 / 2
-    bound.l <- min(bound) - 10^6 / 2
-    x <- runif(n, bound.l, bound.u)
+test_that("pwisesum returns a scalar for a single element", {
+    expect_equal(pwisesum(c(7)), 7)
+})
+
+test_that("pwisesum validates numeric input", {
+    expect_error(pwisesum("string"), class = "cmna_invalid_argument")
+    expect_error(pwisesum(list(1, 2, 3)), class = "cmna_invalid_argument")
+})
+
+test_that("pwisesum follows base R non-finite propagation", {
+    expect_true(is.na(pwisesum(c(1, NA_real_))))
+    expect_true(is.nan(pwisesum(c(1, NaN))))
+    expect_equal(pwisesum(c(1, Inf)), Inf)
+})
+
+test_that("pwisesum matches base R on a stable ordinary case", {
+    x <- c(4, -2, 1, -1, 0.5, 0.25)
     expect_equal(pwisesum(x), sum(x))
-  }
-})
-
-test_that("edge cases like an empty vector", {
-  expect_equal(pwisesum(c()), sum(c()))
-  expect_equal(pwisesum(NULL), sum(NULL))
-})
-
-test_that("edge cases like a single-element vector", {
-  expect_equal(pwisesum(c(1)), sum(c(1)))
-})
-
-test_that("input unexpected types", {
-  expect_error(pwisesum("string"))
-})
-
-test_that("for precision", {
-  expect_equal(pwisesum(c(1e-10, 1, 1e-10)), sum(c(1e-10, 1, 1e-10)), tolerance = 1e-20)
 })

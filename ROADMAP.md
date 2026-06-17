@@ -62,9 +62,14 @@ As of June 2026, the modernization has established the working pattern for CMNA 
   - `bisection()` validates its bracket and termination conditions and handles endpoint roots, reversed bounds, non-finite evaluations, stagnation, and iteration exhaustion;
   - `newton()` validates the function and derivative throughout iteration and distinguishes zero derivatives, non-finite updates, stagnation, and failed convergence; and
   - `secant()` uses two explicit initial estimates and distinguishes zero and non-finite denominators, non-finite updates, stagnation, and failed convergence.
-- Shared private validators now define package-wide scalar, tolerance, iteration-limit, and checked-evaluation behavior.
+- Shared private validators now define package-wide scalar, tolerance, iteration-limit, checked-evaluation, and numeric-vector validation behavior.
 - Root-finding failures use base-R CMNA condition classes for invalid use, numerical breakdown, and convergence failure.
 - Canonical tests and [ROOTFINDING.md](ROOTFINDING.md) record the semantic contract shared with `cmna-el` and the differences intentionally retained by each language.
+- Phase 2 has begun with the summation family:
+  - `naivesum()` remains the readable left-to-right baseline;
+  - `kahansum()` now implements the compensated Kahan update; and
+  - `pwisesum()` remains the recursive pairwise summation example.
+- [SUMMATION.md](SUMMATION.md) records the summation contract shared conceptually with `cmna-el`.
 
 This is the beginning of CMNA 2.0, not the end. Much of the package still reflects the original implementation style and must be reviewed family by family.
 
@@ -109,14 +114,21 @@ Completed family-level work:
 
 **Exit criteria satisfied:** the family is internally consistent, documented, tested for both convergence and failure, and ready to be used as the reference pattern for later iterative methods and the second-edition text.
 
-### Phase 2 — Fundamentals and elementary algorithms
+### Phase 2 — Fundamentals and elementary algorithms — in progress
 
 **Goal:** modernize the small algorithms that establish numerical habits used throughout the book.
 
-Likely scope includes:
+The first completed slice is summation:
+
+- naive summation as the readable baseline;
+- Kahan summation as the compensated method; and
+- pairwise summation as the recursive divide-and-combine method.
+
+The summation contract is documented in [SUMMATION.md](SUMMATION.md), including the canonical low-order precision example shared conceptually with `cmna-el`.
+
+Remaining likely scope includes:
 
 - polynomial evaluation and expansion;
-- naive and compensated summation;
 - division algorithms;
 - quadratic formulas and nth roots;
 - primality and sequence examples; and
