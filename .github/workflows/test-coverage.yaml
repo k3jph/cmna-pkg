@@ -51,5 +51,16 @@ jobs:
         shell: Rscript {0}
 
       - name: Test coverage
-        run: covr::codecov()
-        shell: Rscript {0}
+        shell: bash
+        run: |
+          set +e
+          Rscript -e 'covr::codecov()' > coverage.log 2>&1
+          status=$?
+          exit "$status"
+
+      - name: Upload coverage log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-log
+          path: coverage.log
