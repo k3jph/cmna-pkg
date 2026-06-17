@@ -58,62 +58,70 @@
 #'
 #' @export
 newton <- function(f, fp, x, tol = 1e-3, m = 100) {
-    if (!is.function(f)) {
-        stop("f must be a function", call. = FALSE)
-    }
-    if (!is.function(fp)) {
-        stop("fp must be a function", call. = FALSE)
-    }
-    if (!is.numeric(x) || length(x) != 1L || !is.finite(x)) {
-        stop("x must be a finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(tol) || length(tol) != 1L || !is.finite(tol) || tol <= 0) {
-        stop("tol must be a positive finite numeric scalar", call. = FALSE)
-    }
-    if (!is.numeric(m) || length(m) != 1L || !is.finite(m) || m < 1 || m != floor(m)) {
-        stop("m must be a positive whole number", call. = FALSE)
-    }
+    .cmna_validate_function(f, "f")
+    .cmna_validate_function(fp, "fp")
+    .cmna_validate_finite_scalar(x, "x")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
 
-    fx <- f(x)
-    if (!is.numeric(fx) || length(fx) != 1L || !is.finite(fx)) {
-        stop("f(x) must be a finite numeric scalar", call. = FALSE)
-    }
+    fx <- .cmna_checked_value(f, x, "f(x)")
     if (fx == 0) {
         return(x)
     }
 
     for (iter in seq_len(m)) {
-        fpx <- fp(x)
-        if (!is.numeric(fpx) || length(fpx) != 1L || !is.finite(fpx)) {
-            stop("fp(x) must be a finite numeric scalar", call. = FALSE)
-        }
+        fpx <- .cmna_checked_value(fp, x, "fp(x)")
         if (fpx == 0) {
-            stop("derivative is zero at the current estimate", call. = FALSE)
+            .cmna_abort(
+                "derivative is zero at the current estimate",
+                c("cmna_zero_derivative", "cmna_numerical_breakdown"),
+                method = "newton",
+                iteration = iter - 1L,
+                estimate = x,
+                function_value = fx
+            )
         }
 
-        next_x <- x - fx / fpx
-        if (!is.numeric(next_x) || length(next_x) != 1L || !is.finite(next_x)) {
-            stop("next estimate must be a finite numeric scalar", call. = FALSE)
+        next_x <- .cmna_require_finite_scalar(
+            x - fx / fpx,
+            "next estimate",
+            method = "newton",
+            iteration = iter - 1L,
+            estimate = x
+        )
+
+        if (next_x == x) {
+            .cmna_abort(
+                paste(
+                    "Newton iteration can no longer advance",
+                    "in floating-point arithmetic"
+                ),
+                c("cmna_stagnation", "cmna_convergence_failure"),
+                method = "newton",
+                iteration = iter - 1L,
+                estimate = x,
+                function_value = fx
+            )
         }
 
         step <- abs(next_x - x)
         if (step <= tol) {
             return(next_x)
         }
-        if (next_x == x) {
-            stop("Newton iteration can no longer advance in floating-point arithmetic",
-                 call. = FALSE)
-        }
 
         x <- next_x
-        fx <- f(x)
-        if (!is.numeric(fx) || length(fx) != 1L || !is.finite(fx)) {
-            stop("f(x) must be a finite numeric scalar", call. = FALSE)
-        }
+        fx <- .cmna_checked_value(f, x, "f(x)")
         if (fx == 0) {
             return(x)
         }
     }
 
-    stop("maximum number of iterations exceeded", call. = FALSE)
+    .cmna_abort(
+        "maximum number of iterations exceeded",
+        c("cmna_iteration_limit", "cmna_convergence_failure"),
+        method = "newton",
+        iterations = m,
+        estimate = x,
+        function_value = fx
+    )
 }
