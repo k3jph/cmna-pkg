@@ -134,6 +134,17 @@ with a computational and numerical background.
   * Applications
     * Boundary Value Problems (bvpexample, bvpexample10)
 
+## Root-finding contract
+
+The modernized root-finding family shares its mathematical and failure contract
+with the companion Emacs Lisp implementation. See
+[ROOTFINDING.md](ROOTFINDING.md) for the convergence rules, canonical cases,
+CMNA condition classes, and deliberate language-specific differences.
+
+The public functions continue to return numeric scalar approximations. Invalid
+use, numerical breakdown, and failed convergence are represented by base-R
+condition objects inheriting from `cmna_error` and more specific CMNA classes.
+
 ## Dependencies
 
 * testthat
