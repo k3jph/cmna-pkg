@@ -37,6 +37,7 @@ with a computational and numerical background.
   * Summation
     * Naive Summation (naivesum)
     * Kahan Summation (kahansum)
+    * Pairwise Summation (pwisesum)
   * Division
     * Naive Division (naivediv)
     * Long Division (longdiv)
@@ -133,6 +134,19 @@ with a computational and numerical background.
 	* Wave Equation, 1D (wave)
   * Applications
     * Boundary Value Problems (bvpexample, bvpexample10)
+
+## Summation contract
+
+The modernized summation family establishes the first Phase 2 fundamentals
+slice and shares its conceptual contract with the companion Emacs Lisp
+implementation. See [SUMMATION.md](SUMMATION.md) for the algorithmic
+relationships, canonical low-order precision example, and deliberate
+language-specific differences.
+
+The public R functions remain `naivesum()`, `kahansum()`, and `pwisesum()`.
+They return numeric scalar sums, accept numeric vectors and `NULL`, reject
+non-numeric inputs with `cmna_invalid_argument`, and preserve base-R propagation
+of `NA`, `NaN`, and infinite values.
 
 ## Root-finding contract
 
