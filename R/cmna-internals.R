@@ -25,6 +25,22 @@
     invisible(value)
 }
 
+.cmna_validate_numeric_vector <- function(value, name) {
+    if (is.null(value)) {
+        return(invisible(value))
+    }
+    if (!is.numeric(value)) {
+        .cmna_abort(
+            sprintf("%s must be a numeric vector", name),
+            "cmna_invalid_argument",
+            argument = name,
+            value = value
+        )
+    }
+
+    invisible(value)
+}
+
 .cmna_validate_finite_scalar <- function(value, name) {
     if (!is.numeric(value) || length(value) != 1L || !is.finite(value)) {
         .cmna_abort(
