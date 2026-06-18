@@ -1,125 +1,110 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @name horner
-#' @rdname horner
+#' @name polynomial-evaluation
+#' @rdname polynomial-evaluation
 #'
-#' @title Horner's rule
+#' @title Polynomial evaluation algorithms
 #'
 #' @description
-#' Use Horner's rule to evaluate a polynomial
+#' Evaluate a polynomial by direct powers, cached powers, iterative Horner
+#' evaluation, or recursive Horner evaluation.
 #'
-#' @param x a vector of x values to evaluate the polynomial
-#' @param coefs vector of coefficients of x
+#' @param x A numeric vector of points at which to evaluate the polynomial.
+#' @param coefs A non-empty numeric vector of coefficients in ascending power
+#'   order: the first element is the constant term, the second is the
+#'   coefficient of x, and so on.
 #'
 #' @details
-#' This function implements Horner's rule for fast polynomial
-#' evaluation.  The implementation expects \code{x} to be a vector of x
-#' values at which to evaluate the polynomial. The parameter \code{coefs}
-#' is a vector of coefficients of \emph{x}.  The vector order is such
-#' that the first element is the constant term, the second element is
-#' the coefficient of \emph{x}, the so forth to the highest degreed
-#' term.  Terms with a 0 coefficient should have a 0 element in the
-#' vector.
+#' All four functions use the same coefficient convention. For example,
+#' `c(5, -3, 2)` represents `5 - 3*x + 2*x^2`.
 #'
-#' The function \code{rhorner} implements the the Horner algorithm
-#' recursively.
+#' `naivepoly()` computes each power independently. `betterpoly()` caches the
+#' current power of x. `horner()` evaluates iteratively using Horner's rule.
+#' `rhorner()` evaluates the same recurrence recursively.
 #'
-#' The function \code{naivepoly} implements a polynomial evaluator using
-#' the straightforward algebraic approach.
+#' The functions accept scalar or vector `x` and return a numeric vector of the
+#' same length. Empty `x` returns `numeric(0)`. Coefficients must be non-empty.
+#' Non-finite numeric values follow ordinary R arithmetic.
 #'
-#' The function \code{betterpoly} implements a polynomial evaluator using
-#' the straightforward algebraic approach with cached \emph{x} terms.
-#'
-#' @return the value of the function at \code{x}
+#' @return A numeric vector containing the polynomial value at each element of
+#'   `x`.
 #'
 #' @family algebra
 #'
 #' @examples
-#' b <- c(2, 10, 11)
-#' x <- 5
-#' horner(x, b)
-#' b <- c(-1, 0, 1)
-#' x <- c(1, 2, 3, 4)
-#' horner(x, b)
-#' rhorner(x, b)
-
+#' coefs <- c(5, -3, 2)
+#' horner(c(0, 1, 2), coefs)
+#' naivepoly(c(0, 1, 2), coefs)
+#'
 #' @export
 horner <- function(x, coefs) {
-  y <- rep(0, length(x))
+    if (!is.numeric(x)) {
+        stop("x must be numeric", call. = FALSE)
+    }
+    if (!is.numeric(coefs) || length(coefs) == 0L) {
+        stop("coefs must be a non-empty numeric vector", call. = FALSE)
+    }
 
-  stopifnot(is.numeric(coefs))
-
-  for (i in length(coefs):1) {
-    y <- coefs[i] + x * y
-  }
-
-  return(y)
+    y <- rep(0, length(x))
+    for (i in rev(seq_along(coefs))) {
+        y <- coefs[[i]] + x * y
+    }
+    y
 }
 
-#' @rdname horner
+#' @rdname polynomial-evaluation
 #' @export
 rhorner <- function(x, coefs) {
-  n <- length(coefs)
+    if (!is.numeric(x)) {
+        stop("x must be numeric", call. = FALSE)
+    }
+    if (!is.numeric(coefs) || length(coefs) == 0L) {
+        stop("coefs must be a non-empty numeric vector", call. = FALSE)
+    }
 
-  stopifnot(is.numeric(coefs))
+    recurse <- function(index) {
+        if (index == length(coefs)) {
+            return(rep(coefs[[index]], length(x)))
+        }
+        coefs[[index]] + x * recurse(index + 1L)
+    }
 
-  if (n == 1) {
-    return(coefs)
-  }
-
-  return(coefs[1] + x * rhorner(x, coefs[2:n]))
+    recurse(1L)
 }
 
-#' @rdname horner
+#' @rdname polynomial-evaluation
 #' @export
 naivepoly <- function(x, coefs) {
-  y <- rep(0, length(x))
+    if (!is.numeric(x)) {
+        stop("x must be numeric", call. = FALSE)
+    }
+    if (!is.numeric(coefs) || length(coefs) == 0L) {
+        stop("coefs must be a non-empty numeric vector", call. = FALSE)
+    }
 
-  stopifnot(is.numeric(coefs))
-
-  for (i in 1:length(coefs)) {
-    y <- y + coefs[i] * (x^(i - 1))
-  }
-
-  return(y)
+    y <- rep(0, length(x))
+    for (i in seq_along(coefs)) {
+        y <- y + coefs[[i]] * x^(i - 1L)
+    }
+    y
 }
 
-#' @rdname horner
+#' @rdname polynomial-evaluation
 #' @export
 betterpoly <- function(x, coefs) {
-  y <- rep(0, length(x))
-  cached.x <- 1
+    if (!is.numeric(x)) {
+        stop("x must be numeric", call. = FALSE)
+    }
+    if (!is.numeric(coefs) || length(coefs) == 0L) {
+        stop("coefs must be a non-empty numeric vector", call. = FALSE)
+    }
 
-  stopifnot(is.numeric(coefs))
-
-  for (i in 1:length(coefs)) {
-    y <- y + coefs[i] * cached.x
-    cached.x <- cached.x * x
-  }
-
-  return(y)
+    y <- rep(0, length(x))
+    cached_x <- rep(1, length(x))
+    for (i in seq_along(coefs)) {
+        y <- y + coefs[[i]] * cached_x
+        cached_x <- cached_x * x
+    }
+    y
 }
