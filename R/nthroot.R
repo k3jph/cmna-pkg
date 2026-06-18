@@ -1,60 +1,123 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title The n-th root formula
+#' @title Real n-th roots
 #'
 #' @description
-#' Find the n-th root of real numbers
+#' Find the real `n`-th root of a finite scalar by Newton iteration.
 #'
-#' @param a a positive real number
-#' @param n n
-#' @param tol the permitted error tolerance
+#' @param a A finite numeric scalar radicand.
+#' @param n A positive whole number. Negative radicands require odd `n`.
+#' @param tol A positive finite convergence tolerance.
+#' @param m A positive whole-number iteration limit.
 #'
 #' @details
-#' The \code{nthroot} function finds the \code{n}th root of \code{a} via
-#' an iterative process.
+#' The iteration solves the positive magnitude using
 #'
-#' @return the root
+#' `x_next = ((n - 1) * x + abs(a) / x^(n - 1)) / n`
+#'
+#' and reapplies the sign for a negative radicand with odd `n`. Zero is returned
+#' exactly. Convergence requires the residual to be no larger than `tol` times
+#' the scale of the radicand. Stagnation, non-finite intermediate values, and
+#' exhausted iteration limits are reported with CMNA condition classes.
+#'
+#' @return A numeric scalar containing the real `n`-th root.
 #'
 #' @family algebra
 #'
 #' @examples
 #' nthroot(100, 2)
 #' nthroot(65536, 4)
-#' nthroot(1000, 3)
+#' nthroot(-125, 3)
 #'
 #' @export
-nthroot <- function(a, n, tol = 1 / 1000) {
-    x <- 1
-    deltax <- tol * 10
+nthroot <- function(a, n, tol = 1 / 1000, m = 100) {
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
 
-    while(abs(deltax) > tol) {
-        deltax <- (1 / n) * (a / x ^ (n - 1) - x)
-        x <- x + deltax
+    if (!is.numeric(n) || length(n) != 1L || !is.finite(n) ||
+        n < 1 || n != floor(n)) {
+        .cmna_abort(
+            "n must be a positive whole number",
+            "cmna_invalid_argument",
+            argument = "n",
+            value = n
+        )
     }
 
-    return(x)
+    if (a == 0) {
+        return(0)
+    }
+    if (n == 1) {
+        return(a)
+    }
+    if (a < 0 && n %% 2 == 0) {
+        .cmna_abort(
+            "negative radicands require an odd root degree",
+            "cmna_domain_error",
+            radicand = a,
+            degree = n
+        )
+    }
+
+    sign_result <- if (a < 0) -1 else 1
+    target <- abs(a)
+    x <- if (target >= 1) target / n else 1
+    scale <- max(1, target)
+
+    for (iteration in seq_len(m)) {
+        denominator <- x^(n - 1)
+        .cmna_require_finite_scalar(
+            denominator,
+            "nth-root denominator",
+            iteration = iteration,
+            estimate = x
+        )
+        if (denominator == 0) {
+            .cmna_abort(
+                "nth-root iteration encountered a zero denominator",
+                c("cmna_zero_denominator", "cmna_numerical_breakdown"),
+                iteration = iteration,
+                estimate = x
+            )
+        }
+
+        next_x <- ((n - 1) * x + target / denominator) / n
+        .cmna_require_finite_scalar(
+            next_x,
+            "nth-root estimate",
+            iteration = iteration
+        )
+
+        residual <- abs(next_x^n - target)
+        .cmna_require_finite_scalar(
+            residual,
+            "nth-root residual",
+            iteration = iteration,
+            estimate = next_x
+        )
+
+        if (residual <= tol * scale) {
+            return(sign_result * next_x)
+        }
+        if (next_x == x) {
+            .cmna_abort(
+                "nth-root iteration stagnated before convergence",
+                c("cmna_stagnation", "cmna_convergence_failure"),
+                iteration = iteration,
+                estimate = x,
+                residual = residual
+            )
+        }
+
+        x <- next_x
+    }
+
+    .cmna_abort(
+        "nth-root iteration exceeded the maximum iteration count",
+        c("cmna_iteration_limit", "cmna_convergence_failure"),
+        iterations = m,
+        estimate = sign_result * x
+    )
 }
