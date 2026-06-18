@@ -1,32 +1,49 @@
-library("testthat")
-context("horner")
+test_that("all polynomial evaluators agree on canonical values", {
+    coefs <- c(5, -3, 2)
+    x <- c(-2, -1, 0, 1, 2)
+    expected <- c(19, 10, 5, 4, 7)
 
-test_that("horner evaluates known polynomials correctly", {
-  expect_equal(horner(1, c(1, 2, 3)), 6) # 1 + 2*1 + 3*1^2 = 6
-  expect_equal(horner(0, c(5, 0, 0)), 5) # Testing zero
-  expect_equal(horner(-1, c(1, -1, 1)), 3) # Testing negative x
-  expect_equal(horner(1, c(0.5, 0.25)), 0.75) # Testing fractional coefficients
+    expect_equal(naivepoly(x, coefs), expected)
+    expect_equal(betterpoly(x, coefs), expected)
+    expect_equal(horner(x, coefs), expected)
+    expect_equal(rhorner(x, coefs), expected)
 })
 
-test_that("horner handles edge cases", {
-  expect_error(horner(1, c())) # Empty coefficients
-  expect_equal(horner(1, c(5)), 5) # Single coefficient
+test_that("coefficient order is constant term first", {
+    coefs <- c(5, -3, 2)
+
+    expect_equal(horner(2, coefs), 7)
+    expect_equal(naivepoly(2, coefs), 7)
 })
 
-test_that("horner handles random coefficients and values", {
-  for (i in 1:5) {
-    coefs <- runif(10, -10, 10)
-    x_val <- runif(1, -10, 10)
-    expect_equal(horner(x_val, coefs), sum(coefs * x_val^(0:(length(coefs) - 1))))
-  }
+test_that("polynomial evaluators handle constants and empty x", {
+    expect_equal(horner(c(-1, 0, 1), 5), c(5, 5, 5))
+    expect_equal(rhorner(c(-1, 0, 1), 5), c(5, 5, 5))
+    expect_equal(naivepoly(numeric(), c(1, 2)), numeric())
+    expect_equal(betterpoly(numeric(), c(1, 2)), numeric())
 })
 
-test_that("horner handles large coefficients and values", {
-  large_coefs <- rep(10^6, 10)
-  expect_equal(horner(1, large_coefs), sum(large_coefs))
+test_that("polynomial evaluators reject invalid inputs", {
+    evaluators <- list(naivepoly, betterpoly, horner, rhorner)
+
+    for (evaluate in evaluators) {
+        expect_error(evaluate("x", c(1, 2)), "x must be numeric")
+        expect_error(evaluate(1, character()), "coefs must be")
+        expect_error(evaluate(1, numeric()), "coefs must be")
+    }
 })
 
-test_that("horner rejects non-numeric input", {
-  expect_error(horner("a", c(1, 2, 3)))
-  expect_error(horner(1, c("a", "b", "c")))
+test_that("polynomial evaluators follow ordinary R non-finite arithmetic", {
+    coefs <- c(1, 2)
+
+    expect_true(is.nan(horner(Inf, coefs)))
+    expect_true(is.nan(horner(NaN, coefs)))
+    expect_true(is.na(horner(NA_real_, coefs)))
+})
+
+test_that("iterative and recursive Horner evaluation agree", {
+    coefs <- c(-1, 0, 3, -2, 1)
+    x <- seq(-2, 2, by = 0.25)
+
+    expect_equal(horner(x, coefs), rhorner(x, coefs))
 })
