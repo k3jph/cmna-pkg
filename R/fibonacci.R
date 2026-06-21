@@ -1,53 +1,61 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Fibonacci numbers
+#' @title Exact Fibonacci numbers
 #'
 #' @description
-#' Return the n-th Fibonacci number
+#' Return the `n`-th Fibonacci number using iterative addition.
 #'
-#' @param n n
+#' @param n A whole-number index between 0 and 78 inclusive.
 #'
 #' @details
-#' This function is recursively implements the famous Fibonacci
-#' sequence.  The function returns the \code{n}th member of the
-#' sequence.
+#' The sequence is indexed by `F(0) = 0`, `F(1) = 1`, and
+#' `F(n) = F(n - 1) + F(n - 2)`.
 #'
-#' @return the sequence element
+#' The implementation is iterative and runs in linear time with constant
+#' auxiliary storage. R numeric values can represent every integer through
+#' `F(78)` exactly; larger indices are rejected rather than returned with silent
+#' integer-rounding error.
+#'
+#' @return A numeric scalar containing the exact Fibonacci number.
 #'
 #' @family algebra
 #'
 #' @examples
+#' fibonacci(0)
 #' fibonacci(10)
+#' fibonacci(78)
 #'
 #' @export
 fibonacci <- function(n) {
-    if(n == 0)
+    if (!is.numeric(n) || length(n) != 1L || !is.finite(n) ||
+        n < 0 || n != floor(n)) {
+        .cmna_abort(
+            "n must be a nonnegative whole number",
+            "cmna_invalid_argument",
+            argument = "n",
+            value = n
+        )
+    }
+    if (n > 78) {
+        .cmna_abort(
+            "n must not exceed 78 for exact numeric results",
+            "cmna_domain_error",
+            argument = "n",
+            value = n
+        )
+    }
+    if (n == 0) {
         return(0)
-    if(n == 1)
-        return(1)
-    return(fibonacci(n - 1) + fibonacci(n - 2))
+    }
+
+    previous <- 0
+    current <- 1
+    for (index in seq_len(n - 1L)) {
+        next_value <- previous + current
+        previous <- current
+        current <- next_value
+    }
+
+    current
 }
