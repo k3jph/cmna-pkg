@@ -34,7 +34,7 @@ trap <- function(f, a, b, m = 100) {
     .cmna_validate_pos_integer(m, "m")
 
     x <- seq(a, b, length.out = m + 1)
-    y <- f(x)
+    y <- .cmna_eval_vectorized(f, x)
 
     p.area <- sum(y[2:(m + 1)] + y[1:m])
     p.area * abs(b - a) / (2 * m)

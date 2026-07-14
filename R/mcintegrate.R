@@ -43,7 +43,7 @@ mcint <- function(f, a, b, m = 1000) {
 
     x <- runif(m, min = a, max = b)
 
-    y.hat <- f(x)
+    y.hat <- .cmna_eval_vectorized(f, x)
     area <- (b - a) * sum(y.hat) / m
     return(area)
 }
@@ -63,6 +63,13 @@ mcint2 <- function(f, xdom, ydom, m = 1000) {
     y <- runif(m, min = ymin, max = ymax)
 
     z.hat <- f(x, y)
+    if (length(z.hat) == 1L && m > 1L) z.hat <- rep(z.hat, m)
+    if (length(z.hat) != m)
+        .cmna_abort(
+            sprintf("integrand returned %d values for %d inputs",
+                    length(z.hat), m),
+            "cmna_invalid_argument"
+        )
     V = (xmax - xmin) * (ymax - ymin)
     volume = V * sum(z.hat) / m
     return(volume)

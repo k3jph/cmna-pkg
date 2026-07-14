@@ -35,11 +35,11 @@ simp38 <- function(f, a, b, m = 100) {
     .cmna_validate_pos_integer(m, "m")
 
     x.ends <- seq(a, b, length.out = m + 1)
-    y.ends <- f(x.ends)
+    y.ends <- .cmna_eval_vectorized(f, x.ends)
     x.midh <- (2 * x.ends[2:(m + 1)] + x.ends[1:m]) / 3
     x.midl <- (x.ends[2:(m + 1)] + 2 * x.ends[1:m]) / 3
-    y.midh <- f(x.midh)
-    y.midl <- f(x.midl)
+    y.midh <- .cmna_eval_vectorized(f, x.midh)
+    y.midl <- .cmna_eval_vectorized(f, x.midl)
 
     p.area <- sum(y.ends[2:(m + 1)] + 3 * y.midh[1:m] +
                       3 * y.midl[1:m] + y.ends[1:m])

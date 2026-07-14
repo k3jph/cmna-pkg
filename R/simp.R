@@ -34,9 +34,9 @@ simp <- function(f, a, b, m = 100) {
     .cmna_validate_pos_integer(m, "m")
 
     x.ends <- seq(a, b, length.out = m + 1)
-    y.ends <- f(x.ends)
+    y.ends <- .cmna_eval_vectorized(f, x.ends)
     x.mids <- (x.ends[2:(m + 1)] - x.ends[1:m]) / 2 + x.ends[1:m]
-    y.mids <- f(x.mids)
+    y.mids <- .cmna_eval_vectorized(f, x.mids)
 
     p.area <- sum(y.ends[2:(m + 1)] + 4 * y.mids[1:m] + y.ends[1:m])
     p.area * abs(b - a) / (6 * m)

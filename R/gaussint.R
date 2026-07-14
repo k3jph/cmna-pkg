@@ -35,7 +35,7 @@
 gaussint <- function(f, x, w) {
     .cmna_validate_function(f, "f")
 
-    y <- f(x)
+    y <- .cmna_eval_vectorized(f, x)
 
     return(sum(y * w))
 }

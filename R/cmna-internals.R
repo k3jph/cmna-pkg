@@ -176,3 +176,26 @@
 
     invisible(value)
 }
+
+.cmna_eval_vectorized <- function(f, x) {
+    y <- f(x)
+    if (!is.numeric(y))
+        .cmna_abort(
+            "integrand must return a numeric result",
+            "cmna_invalid_argument"
+        )
+    if (length(y) == 1L && length(x) > 1L)
+        y <- rep(y, length(x))
+    if (length(y) != length(x))
+        .cmna_abort(
+            sprintf("integrand returned %d values for %d inputs",
+                    length(y), length(x)),
+            "cmna_invalid_argument"
+        )
+    if (any(!is.finite(y)))
+        .cmna_abort(
+            "integrand returned non-finite values",
+            "cmna_numerical_breakdown"
+        )
+    y
+}

@@ -34,7 +34,7 @@ midpt <- function(f, a, b, m = 100) {
 
     nwidth <- (b - a) / m
     x <- seq(a, b - nwidth, length.out = m) + nwidth / 2
-    y <- f(x)
+    y <- .cmna_eval_vectorized(f, x)
 
     sum(y) * abs(b - a) / m
 }
