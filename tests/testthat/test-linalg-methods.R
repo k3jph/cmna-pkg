@@ -13,19 +13,24 @@ test_that("solvematrix solves Ax = b", {
     expect_equal(as.numeric(A %*% x), b, tolerance = 1e-10)
 })
 
-test_that("LU decomposition reconstructs original matrix", {
+test_that("LU decomposition satisfies P*A = L*U", {
     A <- matrix(c(2, 1, 1, 0, 3, 1, 1, 1, 3), nrow = 3, byrow = TRUE)
     lu <- lumatrix(A)
-    reconstructed <- lu$L %*% lu$U
-    expect_equal(reconstructed, A, tolerance = 1e-10)
+    expect_equal(lu$P %*% A, lu$L %*% lu$U, tolerance = 1e-10)
 })
 
-test_that("Cholesky decomposition produces lower triangular", {
+test_that("Cholesky satisfies t(L)*L = A for textbook SPD matrix", {
     A <- matrix(c(4, 12, -16, 12, 37, -43, -16, -43, 98), nrow = 3)
     L <- choleskymatrix(A)
-    expect_true(is.matrix(L))
-    expect_equal(nrow(L), 3)
-    expect_equal(ncol(L), 3)
+    expect_equal(t(L) %*% L, A, tolerance = 1e-10)
+    expect_equal(L, chol(A), tolerance = 1e-10)
+})
+
+test_that("Cholesky satisfies t(L)*L = A for 2x2 SPD matrix", {
+    A <- matrix(c(4, 2, 2, 3), nrow = 2)
+    L <- choleskymatrix(A)
+    expect_equal(t(L) %*% L, A, tolerance = 1e-10)
+    expect_true(all(L[lower.tri(L)] == 0))
 })
 
 test_that("detmatrix matches det() for known matrices", {

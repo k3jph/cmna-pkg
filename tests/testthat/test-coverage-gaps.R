@@ -111,20 +111,24 @@ test_that("solvematrix solves 3x3 system", {
 })
 
 ## lumatrix.R
-test_that("lumatrix reconstructs 3x3 matrix", {
+test_that("lumatrix satisfies PA = LU", {
     A <- matrix(c(2, 1, 1, 4, 3, 3, 8, 7, 9), nrow = 3, byrow = TRUE)
     lu <- lumatrix(A)
     expect_true(is.list(lu))
-    expect_true("L" %in% names(lu))
-    expect_true("U" %in% names(lu))
-    expect_equal(lu$L %*% lu$U, A, tolerance = 1e-10)
+    expect_true(all(c("P", "L", "U") %in% names(lu)))
+    expect_equal(lu$P %*% A, lu$L %*% lu$U, tolerance = 1e-10)
 })
 
 ## nthroot.R validation
 test_that("nthroot handles edge cases", {
-    expect_equal(nthroot(0, 3), 0, tolerance = 1e-3)
-    expect_equal(nthroot(1, 5), 1, tolerance = 1e-3)
-    expect_equal(nthroot(27, 3), 3, tolerance = 1e-2)
+    expect_equal(nthroot(0, 3), 0)
+    expect_equal(nthroot(1, 5, tol = 1e-10), 1, tolerance = 1e-10)
+    expect_equal(nthroot(27, 3, tol = 1e-10), 3, tolerance = 1e-10)
+})
+
+test_that("nthroot default tolerance gives reasonable results", {
+    expect_equal(nthroot(8, 3), 2, tolerance = 0.001)
+    expect_equal(nthroot(16, 4), 2, tolerance = 0.001)
 })
 
 ## resizeImage.R
