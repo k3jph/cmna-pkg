@@ -8,3 +8,14 @@ COPYRIGHT.md
 ^pkgdown$
 ^\.github$
 ^data-raw$
+^ARCHITECTURE\.md$
+^DEVELOPMENT\.md$
+^FIBONACCI\.md$
+^NTHROOTS\.md$
+^POLYNOMIALS\.md$
+^QUADRATICS\.md$
+^ROADMAP\.md$
+^ROOTFINDING\.md$
+^SUMMATION\.md$
+^cmna\.Rcheck$
+^cmna_.*\.tar\.gz$
