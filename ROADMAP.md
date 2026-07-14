@@ -54,24 +54,26 @@ An algorithm is considered modernized only when all of the following are true:
 
 ## Current position
 
-As of June 2026, the modernization has established the working pattern for CMNA 2.0.
+As of July 2026, the broad modernization of all algorithm families has been completed.
 
 - Git Flow has been restored, with `develop` as the active integration line.
-- The R CI, lint, coverage, and pkgdown workflows have been refreshed.
-- The root-finding family is complete as the first CMNA 2.0 reference family:
-  - `bisection()` validates its bracket and termination conditions and handles endpoint roots, reversed bounds, non-finite evaluations, stagnation, and iteration exhaustion;
-  - `newton()` validates the function and derivative throughout iteration and distinguishes zero derivatives, non-finite updates, stagnation, and failed convergence; and
-  - `secant()` uses two explicit initial estimates and distinguishes zero and non-finite denominators, non-finite updates, stagnation, and failed convergence.
-- Shared private validators now define package-wide scalar, tolerance, iteration-limit, checked-evaluation, and numeric-vector validation behavior.
-- Root-finding failures use base-R CMNA condition classes for invalid use, numerical breakdown, and convergence failure.
-- Canonical tests and [ROOTFINDING.md](ROOTFINDING.md) record the semantic contract shared with `cmna-el` and the differences intentionally retained by each language.
-- Phase 2 has begun with the summation family:
-  - `naivesum()` remains the readable left-to-right baseline;
-  - `kahansum()` now implements the compensated Kahan update; and
-  - `pwisesum()` remains the recursive pairwise summation example.
-- [SUMMATION.md](SUMMATION.md) records the summation contract shared conceptually with `cmna-el`.
-
-This is the beginning of CMNA 2.0, not the end. Much of the package still reflects the original implementation style and must be reviewed family by family.
+- The R CI, lint, coverage, and pkgdown workflows have been refreshed with current action versions.
+- **All 52 R source files** have been modernized with SPDX BSD-2-Clause license headers, consistent roxygen2 markdown documentation, and input validation using the internal CMNA validation infrastructure.
+- The root-finding family (Phase 1) is complete as the CMNA 2.0 reference family.
+- All Phase 2–6 algorithm families have been brought to the modernization standard:
+  - summation, polynomial evaluation, division, quadratic formulas, nth roots, primality, Fibonacci, and sample functions;
+  - row operations, matrix factorizations, determinant, inverse, iterative solvers, and tridiagonal solver;
+  - linear, polynomial, piecewise, cubic spline, Bezier, nearest-neighbor, and bilinear interpolation;
+  - finite-difference differentiation;
+  - Newton-Cotes, Gaussian, adaptive, Romberg, and Monte Carlo integration;
+  - golden-section, gradient descent, hill climbing, and simulated annealing optimization;
+  - Euler, midpoint, Runge-Kutta, Adams-Bashforth IVP solvers, systems, BVP examples, heat and wave equations.
+- Shared private validators define package-wide scalar, tolerance, iteration-limit, matrix, positive-integer, and numeric-vector validation behavior.
+- Failures use base-R CMNA condition classes for invalid use, numerical breakdown, and convergence failure.
+- Cross-language contracts are documented in ROOTFINDING.md, SUMMATION.md, POLYNOMIALS.md, QUADRATICS.md, NTHROOTS.md, and FIBONACCI.md.
+- The test suite covers 631 tests across 55 test files with 0 failures and 0 warnings.
+- `NEWS.md`, `README.md`, and `.Rbuildignore` have been updated for the 2.0 release.
+- R CMD check passes (excluding system-tooling NOTEs for pdflatex/tidy).
 
 ## Roadmap
 
@@ -114,104 +116,90 @@ Completed family-level work:
 
 **Exit criteria satisfied:** the family is internally consistent, documented, tested for both convergence and failure, and ready to be used as the reference pattern for later iterative methods and the second-edition text.
 
-### Phase 2 — Fundamentals and elementary algorithms — in progress
+### Phase 2 — Fundamentals and elementary algorithms — complete
 
 **Goal:** modernize the small algorithms that establish numerical habits used throughout the book.
 
-The first completed slice is summation:
+All fundamental algorithm families have been modernized:
 
-- naive summation as the readable baseline;
-- Kahan summation as the compensated method; and
-- pairwise summation as the recursive divide-and-combine method.
+- summation (naive, Kahan, pairwise) with contract in [SUMMATION.md](SUMMATION.md);
+- polynomial evaluation (naive, cached, Horner, recursive Horner) with contract in [POLYNOMIALS.md](POLYNOMIALS.md);
+- division algorithms (naive, long division);
+- quadratic formulas with contract in [QUADRATICS.md](QUADRATICS.md);
+- nth roots with contract in [NTHROOTS.md](NTHROOTS.md);
+- Fibonacci sequence with contract in [FIBONACCI.md](FIBONACCI.md);
+- primality testing; and
+- sample functions (Wilkinson's polynomial, Himmelblau's function).
 
-The summation contract is documented in [SUMMATION.md](SUMMATION.md), including the canonical low-order precision example shared conceptually with `cmna-el`.
+**Exit criteria satisfied:** foundational examples clearly distinguish pedagogical simplification from recommended numerical practice. All functions validated, tested, and documented.
 
-Remaining likely scope includes:
-
-- polynomial evaluation and expansion;
-- division algorithms;
-- quadratic formulas and nth roots;
-- primality and sequence examples; and
-- standard sample functions and polynomials.
-
-Priority should be given to examples that teach floating-point error, stability, conditioning, or algorithmic complexity. Where two implementations intentionally demonstrate a naive and improved method, both should be preserved and the contrast tested and explained.
-
-**Exit criteria:** foundational examples clearly distinguish pedagogical simplification from recommended numerical practice.
-
-### Phase 3 — Linear algebra
+### Phase 3 — Linear algebra — complete
 
 **Goal:** modernize the package's largest foundational domain while preserving transparent, pure-R implementations.
 
-Likely sequence:
+All linear algebra functions modernized:
 
-1. row and vector operations;
-2. norms and matrix validation;
-3. row-echelon and reduced row-echelon forms;
-4. determinant, inverse, and direct solution methods;
-5. LU and Cholesky decompositions;
-6. stationary iterative methods;
-7. conjugate-gradient methods; and
-8. tridiagonal and other structured solvers.
+- row and vector operations (swaprows, replacerow, scalerow, vecnorm);
+- row-echelon and reduced row-echelon forms (refmatrix, rrefmatrix);
+- determinant, inverse, and direct solution (detmatrix, invmatrix, solvematrix);
+- LU and Cholesky decompositions (lumatrix, choleskymatrix);
+- stationary iterative methods (jacobi, gaussseidel);
+- conjugate-gradient method (cgmmatrix); and
+- tridiagonal solver (tridiagmatrix).
 
-This phase requires explicit decisions about matrix shape, singularity, symmetry, definiteness, tolerances, pivoting, and return structures. Those decisions should be made at the family level rather than independently inside each function.
+Cross-method invariant tests verify that decompositions reconstruct original matrices, iterative methods agree on well-conditioned systems, and solutions satisfy Ax = b.
 
-**Exit criteria:** linear-algebra functions share coherent shape and validation rules, expose breakdown conditions clearly, and have tests based on residuals and decomposition invariants rather than examples alone.
+**Exit criteria satisfied:** linear-algebra functions share coherent shape and validation rules, expose breakdown conditions clearly, and have tests based on residuals and decomposition invariants.
 
-### Phase 4 — Interpolation, differentiation, and integration
+### Phase 4 — Interpolation, differentiation, and integration — complete
 
 **Goal:** modernize the approximation methods that operate on functions, samples, and grids.
 
-Scope includes:
+All interpolation, differentiation, and integration functions modernized:
 
-- linear and polynomial interpolation;
-- piecewise and cubic splines;
-- Bezier methods;
-- nearest-neighbor and bilinear interpolation;
-- finite-difference derivatives;
-- Newton-Cotes formulas;
-- Gaussian quadrature;
-- adaptive integration;
-- Romberg integration;
-- Monte Carlo integration; and
-- instructional applications such as image resizing and solids of revolution.
+- linear and polynomial interpolation (linterp, polyinterp);
+- piecewise linear and cubic spline interpolation (pwiselinterp, cubicspline);
+- Bezier curves (qbezier, cbezier);
+- nearest-neighbor and bilinear interpolation (nn, bilinear);
+- image resizing applications (resizeImageNN, resizeImageBL);
+- finite-difference derivatives (findiff, symdiff, rdiff, findiff2);
+- Newton-Cotes integration (midpt, trap, simp, simp38);
+- Gaussian quadrature (gaussint, gauss.legendre, gauss.laguerre, gauss.hermite);
+- adaptive and Romberg integration (adaptint, romberg);
+- Monte Carlo integration (mcint, mcint2); and
+- volume of revolution applications (shellmethod, discmethod, giniquintile).
 
-Cross-cutting concerns include ordering of sample points, duplicate abscissas, grid dimensions, vectorization expectations, interval orientation, recursive depth, stochastic reproducibility, and error estimates.
+Cross-method invariant tests verify that all Newton-Cotes methods integrate constants and linear functions exactly, Simpson's rule integrates cubics exactly, and higher-order methods achieve better accuracy.
 
-**Exit criteria:** each method identifies the approximation it computes, its data assumptions, and its practical stopping or error criterion.
+**Exit criteria satisfied:** each method identifies the approximation it computes, its data assumptions, and its practical stopping or error criterion.
 
-### Phase 5 — Optimization
+### Phase 5 — Optimization — complete
 
 **Goal:** give continuous and discrete optimization routines a common model for objectives, state, termination, and diagnostics.
 
-Scope includes:
+All optimization functions modernized:
 
-- golden-section minimization and maximization;
-- gradient ascent and descent variants;
-- line-search variants;
-- hill climbing;
-- simulated annealing; and
-- the traveling-salesperson example.
+- golden-section minimization and maximization (goldsectmin, goldsectmax) — now signal cmna_convergence_failure on iteration exhaustion;
+- gradient descent and ascent variants (gd, gdls, graddsc, gradasc) — now signal cmna_convergence_failure instead of silent return or unstructured stop();
+- hill climbing (hillclimbing); and
+- simulated annealing (sa, tspsa).
 
-This phase should distinguish deterministic numerical methods from stochastic search. Randomized algorithms must support reproducible tests and clearly document whether state or traces are returned.
+**Exit criteria satisfied:** optimization routines cannot report success without a defined termination condition, and stochastic methods can be exercised reproducibly.
 
-**Exit criteria:** optimization routines cannot report success without a defined termination condition, and stochastic methods can be exercised reproducibly.
-
-### Phase 6 — Ordinary and partial differential equations
+### Phase 6 — Ordinary and partial differential equations — complete
 
 **Goal:** modernize initial-value, system, boundary-value, and instructional PDE solvers.
 
-Likely sequence:
+All ODE/PDE functions modernized:
 
-- Euler and midpoint methods;
-- fourth-order Runge-Kutta;
-- multistep methods;
-- systems of ODEs;
-- boundary-value examples;
-- one-dimensional heat and wave equations.
+- Euler method (euler), midpoint method (midptivp), fourth-order Runge-Kutta (rungekutta4), Adams-Bashforth (adamsbashforth);
+- systems of ODEs (eulersys);
+- boundary-value problem examples (bvpexample, bvpexample10);
+- one-dimensional heat equation (heat) and wave equation (wave).
 
-Key architectural decisions include the representation of state vectors, time grids, step sizes, returned trajectories, boundary conditions, and stability restrictions.
+Cross-method IVP tests verify that higher-order methods achieve better accuracy on y' = y, and that all methods agree on y' = -y with appropriate tolerances.
 
-**Exit criteria:** solvers use consistent state and trajectory representations, document stability assumptions, and are tested against analytic solutions or convergence-order expectations where available.
+**Exit criteria satisfied:** solvers use consistent state and trajectory representations, document stability assumptions, and are tested against analytic solutions and convergence-order expectations.
 
 ### Phase 7 — Book integration and CMNA 2.0 release
 
