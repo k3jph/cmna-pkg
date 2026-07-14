@@ -278,26 +278,22 @@ test_that("kahansum preserves precision on alternating large/small values", {
     expect_equal(kahansum(x), n_ones)
 })
 
-test_that("nthroot for very large values (1e30)", {
-    ## The initial guess (a/n) is far from the true root for large radicands,
-    ## requiring many iterations. With sufficient m, convergence succeeds.
-    ## cube root of 1e30 = 1e10
-    result <- nthroot(1e30, 3, tol = 1e-3, m = 200)
-    expect_equal(result, 1e10, tolerance = 1e-3 * 1e10)
-    ## square root of 1e30 = 1e15
-    result2 <- nthroot(1e30, 2, tol = 1e-3, m = 200)
-    expect_equal(result2, 1e15, tolerance = 1e-3 * 1e15)
+test_that("nthroot for very large values", {
+    expect_equal(nthroot(1e30, 3, tol = 1e-10), 1e10, tolerance = 1e-8)
+    expect_equal(nthroot(1e30, 2, tol = 1e-10), 1e15, tolerance = 1e-8)
+    expect_equal(nthroot(1e100, 5, tol = 1e-10), 1e20, tolerance = 1e-8)
 })
 
-test_that("nthroot for very small values (1e-30)", {
-    ## nthroot uses scale = max(1, abs(a)) for its convergence criterion:
-    ## |x^n - |a|| <= tol * scale. When a << 1, scale = 1, so the absolute
-    ## tolerance is tol (e.g., 1e-3). The iteration stops as soon as x^n < tol,
-    ## which can happen at x far from the true root (e.g., x ~ 0.088 for
-    ## cube root of 1e-30). This is a known limitation: the convergence
-    ## criterion is absolute, not relative, so small radicands get poor
-    ## relative accuracy.
-    skip("nthroot convergence criterion is absolute (scale = max(1, |a|)), so small radicands converge prematurely")
+test_that("nthroot for very small values", {
+    expect_equal(nthroot(1e-30, 3, tol = 1e-10), 1e-10, tolerance = 1e-8)
+    expect_equal(nthroot(1e-12, 2, tol = 1e-10), 1e-6, tolerance = 1e-8)
+    expect_equal(nthroot(1e-100, 5, tol = 1e-10), 1e-20, tolerance = 1e-8)
+})
+
+test_that("nthroot near one", {
+    expect_equal(nthroot(1, 10, tol = 1e-10), 1, tolerance = 1e-10)
+    expect_equal(nthroot(1.001, 3, tol = 1e-10), 1.001^(1/3), tolerance = 1e-8)
+    expect_equal(nthroot(0.999, 3, tol = 1e-10), 0.999^(1/3), tolerance = 1e-8)
 })
 
 test_that("nthroot negative radicand with odd root", {

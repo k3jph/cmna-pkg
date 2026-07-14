@@ -32,11 +32,11 @@ test_that("nthroot validates the radicand", {
 
 test_that("nthroot exposes exhausted iteration limits", {
     expect_error(
-        nthroot(2, 2, tol = 1e-15, m = 1),
+        nthroot(3, 7, tol = 1e-15, m = 1),
         class = "cmna_iteration_limit"
     )
     expect_error(
-        nthroot(2, 2, tol = 1e-15, m = 1),
+        nthroot(3, 7, tol = 1e-15, m = 1),
         class = "cmna_convergence_failure"
     )
 })

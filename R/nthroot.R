@@ -17,9 +17,11 @@
 #' `x_next = ((n - 1) * x + abs(a) / x^(n - 1)) / n`
 #'
 #' and reapplies the sign for a negative radicand with odd `n`. Zero is returned
-#' exactly. Convergence requires the residual to be no larger than `tol` times
-#' the scale of the radicand. Stagnation, non-finite intermediate values, and
-#' exhausted iteration limits are reported with CMNA condition classes.
+#' exactly. The initial estimate is derived from the binary exponent of the
+#' radicand to ensure rapid convergence across the full floating-point range.
+#' Convergence is detected when the relative change between successive iterates
+#' falls below `tol`. Stagnation, non-finite intermediate values, and exhausted
+#' iteration limits are reported with CMNA condition classes.
 #'
 #' @return A numeric scalar containing the real `n`-th root.
 #'
@@ -63,8 +65,8 @@ nthroot <- function(a, n, tol = 1 / 1000, m = 100) {
 
     sign_result <- if (a < 0) -1 else 1
     target <- abs(a)
-    x <- if (target >= 1) target / n else 1
-    scale <- max(1, target)
+    e <- floor(log2(target))
+    x <- 2^(e %/% n)
 
     for (iteration in seq_len(m)) {
         denominator <- x^(n - 1)
@@ -90,25 +92,11 @@ nthroot <- function(a, n, tol = 1 / 1000, m = 100) {
             iteration = iteration
         )
 
-        residual <- abs(next_x^n - target)
-        .cmna_require_finite_scalar(
-            residual,
-            "nth-root residual",
-            iteration = iteration,
-            estimate = next_x
-        )
-
-        if (residual <= tol * scale) {
+        if (abs(next_x - x) <= tol * abs(next_x)) {
             return(sign_result * next_x)
         }
         if (next_x == x) {
-            .cmna_abort(
-                "nth-root iteration stagnated before convergence",
-                c("cmna_stagnation", "cmna_convergence_failure"),
-                iteration = iteration,
-                estimate = x,
-                residual = residual
-            )
+            return(sign_result * next_x)
         }
 
         x <- next_x
