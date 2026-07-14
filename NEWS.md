@@ -35,10 +35,11 @@
   `.cmna_validate_nonneg_integer()`, `.cmna_validate_square_matrix()`,
   `.cmna_validate_matrix()`, `.cmna_validate_positive_scalar()`.
 
-* Test suite expanded from ~20 legacy tests to 500+ tests covering all
-  exported functions, using testthat edition 3. Includes edge cases,
-  validation error paths, numerical contracts, and cross-method
-  invariants.
+* Test suite expanded from ~20 legacy tests to 920+ tests covering all
+  81 exported functions, using testthat edition 3. Includes edge cases,
+  validation error paths, numerical contracts, cross-method invariants,
+  independent mathematical oracle tests, and deep correctness tests
+  for floating-point robustness.
 
 * All existing tests migrated to testthat edition 3 (positional
   tolerance arguments replaced with named `tolerance =`, deprecated
