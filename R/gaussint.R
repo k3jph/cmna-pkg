@@ -1,45 +1,27 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Gaussian integration method driver
+#' @title Gaussian Integration
 #'
 #' @description
-#' Use the Gaussian method to evaluate integrals
+#' Evaluate integrals using Gaussian quadrature.
 #'
 #' @param f function to integrate
-#' @param m number of evaluation points
-#' @param x list of evaluation points
-#' @param w list of weights
+#' @param m number of evaluation points (positive integer, default 5)
+#' @param x vector of evaluation points (abscissae)
+#' @param w vector of quadrature weights
 #'
 #' @details
-#' The \code{gaussint} function uses the Gaussian integration to
-#' evaluate an integral.  The function itself is a driver and expects
-#' the integration points and associated weights as options.
+#' `gaussint` is a low-level driver that evaluates `f` at the supplied
+#' points `x` and returns the weighted sum using weights `w`.
 #'
-#' @return the value of the integral
+#' `gauss.legendre`, `gauss.laguerre`, and `gauss.hermite` are
+#' convenience wrappers that look up the pre-computed nodes and weights
+#' for the corresponding orthogonal-polynomial family with `m` points.
+#' The lookup uses `eval(parse(...))` to resolve the stored parameter
+#' sets by name; this is intentional for pedagogical purposes.
+#'
+#' @return A numeric scalar giving the value of the integral.
 #'
 #' @family integration
 #'
@@ -51,6 +33,8 @@
 #'
 #' @export
 gaussint <- function(f, x, w) {
+    .cmna_validate_function(f, "f")
+
     y <- f(x)
 
     return(sum(y * w))
@@ -59,6 +43,9 @@ gaussint <- function(f, x, w) {
 #' @rdname gaussint
 #' @export
 gauss.legendre <- function(f, m = 5) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_pos_integer(m, "m")
+
     p <- paste("gauss.legendre.", m, sep = "")
     params <- eval(parse(text = p))
 
@@ -68,17 +55,23 @@ gauss.legendre <- function(f, m = 5) {
 #' @rdname gaussint
 #' @export
 gauss.laguerre <- function(f, m = 5) {
-  p <- paste("gauss.laguerre.", m, sep = "")
-  params <- eval(parse(text = p))
+    .cmna_validate_function(f, "f")
+    .cmna_validate_pos_integer(m, "m")
 
-  return(gaussint(f, params$x, params$w))
+    p <- paste("gauss.laguerre.", m, sep = "")
+    params <- eval(parse(text = p))
+
+    return(gaussint(f, params$x, params$w))
 }
 
 #' @rdname gaussint
 #' @export
 gauss.hermite <- function(f, m = 5) {
-  p <- paste("gauss.hermite.", m, sep = "")
-  params <- eval(parse(text = p))
+    .cmna_validate_function(f, "f")
+    .cmna_validate_pos_integer(m, "m")
 
-  return(gaussint(f, params$x, params$w))
+    p <- paste("gauss.hermite.", m, sep = "")
+    params <- eval(parse(text = p))
+
+    return(gaussint(f, params$x, params$w))
 }

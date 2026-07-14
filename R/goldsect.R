@@ -1,28 +1,5 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @title Golden Section Search
 #'
@@ -30,23 +7,25 @@
 #' @rdname goldsect
 #'
 #' @description
-#' Use golden section search to find local extrema
+#' Use golden section search to find local extrema.
 #'
-#' @param f function to integrate
-#' @param a the a bound of the search region
-#' @param b the b bound of the search region
-#' @param tol the error tolerance
-#' @param m the maximum number of iterations
+#' @param f function to optimize
+#' @param a lower bound of the search region (finite numeric scalar)
+#' @param b upper bound of the search region (finite numeric scalar)
+#' @param tol error tolerance (positive numeric scalar, default 1e-3)
+#' @param m maximum number of iterations (positive integer, default 100)
 #'
 #' @details
-#'
-#' The golden section search  method functions by repeatedly dividing the interval
-#' between \code{a} and \code{b} and will return when the
-#' interval between them is less than \code{tol}, the error tolerance.
-#' However, this implementation also stop if after \code{m}
+#' The golden section search method functions by repeatedly dividing
+#' the interval between `a` and `b` using the golden ratio and will
+#' return when the interval between them is less than `tol`, the error
+#' tolerance. However, this implementation also stops if after `m`
 #' iterations.
 #'
-#' @return the \code{x} value of the minimum found
+#' `goldsectmin` searches for a local minimum; `goldsectmax` searches
+#' for a local maximum.
+#'
+#' @return The `x` value of the extremum found.
 #'
 #' @family optimz
 #'
@@ -56,6 +35,12 @@
 #'
 #' @export
 goldsectmin <- function(f, a, b, tol = 1e-3, m = 100) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
+
     iter <- 0
     phi <- (sqrt(5) - 1) / 2
 
@@ -65,8 +50,14 @@ goldsectmin <- function(f, a, b, tol = 1e-3, m = 100) {
     while (abs(b - a) > tol) {
         iter <- iter + 1
         if (iter > m) {
-            warning("iterations maximum exceeded")
-            break
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                c("cmna_iteration_limit", "cmna_convergence_failure"),
+                method = "goldsectmin",
+                iterations = iter,
+                a = a,
+                b = b
+            )
         }
 
         if(f(a.star) < f(b.star)) {
@@ -86,6 +77,12 @@ goldsectmin <- function(f, a, b, tol = 1e-3, m = 100) {
 #' @rdname goldsect
 #' @export
 goldsectmax <- function(f, a, b, tol = 1e-3, m = 100) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
+
     iter <- 0
     phi <- (sqrt(5) - 1) / 2
 
@@ -95,8 +92,14 @@ goldsectmax <- function(f, a, b, tol = 1e-3, m = 100) {
     while (abs(b - a) > tol) {
         iter <- iter + 1
         if (iter > m) {
-            warning("iterations maximum exceeded")
-            break
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                c("cmna_iteration_limit", "cmna_convergence_failure"),
+                method = "goldsectmax",
+                iterations = iter,
+                a = a,
+                b = b
+            )
         }
 
         if(f(a.star) > f(b.star)) {

@@ -1,42 +1,23 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Nearest interpolation
+#' @title Nearest Neighbor Interpolation
 #'
 #' @description
-#' Find the nearest neighbor for a set of data points
+#' Find the nearest neighbor for a set of data points.
 #'
-#' @param p matrix of variable values, each row is a data point
-#' @param y vector of values, each entry corresponds to one row in \code{p}
-#' @param q vector of variable values, each entry corresponds to one column of \code{p}
+#' @param p a numeric matrix of variable values, where each row is a data point
+#' @param y a numeric vector of values, each entry corresponding to one row
+#'   in `p`
+#' @param q a numeric matrix of query points, where each row is a point to
+#'   interpolate and the number of columns must match `p`
 #'
 #' @details
-#' \code{nn} finds the n-dimensional nearest neighbor for given datapoint
+#' `nn` finds the n-dimensional nearest neighbor among the rows of `p`
+#' for the query point `q`, using Euclidean distance, and returns the
+#' corresponding value from `y`.
 #'
-#' @return an interpolated value for \var{q}
+#' @return The interpolated value from `y` for the nearest neighbor of `q`.
 #'
 #' @family interp
 #'
@@ -48,8 +29,16 @@
 #'
 #' @export
 nn <- function(p, y, q) {
-    if(ncol(p) != ncol(q))
-        stop("p and q must have same number of columns")
+    .cmna_validate_matrix(p, "p")
+    .cmna_validate_matrix(q, "q")
+    .cmna_validate_numeric_vector(y, "y")
+    if (ncol(p) != ncol(q))
+        .cmna_abort(
+            "`p` and `q` must have the same number of columns",
+            "cmna_invalid_argument",
+            p_ncol = ncol(p),
+            q_ncol = ncol(q)
+        )
 
     ## Repeat the rows of q to simplfy the  calculation
     qprime <- t(matrix(rep(q, nrow(p)), ncol(p)))

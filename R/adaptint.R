@@ -1,48 +1,25 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @title Adaptive Integration
 #'
 #' @description
-#' Adaptive integration
+#' Approximate a definite integral using adaptive subdivision.
 #'
 #' @param f function to integrate
-#' @param a the a-bound of integration
-#' @param b the b-bound of integration
-#' @param n the maximum recursive depth
-#' @param tol the maximum error tolerance
+#' @param a lower bound of integration (finite numeric scalar)
+#' @param b upper bound of integration (finite numeric scalar)
+#' @param n maximum recursive depth (positive integer, default 10)
+#' @param tol error tolerance (positive numeric scalar, default 1e-6)
 #'
 #' @details
-#' The \code{adaptint} function uses Romberg's rule to calculate the
-#' integral of the function \code{f} over the interval from \code{a}
-#' to \code{b}.  The parameter \code{n} sets the number of intervals
-#' to use when evaluating.  Additional options are passed to the
-#' function \code{f} when evaluating.
+#' `adaptint` recursively subdivides `[a, b]` and uses the midpoint
+#' rule on each subinterval. When two successive midpoint estimates
+#' differ by more than `3 * tol`, the interval is halved and each half
+#' is integrated with reduced depth and tighter tolerance. Recursion
+#' stops when the estimates agree or the depth limit `n` is reached.
 #'
-#' @return the value of the integral
+#' @return A numeric scalar approximating the integral.
 #'
 #' @family integration
 #' @family newton-cotes
@@ -56,6 +33,12 @@
 #'
 #' @export
 adaptint <- function(f, a, b, n = 10, tol = 1e-6) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_pos_integer(n, "n")
+    .cmna_validate_tolerance(tol)
+
     if(n == 1)
         area <- midpt(f, a, b, m = 2)
     else {

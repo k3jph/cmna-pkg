@@ -1,6 +1,3 @@
-library("testthat")
-context("rhorner")
-
 test_that("rhorner evaluates known polynomials correctly", {
   expect_equal(rhorner(1, c(1, 2, 3)), 6) # 1 + 2*1 + 3*1^2 = 6
   expect_equal(rhorner(0, c(5, 0, 0)), 5) # Testing zero

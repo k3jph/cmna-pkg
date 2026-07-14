@@ -1,6 +1,3 @@
-library("testthat")
-context("betterpoly")
-
 test_that("betterpoly evaluates known polynomials correctly", {
   expect_equal(betterpoly(1, c(1, 2, 3)), 6) # 1 + 2*1 + 3*1^2 = 6
   expect_equal(betterpoly(0, c(5, 0, 0)), 5) # Testing zero

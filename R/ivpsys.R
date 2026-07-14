@@ -1,50 +1,28 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Initial value problems for systems of ordinary differential equations
+#' @title Initial Value Problems for Systems of ODEs
 #'
 #' @name ivpsys
-#' @rdname ivpsys
 #'
 #' @description
-#' solve initial value problems for systems ordinary differential equations
+#' Solve initial value problems for systems of ordinary differential
+#' equations.
 #'
-#' @param f function to integrate
-#' @param x0 the initial value of x
-#' @param y0 the vector initial values of y
-#' @param h selected step size
-#' @param n the number of steps
+#' @param f a function of two arguments \eqn{(x, y)} returning a numeric
+#'   vector of derivatives
+#' @param x0 a finite numeric scalar giving the initial x-value
+#' @param y0 a numeric vector of initial y-values
+#' @param h a positive numeric scalar giving the step size
+#' @param n a positive integer giving the number of steps
 #'
 #' @details
-#' The \code{euler} method implements the Euler method for solving
-#' differential equations.  The code{midptivp} method solves initial
-#' value problems using the second-order Runge-Kutta method.  The
-#' \code{rungekutta4} method is the fourth-order Runge-Kutta method.
+#' `eulersys` implements the Euler method for solving systems of
+#' ordinary differential equations. If `y0` is a named vector, the
+#' names are preserved in the returned data frame.
 #'
-#' @return a data frame of \code{x} and \code{y} values
+#' @return A data frame with a column `x` and one column per component
+#'   of the system.
 #'
 #' @examples
 #' f <- function(x, y) { y / (2 * x + 1) }
@@ -53,6 +31,12 @@
 #' @rdname ivpsys
 #' @export
 eulersys <- function(f, x0, y0, h, n) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x0, "x0")
+    .cmna_validate_numeric_vector(y0, "y0")
+    .cmna_validate_positive_scalar(h, "h")
+    .cmna_validate_pos_integer(n, "n")
+
     x <- x0
     y <- y0
 

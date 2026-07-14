@@ -1,48 +1,33 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Simulated annealing
+#' @title Simulated Annealing
 #'
 #' @name sa
-#' @rdname sa
 #'
 #' @description
-#' Use simulated annealing to find the global minimum
+#' Use simulated annealing to find the global minimum.
 #'
-#' @param f function representing \code{f}
-#' @param x an initial estimate of the minimum
-#' @param temp the initial temperature
-#' @param rate the cooling rate
+#' @param f function to minimize
+#' @param x an initial estimate of the minimum (numeric vector for `sa`,
+#'   numeric matrix of point coordinates for `tspsa`)
+#' @param temp initial temperature (positive numeric scalar)
+#' @param rate cooling rate (positive numeric scalar between 0 and 1)
 #'
 #' @details
+#' Simulated annealing finds a global minimum by mimicking the
+#' metallurgical process of annealing. At each step a random
+#' perturbation is proposed and accepted if it improves the objective
+#' or with probability depending on the current temperature.
 #'
-#' Simulated annealing finds a global minimum by mimicing the
-#' metallurgical process of annealing.
+#' `sa` performs general-purpose simulated annealing on a numeric
+#' vector. `tspsa` solves the travelling salesman problem on a matrix
+#' of point coordinates, returning the best tour order and its total
+#' distance.
 #'
-#' @return the \code{x} value of the minimum found
+#' @return For `sa`, the `x` value of the minimum found. For `tspsa`,
+#'   a list with components `order` (the best tour) and `distance`
+#'   (the total tour distance).
 #'
 #' @family optimz
 #'
@@ -59,6 +44,11 @@
 #' @rdname sa
 #' @export
 sa <- function(f, x, temp = 1e4, rate = 1e-4) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_positive_scalar(temp, "temp")
+    .cmna_validate_positive_scalar(rate, "rate")
+
     step = 1 - rate
     n <- length(x)
 
@@ -87,6 +77,15 @@ sa <- function(f, x, temp = 1e4, rate = 1e-4) {
 #' @rdname sa
 #' @export
 tspsa <- function(x, temp = 1e2, rate = 1e-4) {
+    if (!is.matrix(x))
+        .cmna_abort(
+            "`x` must be a numeric matrix",
+            "cmna_invalid_argument",
+            arg = "x"
+        )
+    .cmna_validate_positive_scalar(temp, "temp")
+    .cmna_validate_positive_scalar(rate, "rate")
+
     step = 1 - rate
     n <- nrow(x)
 

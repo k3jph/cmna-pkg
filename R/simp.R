@@ -1,67 +1,43 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @title Simpson's rule
 #'
 #' @description
-#' Use Simpson's rule to integrate a function
+#' Approximate a definite integral using the composite Simpson's rule.
 #'
 #' @param f function to integrate
-#' @param a the a-bound of integration
-#' @param b the b-bound of integration
-#' @param m the number of subintervals to calculate
+#' @param a lower bound of integration (finite numeric scalar)
+#' @param b upper bound of integration (finite numeric scalar)
+#' @param m number of subintervals (positive integer, default 100)
 #'
 #' @details
-#' The \code{simp} function uses Simpson's rule to calculate the
-#' integral of the function \code{f} over the interval from \code{a}
-#' to \code{b}.  The parameter \code{m} sets the number of intervals
-#' to use when evaluating.  Additional options are passed to the
-#' function \code{f} when evaluating.
+#' Simpson's rule divides `[a, b]` into `m` subintervals and
+#' approximates the integral using a quadratic interpolation on each
+#' subinterval. The rule integrates polynomials up to degree 3 exactly.
+#' The error for smooth functions is O(h^4).
 #'
-#' @return the value of the integral
+#' @return A numeric scalar approximating the integral.
 #'
 #' @family integration
 #' @family newton-cotes
 #'
 #' @examples
-#' f <- function(x) { sin(x)^2 + cos(x)^2 }
-#' simp(f, -pi, pi, m = 10)
+#' f <- function(x) sin(x)^2 + cos(x)^2
 #' simp(f, -pi, pi, m = 100)
-#' simp(f, -pi, pi, m = 1000)
 #'
 #' @export
 simp <- function(f, a, b, m = 100) {
-    x.ends = seq(a, b, length.out = m + 1)
-    y.ends = f(x.ends)
-    x.mids = (x.ends[2:(m + 1)] - x.ends[1:m]) / 2 +
-        x.ends[1:m]
-    y.mids = f(x.mids)
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_pos_integer(m, "m")
 
-    p.area = sum(y.ends[2:(m+1)] + 4 * y.mids[1:m] +
-                     y.ends[1:m])
-    p.area = p.area * abs(b - a) / (6 * m)
-    return(p.area)
+    x.ends <- seq(a, b, length.out = m + 1)
+    y.ends <- f(x.ends)
+    x.mids <- (x.ends[2:(m + 1)] - x.ends[1:m]) / 2 + x.ends[1:m]
+    y.mids <- f(x.mids)
+
+    p.area <- sum(y.ends[2:(m + 1)] + 4 * y.mids[1:m] + y.ends[1:m])
+    p.area * abs(b - a) / (6 * m)
 }

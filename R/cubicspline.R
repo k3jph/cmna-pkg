@@ -1,43 +1,22 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Natural cubic spline interpolation
+#' @title Natural Cubic Spline Interpolation
 #'
 #' @description
-#' Finds a piecewise linear function that interpolates the data points
+#' Find a natural cubic spline that interpolates the data points.
 #'
-#' @param x a vector of x values
-#' @param y a vector of y values
+#' @param x a numeric vector of x-coordinates
+#' @param y a numeric vector of y-coordinates
 #'
 #' @details
-#' \code{cubicspline} finds a piecewise cubic spline function that
-#' interpolates the data points.  For each x-y ordered pair. The function will
-#' return a list of four vectors representing the coefficients.
+#' `cubicspline` computes a natural cubic spline interpolant for the
+#' given data points. The vectors `x` and `y` must have the same
+#' length. The function returns a list of four coefficient vectors
+#' representing the piecewise cubic polynomials.
 #'
-#' @return a list of coefficient vectors
+#' @return A list with components `a`, `b`, `c`, and `d`, each of
+#'   length `length(x) - 1`, giving the cubic polynomial coefficients.
 #'
 #' @family interp
 #' @family algebra
@@ -53,6 +32,16 @@
 #'
 #' @export
 cubicspline <- function(x, y) {
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_numeric_vector(y, "y")
+    if (length(x) != length(y))
+        .cmna_abort(
+            "`x` and `y` must have the same length",
+            "cmna_invalid_argument",
+            x_length = length(x),
+            y_length = length(y)
+        )
+
     n <- length(x)
     dvec <- bvec <- avec <- rep(0, n - 1)
     vec <- rep(0, n)
@@ -87,4 +76,3 @@ cubicspline <- function(x, y) {
     return(list(a = avec, b = bvec,
                 c = cvec[1:(n - 1)], d = dvec))
 }
-

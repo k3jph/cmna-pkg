@@ -103,3 +103,76 @@
         argument = x
     )
 }
+
+.cmna_validate_pos_integer <- function(value, name) {
+    if (!is.numeric(value) || length(value) != 1L ||
+        !is.finite(value) || value < 1 || value != floor(value)) {
+        .cmna_abort(
+            sprintf("%s must be a positive whole number", name),
+            "cmna_invalid_argument",
+            argument = name,
+            value = value
+        )
+    }
+
+    invisible(value)
+}
+
+.cmna_validate_nonneg_integer <- function(value, name) {
+    if (!is.numeric(value) || length(value) != 1L ||
+        !is.finite(value) || value < 0 || value != floor(value)) {
+        .cmna_abort(
+            sprintf("%s must be a nonnegative whole number", name),
+            "cmna_invalid_argument",
+            argument = name,
+            value = value
+        )
+    }
+
+    invisible(value)
+}
+
+.cmna_validate_square_matrix <- function(value, name) {
+    if (!is.matrix(value)) {
+        .cmna_abort(
+            sprintf("%s must be a matrix", name),
+            "cmna_invalid_argument",
+            argument = name
+        )
+    }
+    if (nrow(value) != ncol(value)) {
+        .cmna_abort(
+            sprintf("%s must be a square matrix", name),
+            "cmna_invalid_argument",
+            argument = name
+        )
+    }
+
+    invisible(value)
+}
+
+.cmna_validate_matrix <- function(value, name) {
+    if (!is.matrix(value)) {
+        .cmna_abort(
+            sprintf("%s must be a matrix", name),
+            "cmna_invalid_argument",
+            argument = name
+        )
+    }
+
+    invisible(value)
+}
+
+.cmna_validate_positive_scalar <- function(value, name) {
+    if (!is.numeric(value) || length(value) != 1L ||
+        !is.finite(value) || value <= 0) {
+        .cmna_abort(
+            sprintf("%s must be a positive finite numeric scalar", name),
+            "cmna_invalid_argument",
+            argument = name,
+            value = value
+        )
+    }
+
+    invisible(value)
+}

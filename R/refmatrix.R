@@ -1,53 +1,30 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @name refmatrix
 #' @rdname refmatrix
 #'
-#' @title Matrix to Row Echelon Form
+#' @title Matrix to row echelon form
 #'
 #' @description
 #' Transform a matrix to row echelon form.
 #'
 #' @param m a matrix
-#' @param A a square matrix representing the coefficients of a linear
-#' system in \code{solvematrix}
-#' @param b a vector representing the right-hand side of the linear
-#' system in \code{solvematrix}
+#' @param A a matrix representing the coefficients of a linear
+#'   system in `solvematrix`
+#' @param b a numeric vector representing the right-hand side of the
+#'   linear system in `solvematrix`
 #'
 #' @details
-#' \code{refmatrix} reduces a matrix to row echelon form.  This is not a
+#' `refmatrix` reduces a matrix to row echelon form. This is not a
 #' reduced row echelon form, though that can be easily calculated from
-#' the diagonal.  This function works on non-square matrices.
+#' the diagonal. This function works on non-square matrices.
 #'
-#' \code{rrefmatrix} returns the reduced row echelon matrix.
+#' `rrefmatrix` returns the reduced row echelon matrix.
 #'
-#' \code{solvematrix} solves a linear system using \code{rrefmatrix}.
+#' `solvematrix` solves a linear system using `rrefmatrix`.
 #'
-#' @return the modified matrix
+#' @return The modified matrix, or for `solvematrix` the solution vector.
 #'
 #' @family linear
 #'
@@ -57,6 +34,8 @@
 #'
 #' @export
 refmatrix <- function(m) {
+    .cmna_validate_matrix(m, "m")
+
     count.rows <- nrow(m)
     count.cols <- ncol(m)
     piv <- 1
@@ -89,6 +68,8 @@ refmatrix <- function(m) {
 #' @rdname refmatrix
 #' @export
 rrefmatrix <- function(m) {
+    .cmna_validate_matrix(m, "m")
+
     count.rows <- nrow(m)
     count.cols <- ncol(m)
     piv <- 1
@@ -123,6 +104,8 @@ rrefmatrix <- function(m) {
 #' @rdname refmatrix
 #' @export
 solvematrix <- function(A, b) {
+    .cmna_validate_matrix(A, "A")
+    .cmna_validate_numeric_vector(b, "b")
 
     m <- cbind(A, b)
     m <- rrefmatrix(m)

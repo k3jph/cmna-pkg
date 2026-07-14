@@ -1,88 +1,67 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @name division
 #' @rdname division
 #'
-#' @title Algorithms for divisions
+#' @title Integer division algorithms
 #'
 #' @description
-#' Algorithms for division that provide a quotient and remainder.
+#' Compute the quotient and remainder of integer division using
+#' elementary algorithms.
 #'
-#' @param m the dividend
-#' @param n the divisor
+#' @param m the dividend (a nonnegative integer)
+#' @param n the divisor (a positive integer)
 #'
 #' @details
-#' The \code{naivediv} divides \code{m} by \code{n} by using repeated
-#' division.  The \code{longdiv} function uses the long division
-#' algorithm in binary.
+#' `naivediv` divides `m` by `n` using repeated subtraction.
+#' `longdiv` uses the binary long-division algorithm, processing
+#' bits from most significant to least significant.
 #'
-#' @return the quotient and remainder as a list
+#' Both functions return the unique quotient `q` and remainder `r`
+#' satisfying `m = q * n + r` with `0 <= r < n`.
+#'
+#' @return A list with components `quotient` and `remainder`.
 #'
 #' @family algebra
 #'
 #' @examples
-#' a <- floor(runif(1, 1, 1000))
-#' b <- floor(runif(1, 1, 100))
-#' naivediv(a, b)
-#' longdiv(a, b)
+#' naivediv(17, 5)
+#' longdiv(17, 5)
 #'
 #' @export
 naivediv <- function(m, n) {
+    .cmna_validate_nonneg_integer(m, "m")
+    .cmna_validate_pos_integer(n, "n")
+
     quot <- 0
     r <- m
 
-    if(n == 0)
-        stop("Attempted division by 0")
-
-    while(r >= n) {
+    while (r >= n) {
         quot <- quot + 1
         r <- r - n
     }
 
-    return(list(quotient = quot, remainder = r))
+    list(quotient = quot, remainder = r)
 }
 
 #' @rdname division
 #' @export
 longdiv <- function(m, n) {
+    .cmna_validate_nonneg_integer(m, "m")
+    .cmna_validate_pos_integer(n, "n")
+
     quot <- 0
     r <- 0
 
-    if(n == 0)
-        stop("Attempted division by 0")
-
-    for(i in 31:0) {
+    for (i in 31:0) {
         r <- bitwShiftL(r, 1)
         r <- r + bitwAnd(bitwShiftR(m, i), 1)
-        if(r >= n) {
+        if (r >= n) {
             r <- r - n
             quot <- quot + bitwShiftL(1, i)
         }
     }
 
-    return(list(quotient = quot, remainder = r))
+    list(quotient = quot, remainder = r)
 }

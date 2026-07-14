@@ -1,48 +1,29 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Wave Equation using
+#' @title Wave Equation via Finite Differences
 #'
 #' @name wave
 #' @rdname wave
 #'
 #' @description
-#' solve heat equation via forward-time central-space method
+#' Solve the one-dimensional wave equation using a finite difference
+#' method.
 #'
-#' @param u the initial values of u
-#' @param alpha the thermal diffusivity coefficient
-#' @param xdelta the change in \code{x} at each step in \code{u}
-#' @param tdelta the time step
-#' @param n the number of steps to take
+#' @param u a numeric vector of initial displacement values
+#' @param alpha a positive numeric scalar giving the wave speed
+#' @param xdelta a positive numeric scalar giving the spatial step size
+#' @param tdelta a positive numeric scalar giving the time step size
+#' @param n a positive integer giving the number of time steps
 #'
 #' @details
-#' The \code{heat} solves the heat equation using the forward-time
-#' central-space method in one-dimension.
+#' `wave` solves the one-dimensional wave equation using a central
+#' difference scheme in both space and time. The initial velocity is
+#' assumed to be zero. Fixed boundary conditions are applied at the
+#' endpoints.
 #'
-#' @return a matrix of u values at each time step
+#' @return A matrix with `n + 1` rows, where each row is the
+#'   displacement vector `u` at a given time step.
 #'
 #' @examples
 #' speed <- 2
@@ -58,6 +39,12 @@
 
 #' @export
 wave <- function(u, alpha, xdelta, tdelta, n) {
+    .cmna_validate_numeric_vector(u, "u")
+    .cmna_validate_positive_scalar(alpha, "alpha")
+    .cmna_validate_positive_scalar(xdelta, "xdelta")
+    .cmna_validate_positive_scalar(tdelta, "tdelta")
+    .cmna_validate_pos_integer(n, "n")
+
     m <- length(u)
     uarray <- matrix(u, nrow = 1)
     newu <- u

@@ -1,53 +1,27 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @rdname rowops
 #' @name rowops
 #'
 #' @title Elementary row operations
 #'
 #' @description
-#'
-#' These are elementary operations for a matrix.  They do not presume a
-#' square matrix and will work on any matrix.  They use R's internal row
-#' addressing to function.
+#' Elementary row operations for a matrix. These do not require a
+#' square matrix and will work on any matrix. They use R's internal
+#' row addressing to function.
 #'
 #' @param m a matrix
-#' @param row a row to modify
-#' @param row1 a source row
-#' @param row2 a destination row
-#' @param k a scaling factor
+#' @param row a row index to modify
+#' @param row1 a source row index
+#' @param row2 a destination row index
+#' @param k a numeric scaling factor
 #'
 #' @details
+#' `replacerow` replaces one row with the sum of itself and the
+#' multiple of another row. `swaprows` swaps two rows in the
+#' matrix. `scalerow` scales all entries in a row by a constant.
 #'
-#' \code{replacerow} replaces one row with the sum of itself and the
-#' multiple of another row.  \code{swaprows} swap two rows in the
-#' matrix.  \code{scalerow} scales all enteries in a row by a constant.
-#'
-#' @return the modified matrix
+#' @return The modified matrix.
 #'
 #' @family linear
 #'
@@ -61,6 +35,16 @@
 #' @rdname rowops
 #' @export
 swaprows <- function(m, row1, row2) {
+    .cmna_validate_matrix(m, "m")
+    .cmna_validate_pos_integer(row1, "row1")
+    .cmna_validate_pos_integer(row2, "row2")
+    if (row1 > nrow(m))
+        .cmna_abort("`row1` must not exceed the number of rows in `m`.",
+                    "cmna_error_invalid_input")
+    if (row2 > nrow(m))
+        .cmna_abort("`row2` must not exceed the number of rows in `m`.",
+                    "cmna_error_invalid_input")
+
     row.tmp <- m[row1,]
     m[row1,] <- m[row2,]
     m[row2,] <- row.tmp
@@ -71,6 +55,16 @@ swaprows <- function(m, row1, row2) {
 #' @rdname rowops
 #' @export
 replacerow <- function(m, row1, row2, k) {
+    .cmna_validate_matrix(m, "m")
+    .cmna_validate_pos_integer(row1, "row1")
+    .cmna_validate_pos_integer(row2, "row2")
+    if (row1 > nrow(m))
+        .cmna_abort("`row1` must not exceed the number of rows in `m`.",
+                    "cmna_error_invalid_input")
+    if (row2 > nrow(m))
+        .cmna_abort("`row2` must not exceed the number of rows in `m`.",
+                    "cmna_error_invalid_input")
+
     m[row2,] <- m[row2,] + m[row1,] * k
     return(m)
 }
@@ -78,7 +72,12 @@ replacerow <- function(m, row1, row2, k) {
 #' @rdname rowops
 #' @export
 scalerow <- function(m, row, k) {
+    .cmna_validate_matrix(m, "m")
+    .cmna_validate_pos_integer(row, "row")
+    if (row > nrow(m))
+        .cmna_abort("`row` must not exceed the number of rows in `m`.",
+                    "cmna_error_invalid_input")
+
     m[row,] <- m[row,] * k
     return(m)
 }
-

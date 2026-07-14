@@ -1,47 +1,25 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @rdname bezier
 #' @name bezier
 #'
-#' @title Bezier curves
+#' @title Bezier Curves
 #'
 #' @description
-#' Find the quadratic and cubic Bezier curve for the given points
+#' Compute quadratic and cubic Bezier curves for the given control points.
 #'
-#' @param x a vector of x values
-#' @param y a vector of y values
-#' @param t a vector of t values for which the curve will be computed
+#' @param x a numeric vector of x-coordinates for the control points
+#' @param y a numeric vector of y-coordinates for the control points
+#' @param t a numeric vector of parameter values at which to evaluate the curve
 #'
-#' @details \code{qbezier} finds the quadratic Bezier curve for the
-#' given three points and \code{cbezier} finds the cubic Bezier curve
-#' for the given four points.  The curve will be computed at all values
-#' in the vector \code{t} and a list of x and y values returned.
+#' @details
+#' `qbezier` computes the quadratic Bezier curve through three control
+#' points and `cbezier` computes the cubic Bezier curve through four
+#' control points. The curve is evaluated at all values in the vector
+#' `t`, which typically ranges from 0 to 1.
 #'
-#' @return a list composed of an x-vector and a y-vector
+#' @return A list with components `x` and `y`, each a numeric vector
+#'   of the same length as `t`.
 #'
 #' @family interp
 #'
@@ -57,8 +35,16 @@
 #' @rdname bezier
 #' @export
 qbezier <- function(x, y, t) {
-    if(length(x) != 3 || length(y) != 3)
-        stop("x and y must contain exactly 3 values")
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_numeric_vector(y, "y")
+    .cmna_validate_numeric_vector(t, "t")
+    if (length(x) != 3 || length(y) != 3)
+        .cmna_abort(
+            "`x` and `y` must each contain exactly 3 values",
+            "cmna_invalid_argument",
+            x_length = length(x),
+            y_length = length(y)
+        )
 
     newx <- (1-t)^2 * x[1] + 2 * (1-t) * t * x[2] +
         t^2 * x[3]
@@ -71,8 +57,16 @@ qbezier <- function(x, y, t) {
 #' @rdname bezier
 #' @export
 cbezier <- function(x, y, t) {
-    if(length(x) != 4 || length(y) != 4)
-        stop("x and y must contain exactly 4 values")
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_numeric_vector(y, "y")
+    .cmna_validate_numeric_vector(t, "t")
+    if (length(x) != 4 || length(y) != 4)
+        .cmna_abort(
+            "`x` and `y` must each contain exactly 4 values",
+            "cmna_invalid_argument",
+            x_length = length(x),
+            y_length = length(y)
+        )
 
     newx <- (1-t)^3 * x[1] + 3 * (1-t)^2 * t * x[2] +
         3 * (1-t) * t^2 * x[3] + t^3 * x[4]

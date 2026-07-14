@@ -1,44 +1,24 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Bilinear interpolation
+#' @title Bilinear Interpolation
 #'
 #' @description
-#' Finds a bilinear interpolation bounded by four points
+#' Compute a bilinear interpolation bounded by four corner points.
 #'
-#' @param x vector of two x values representing \code{x_1} and \code{x_2}
-#' @param y vector of two y values representing \code{y_1} and \code{y_2}
-#' @param z 2x2 matrix if \code{z} values
-#' @param newx vector of new \code{x} values to interpolate
-#' @param newy vector of new \code{y} values to interpolate
+#' @param x a numeric vector of length 2 giving \eqn{x_1} and \eqn{x_2}
+#' @param y a numeric vector of length 2 giving \eqn{y_1} and \eqn{y_2}
+#' @param z a 2-by-2 numeric matrix of z-values at the four corners
+#' @param newx a numeric vector of x-coordinates at which to interpolate
+#' @param newy a numeric vector of y-coordinates at which to interpolate
 #'
 #' @details
-#' \code{bilinear} finds a bilinear interpolation bounded by four corners
+#' `bilinear` performs bilinear interpolation within the rectangle
+#' defined by the corners \eqn{(x_1, y_1)} and \eqn{(x_2, y_2)}.
+#' First the function interpolates along the x-axis, then along the
+#' y-axis.
 #'
-#' @return a vector of interpolated z values at (\code{x}, \code{y})
+#' @return A numeric vector of interpolated z-values.
 #'
 #' @family interp
 #' @family algebra
@@ -53,6 +33,11 @@
 #'
 #' @export
 bilinear <- function(x, y, z, newx, newy) {
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_numeric_vector(y, "y")
+    .cmna_validate_matrix(z, "z")
+    .cmna_validate_numeric_vector(newx, "newx")
+    .cmna_validate_numeric_vector(newy, "newy")
 
     ## Find intermediate values along the x-axis, first
     z1 <- (x[2] - newx) * z[1,1] + (newx - x[1]) * z[1,2]
@@ -66,4 +51,3 @@ bilinear <- function(x, y, z, newx, newy) {
 
     return(z)
 }
-

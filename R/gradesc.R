@@ -1,52 +1,33 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Gradient descent
+#' @title Gradient Descent
 #'
 #' @name gradient
 #' @rdname gradient
 #'
 #' @description
-#' Use gradient descent to find local minima
+#' Use gradient descent or ascent to find local extrema.
 #'
-#' @param fp function representing the derivative of \code{f}
-#' @param x an initial estimate of the minima
-#' @param h the step size
-#' @param tol the error tolerance
-#' @param m the maximum number of iterations
+#' @param fp function representing the derivative of the objective
+#' @param x an initial estimate of the extremum (finite numeric scalar
+#'   for `graddsc`/`gradasc`, numeric vector for `gd`)
+#' @param h step size (positive numeric scalar)
+#' @param tol error tolerance (positive numeric scalar)
+#' @param m maximum number of iterations (positive integer)
 #'
 #' @details
+#' Gradient descent can be used to find local minima of functions. It
+#' will return an approximation based on the step size `h` and `fp`.
+#' The `tol` is the error tolerance, `x` is the initial guess at the
+#' minimum. This implementation also stops after `m` iterations.
 #'
-#' Gradient descent can be used to find local minima of functions.  It
-#' will return an approximation based on the step size \code{h} and
-#' \code{fp}.  The \code{tol} is the error tolerance, \code{x} is the
-#' initial guess at the minimum.  This implementation also stops after
-#' \code{m} iterations.
+#' `graddsc` performs scalar gradient descent (minimization).
+#' `gradasc` performs scalar gradient ascent (maximization).
+#' `gd` performs multivariate gradient descent on a vector-valued
+#' input.
 #'
-#' @return the \code{x} value of the minimum found
+#' @return The `x` value of the extremum found.
 #'
 #' @family optimz
 #'
@@ -65,6 +46,12 @@
 
 #' @export
 graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
+    .cmna_validate_function(fp, "fp")
+    .cmna_validate_finite_scalar(x, "x")
+    .cmna_validate_positive_scalar(h, "h")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
+
     iter <- 0
 
     oldx <- x
@@ -73,7 +60,12 @@ graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
     while(abs(x - oldx) > tol) {
         iter <- iter + 1
         if(iter > m)
-            stop("No solution found")
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                "cmna_convergence_failure",
+                method = "graddsc",
+                iterations = iter
+            )
         oldx <- x
         x = x - h * fp(x)
     }
@@ -84,6 +76,12 @@ graddsc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
 #' @rdname gradient
 #' @export
 gradasc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
+    .cmna_validate_function(fp, "fp")
+    .cmna_validate_finite_scalar(x, "x")
+    .cmna_validate_positive_scalar(h, "h")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
+
     iter <- 0
 
     oldx <- x
@@ -92,7 +90,12 @@ gradasc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
     while(abs(x - oldx) > tol) {
         iter <- iter + 1
         if(iter > m)
-            stop("No solution found")
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                "cmna_convergence_failure",
+                method = "gradasc",
+                iterations = iter
+            )
         oldx <- x
         x = x + h * fp(x)
     }
@@ -103,6 +106,12 @@ gradasc <- function(fp, x, h = 1e-3, tol = 1e-4, m = 1e3) {
 #' @rdname gradient
 #' @export
 gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
+    .cmna_validate_function(fp, "fp")
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_positive_scalar(h, "h")
+    .cmna_validate_tolerance(tol)
+    .cmna_validate_max_iterations(m)
+
     iter <- 0
 
     oldx <- x
@@ -111,7 +120,12 @@ gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
     while(vecnorm(x - oldx) > tol) {
         iter <- iter + 1
         if(iter > m)
-            return(x)
+            .cmna_abort(
+                "maximum number of iterations exceeded",
+                "cmna_convergence_failure",
+                method = "gd",
+                iterations = iter
+            )
         oldx <- x
         x = x - h * fp(x)
     }

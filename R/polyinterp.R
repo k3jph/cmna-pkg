@@ -1,41 +1,22 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
-#' @title Polynomial interpolation
+#' @title Polynomial Interpolation
 #'
 #' @description
-#' Finds a polynomial function interpolating the given points
+#' Find the polynomial that interpolates the given points.
 #'
-#' @param x a vector of x values
-#' @param y a vector of y values
+#' @param x a numeric vector of x-coordinates
+#' @param y a numeric vector of y-coordinates
 #'
 #' @details
-#' \code{polyinterp} finds a polynomial that interpolates the given points.
+#' `polyinterp` constructs the Vandermonde matrix for the given
+#' x-coordinates and solves for the polynomial coefficients that
+#' interpolate the corresponding y-values. The vectors `x` and `y`
+#' must have the same length.
 #'
-#' @return a polynomial equation's coefficients
+#' @return A numeric vector of polynomial coefficients in ascending
+#'   order of degree, suitable for [horner()].
 #'
 #' @family interp
 #' @family algebra
@@ -47,8 +28,15 @@
 #'
 #' @export
 polyinterp <- function(x, y) {
-    if(length(x) != length(y))
-        stop("Length of x and y vectors must be the same")
+    .cmna_validate_numeric_vector(x, "x")
+    .cmna_validate_numeric_vector(y, "y")
+    if (length(x) != length(y))
+        .cmna_abort(
+            "`x` and `y` must have the same length",
+            "cmna_invalid_argument",
+            x_length = length(x),
+            y_length = length(y)
+        )
 
     n <- length(x) - 1
     vandermonde <- rep(1, length(x))

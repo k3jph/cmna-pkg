@@ -1,28 +1,5 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @name mcint
 #' @rdname mcint
@@ -30,23 +7,23 @@
 #' @title Monte Carlo Integration
 #'
 #' @description
-#' Simple Monte Carlo Integraton
+#' Estimate definite integrals by Monte Carlo sampling.
 #'
 #' @param f function to integrate
-#' @param a the lower-bound of integration
-#' @param b the upper-bound of integration
-#' @param xdom the domain on \code{x} of integration in two dimensions
-#' @param ydom the domain on \code{y} of integration in two dimensions
-#' @param m the number of subintervals to calculate
+#' @param a lower bound of integration (finite numeric scalar)
+#' @param b upper bound of integration (finite numeric scalar)
+#' @param xdom the domain on `x` of integration in two dimensions
+#' @param ydom the domain on `y` of integration in two dimensions
+#' @param m number of random sample points (positive integer, default 1000)
 #'
 #' @details
-#' The \code{mcint} function uses a simple Monte Carlo algorithm to
-#' estimate the value of an integral.  The parameter \code{n} sets the
-#' total number of evaluation points.  The parameter \code{max.y} is the
-#' maximum expected value of the range of function \code{f}.  The
-#' \code{mcint2} provides Monte Carlo integration in two dimensions.
+#' `mcint` draws `m` points uniformly on `[a, b]`, evaluates `f` at
+#' each, and returns `(b - a)` times the sample mean. `mcint2` extends
+#' this to two dimensions: `m` points are drawn uniformly over the
+#' rectangular domain defined by `xdom` and `ydom`, and the volume
+#' estimate is the domain area times the sample mean of `f(x, y)`.
 #'
-#' @return the value of the integral
+#' @return A numeric scalar giving the estimated integral (or volume).
 #'
 #' @family integration
 #'
@@ -59,16 +36,24 @@
 #'
 #' @export
 mcint <- function(f, a, b, m = 1000) {
-  x <- runif(m, min = a, max = b)
-  
-  y.hat <- f(x)
-  area <- (b - a) * sum(y.hat) / m
-  return(area)
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_pos_integer(m, "m")
+
+    x <- runif(m, min = a, max = b)
+
+    y.hat <- f(x)
+    area <- (b - a) * sum(y.hat) / m
+    return(area)
 }
 
 #' @rdname mcint
 #' @export
 mcint2 <- function(f, xdom, ydom, m = 1000) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_pos_integer(m, "m")
+
     xmin <- min(xdom)
     xmax <- max(xdom)
     ymin <- min(ydom)

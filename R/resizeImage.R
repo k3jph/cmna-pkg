@@ -1,52 +1,36 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @name resizeImage
 #' @rdname resizeImage
 #'
-#' @title Image resizing
+#' @title Image Resizing
 #'
 #' @description
-#' Resize images using nearest neighbor and
+#' Resize images using nearest neighbor or bilinear interpolation.
 #'
-#' @param imx a 3-dimensional array containing image data
-#' @param width the new width
-#' @param height the new height
+#' @param imx a 3-dimensional numeric array containing image data
+#' @param width a positive integer giving the new width
+#' @param height a positive integer giving the new height
 #'
 #' @details
-#' The \var{resizeImageNN} function uses the nearest neighbor method to
-#' resize the image.  Also, \var{resizeImageBL} uses bilinear
-#' interpolation to resize the image.
+#' `resizeImageNN` uses the nearest neighbor method to resize the image.
+#' `resizeImageBL` uses bilinear interpolation to resize the image.
 #'
-#' @return a three-dimensional array containing the resized image.
+#' @return A 3-dimensional array containing the resized image.
 #'
 #' @family interpolation
 
 #' @export
 resizeImageNN <- function(imx, width, height) {
+    if (!is.array(imx) || length(dim(imx)) != 3)
+        .cmna_abort(
+            "`imx` must be a 3-dimensional array",
+            "cmna_invalid_argument"
+        )
+    .cmna_validate_pos_integer(width, "width")
+    .cmna_validate_pos_integer(height, "height")
+
     imx.dim <- dim(imx)
     layers <- imx.dim[3]
     w.scale <- width / (imx.dim[1] - 1)
@@ -70,6 +54,14 @@ resizeImageNN <- function(imx, width, height) {
 #' @rdname resizeImage
 #' @export
 resizeImageBL <- function(imx, width, height) {
+    if (!is.array(imx) || length(dim(imx)) != 3)
+        .cmna_abort(
+            "`imx` must be a 3-dimensional array",
+            "cmna_invalid_argument"
+        )
+    .cmna_validate_pos_integer(width, "width")
+    .cmna_validate_pos_integer(height, "height")
+
     imx.dim <- dim(imx)
     layers <- imx.dim[3]
     w.orig <- imx.dim[1]

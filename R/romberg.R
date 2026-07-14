@@ -1,48 +1,28 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @title Romberg Integration
 #'
 #' @description
-#' Romberg's adaptive integration
+#' Approximate a definite integral using Romberg's method.
 #'
 #' @param f function to integrate
-#' @param a the lowerbound of integration
-#' @param b the upperbound of integration
-#' @param m the maximum number of iterations
-#' @param tab if \code{TRUE}, return the table of values
+#' @param a lower bound of integration (finite numeric scalar)
+#' @param b upper bound of integration (finite numeric scalar)
+#' @param m number of Richardson extrapolation levels (positive integer)
+#' @param tab if `TRUE`, return the full Romberg table instead of just
+#'   the final estimate
 #'
 #' @details
-#' The \code{romberg} function uses Romberg's rule to calculate the
-#' integral of the function \code{f} over the interval from \code{a}
-#' to \code{b}.  The parameter \code{m} sets the number of intervals
-#' to use when evaluating.  Additional options are passed to the
-#' function \code{f} when evaluating.
+#' Romberg integration applies Richardson extrapolation to successive
+#' refinements of the composite trapezoidal rule. At each level `j` the
+#' trapezoidal estimate with `2^(j-1)` subintervals is combined with
+#' earlier estimates to cancel leading error terms, yielding
+#' progressively higher-order approximations. The parameter `m` controls
+#' how many levels of extrapolation are performed.
 #'
-#' @return the value of the integral
+#' @return A numeric scalar giving the integral estimate, or (when
+#'   `tab = TRUE`) the full m-by-m Romberg table as a matrix.
 #'
 #' @family integration
 #' @family newton-cotes
@@ -55,6 +35,11 @@
 #'
 #' @export
 romberg <- function(f, a, b, m, tab = FALSE) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(a, "a")
+    .cmna_validate_finite_scalar(b, "b")
+    .cmna_validate_pos_integer(m, "m")
+
     R <- matrix(NA, nrow = m, ncol = m)
 
     R[1, 1] <- trap(f, a, b, m = 1)

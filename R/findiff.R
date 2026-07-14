@@ -1,28 +1,5 @@
-## Copyright (c) 2016, James P. Howard, II <jh@jameshoward.us>
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions are
-## met:
-##
-##     Redistributions of source code must retain the above copyright
-##     notice, this list of conditions and the following disclaimer.
-##
-##     Redistributions in binary form must reproduce the above copyright
-##     notice, this list of conditions and the following disclaimer in
-##     the documentation and/or other materials provided with the
-##     distribution.
-##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-## HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+## Copyright (c) 2016-2026, James P. Howard, II <jh@jameshoward.us>
+## SPDX-License-Identifier: BSD-2-Clause
 
 #' @name findiff
 #' @rdname findiff
@@ -30,21 +7,29 @@
 #' @title Finite Differences
 #'
 #' @description
-#' Finite differences formulas
+#' Approximate derivatives using finite-difference formulas.
 #'
 #' @param f function to differentiate
-#' @param x the \code{x}-value to differentiate at
-#' @param h the step-size for evaluation
-#' @param n the maximum number of convergence steps in \code{rdiff}
+#' @param x the point at which to evaluate the derivative (finite numeric
+#'   scalar)
+#' @param h step size for evaluation (numeric scalar)
+#' @param n maximum number of Richardson extrapolation steps in `rdiff`
+#'   (positive integer, default 10)
 #'
 #' @details
+#' `findiff` uses the forward-difference formula
+#' `(f(x + h) - f(x)) / h` to approximate `f'(x)`.
 #'
-#' The \code{findiff} formula uses the finite differences formula to
-#' find the derivative of \code{f} at \code{x}.  The value of \code{h}
-#' is the step size of the evaluation. The function \code{findiff2}
-#' provides the second derivative.
+#' `symdiff` uses the central (symmetric) difference
+#' `(f(x + h) - f(x - h)) / (2h)`, which has error O(h^2).
 #'
-#' @return the value of the derivative
+#' `findiff2` approximates the second derivative using the standard
+#' three-point stencil `(f(x + h) - 2f(x) + f(x - h)) / h^2`.
+#'
+#' `rdiff` applies Richardson extrapolation to `symdiff`, recursively
+#' combining estimates at halved step sizes up to depth `n`.
+#'
+#' @return A numeric scalar giving the estimated derivative.
 #'
 #' @family differentiation
 #'
@@ -55,6 +40,9 @@
 #' @export
 findiff <- function(f, x,
                h = x * sqrt(.Machine$double.eps)) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x, "x")
+
     return((f(x + h) - f(x)) / h)
 }
 
@@ -62,18 +50,28 @@ findiff <- function(f, x,
 #' @export
 symdiff <- function(f, x,
                h = x * .Machine$double.eps^(1/3)) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x, "x")
+
     return((f(x + h) - f(x - h)) / (2 * h))
 }
 
 #' @rdname findiff
 #' @export
 findiff2 <- function(f, x, h) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x, "x")
+
     return((f(x + h) - 2 * f(x) + f(x - h)) / h^2)
 }
 
 #' @rdname findiff
 #' @export
 rdiff <- function(f, x, n = 10, h = 1e-4) {
+    .cmna_validate_function(f, "f")
+    .cmna_validate_finite_scalar(x, "x")
+    .cmna_validate_pos_integer(n, "n")
+
     if(n == 1)
         return(symdiff(f, x, h = h))
 
