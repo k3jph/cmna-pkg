@@ -43,7 +43,7 @@ refmatrix <- function(m) {
     for(row.curr in 1:count.rows) {
         if(piv <= count.cols) {
             i <- row.curr
-            while(m[i, piv] == 0 && i < count.rows) {
+            while(m[i, piv] == 0) {
                 i <- i + 1
                 if(i > count.rows) {
                     i <- row.curr
@@ -77,7 +77,7 @@ rrefmatrix <- function(m) {
     for(row.curr in 1:count.rows) {
         if(piv <= count.cols) {
             i <- row.curr
-            while(m[i, piv] == 0 && i < count.rows) {
+            while(m[i, piv] == 0) {
                 i <- i + 1
                 if(i > count.rows) {
                     i <- row.curr
