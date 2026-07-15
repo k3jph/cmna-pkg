@@ -27,9 +27,11 @@ The iteration solves the positive magnitude using
 \code{x_next = ((n - 1) * x + abs(a) / x^(n - 1)) / n}
 
 and reapplies the sign for a negative radicand with odd \code{n}. Zero is returned
-exactly. Convergence requires the residual to be no larger than \code{tol} times
-the scale of the radicand. Stagnation, non-finite intermediate values, and
-exhausted iteration limits are reported with CMNA condition classes.
+exactly. The initial estimate is derived from the binary exponent of the
+radicand to ensure rapid convergence across the full floating-point range.
+Convergence is detected when the relative change between successive iterates
+falls below \code{tol}. Stagnation, non-finite intermediate values, and exhausted
+iteration limits are reported with CMNA condition classes.
 }
 \examples{
 nthroot(100, 2)
