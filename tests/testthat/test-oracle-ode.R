@@ -43,6 +43,13 @@ test_that("rungekutta4 solves y' = cos(x), y(0) = 0", {
     expect_equal(result$y[101], exact, tolerance = 1e-8)
 })
 
+test_that("rungekutta4 achieves RK4-level accuracy on y'=-y^2", {
+    f <- function(x, y) -y^2
+    result <- rungekutta4(f, 0, 1, 0.001, 1000)
+    exact <- 1 / 2
+    expect_equal(result$y[1001], exact, tolerance = 1e-12)
+})
+
 test_that("IVP solvers return correct structure", {
     f <- function(x, y) y
     result <- euler(f, 0, 1, 0.1, 5)
